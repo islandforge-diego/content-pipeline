@@ -1,0 +1,13 @@
+{
+  "_comment": "OPTIONAL. Only apply this if you want permanently-public media URLs WITHOUT CloudFront. Default pipeline keeps Block Public Access ON and uses presigned URLs, so you do NOT need this. If you do use it: replace BUCKET_NAME, turn off Block Public Access for the bucket, and keep uploads under the media/ prefix so only that prefix is public.",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadMediaPrefix",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::BUCKET_NAME/media/*"
+    }
+  ]
+}

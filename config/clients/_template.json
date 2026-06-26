@@ -1,0 +1,39 @@
+{
+  "slug": "CLIENT_SLUG",
+  "display_name": "Client Name",
+  "brand": {
+    "name": "Brand name / show title",
+    "tagline": "Tagline",
+    "colors": { "primary": "#000000", "secondary": "#000000", "accent": "#000000", "neutral": "#FFFFFF" },
+    "color_ratio": "e.g. 60/25/10/5, one dominates per piece",
+    "fonts": { "display": "Display font", "body": "Body font", "display_substitute_pil": "LiberationSerif-Bold" },
+    "voice": "describe tone in a sentence",
+    "hard_rules": ["compliance / brand do-nots go here"],
+    "cta_keyword": "KEYWORD",
+    "link_in_bio": "https://...",
+    "course_platform": "",
+    "canva_brand_kit_id": ""
+  },
+  "buffer": {
+    "org_name": "Island Forge Studio",
+    "org_id": "67e362b288f79c93410af3fb",
+    "timezone": "America/Chicago",
+    "channels": {
+      "facebook":  { "id": "", "name": "", "type": "page" },
+      "instagram": { "id": "", "handle": "", "type": "business" },
+      "tiktok":    { "id": "", "handle": "", "type": "account" },
+      "linkedin":  { "id": "", "name": "", "type": "profile" },
+      "youtube":   { "id": "", "name": "", "type": "channel" }
+    }
+  },
+  "schedule": {
+    "feed":    { "per_day": 1, "default_time": "15:00", "reels_channels": ["facebook","instagram","tiktok","linkedin","youtube"], "image_channels": ["facebook","instagram","linkedin"] },
+    "stories": { "per_day": 1, "default_time": "07:00", "channel": "instagram", "scheduling_type": "notification", "theme_rotation": {} }
+  },
+  "s3": { "bucket": "CLIENT-bucket-name", "region": "us-east-2", "block_public_access": true, "delivery": "presigned" },
+  "preview": {
+    "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
+    "data_file": "content-preview/clients/CLIENT_SLUG/config.json"
+  },
+  "partners": []
+}

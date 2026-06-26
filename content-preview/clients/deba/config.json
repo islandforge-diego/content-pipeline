@@ -1,0 +1,247 @@
+{
+ "slug": "deba",
+ "name": "Deba Douglas",
+ "title": "Content Preview — Deba Douglas",
+ "range_label": "Jun 23–28",
+ "feed_time": "3:00 PM CT",
+ "theme": {
+  "accent": "#1f6f54",
+  "soft": "#e8f1ec",
+  "soft_border": "#cfe2d8",
+  "accent_text": "#16503c",
+  "story_bg": "#0d5f6e"
+ },
+ "banner": "👀 <b>For your review.</b> Everything below is scheduled. Feed posts go out at 3:00 PM CT; Instagram Stories run once a day (7:00 AM CT). Tap a video to watch, swipe the photos, or tap “Captions” to read each platform's copy.",
+ "footer": "Scheduled by Diego · Island Forge Studio · feed posts 3:00 PM CT · stories 7:00 AM CT (Tue 2:00 PM)",
+ "stories": {
+  "channel": "debaflipstexas",
+  "month_label": "June 2026",
+  "year": 2026,
+  "month": 6,
+  "items": [
+   {
+    "day": 23,
+    "dow": "Tue",
+    "time": "2:00 PM CT",
+    "title": "Mentee Tuesday",
+    "sticker": "🗳️ Poll · “Could you see yourself doing this?”",
+    "img": "stories/Day2_Tue_Mentee.png"
+   },
+   {
+    "day": 24,
+    "dow": "Wed",
+    "time": "7:00 AM CT",
+    "title": "Wealth-Building Wednesday",
+    "sticker": "💬 DM “INVESTOR”",
+    "img": "stories/Day3_Wed_WealthBuilding.png"
+   },
+   {
+    "day": 25,
+    "dow": "Thu",
+    "time": "7:00 AM CT",
+    "title": "Transformation Thursday",
+    "sticker": "🗳️ Poll · “Flip it or rent it out?”",
+    "img": "stories/Day4_Thu_Transformation.png"
+   },
+   {
+    "day": 26,
+    "dow": "Fri",
+    "time": "7:00 AM CT",
+    "title": "Teaching Friday",
+    "sticker": "❓ Question box · “Ask me anything”",
+    "img": "stories/Day5_Fri_Teaching.png"
+   },
+   {
+    "day": 27,
+    "dow": "Sat",
+    "time": "7:00 AM CT",
+    "title": "Community Saturday",
+    "sticker": "🗳️ Poll · “Come to an event like this?”",
+    "img": "stories/Day6_Sat_Community.png"
+   },
+   {
+    "day": 28,
+    "dow": "Sun",
+    "time": "7:00 AM CT",
+    "title": "Faith & Freedom Sunday",
+    "sticker": "❓ Question box · “What would freedom let you do?”",
+    "img": "stories/Day7_Sun_FaithFreedom.png"
+   }
+  ]
+ },
+ "feed": [
+  {
+   "date": "Tue · Jun 23",
+   "title": "Happy Hour with our latest cohort",
+   "chips": [
+    "Facebook",
+    "Instagram",
+    "LinkedIn",
+    "🤝 Collab: @longhorn_investments"
+   ],
+   "media": {
+    "type": "gallery",
+    "images": [
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201234_mljavq.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201069_q6nfaa.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201119_qbiam1.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201130_ummfqw.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201167_qhwgf5.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201169_txinjm.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201206_sxk1hs.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201178_thzf7o.jpg"
+    ]
+   },
+   "caps": [
+    [
+     "Instagram",
+     "Happy Hour with our latest cohort 🥂\n\nThere's nothing like getting our Principles of Real Estate family together — good people, good energy, and a whole lot of laughs. This is what the journey looks like off the spreadsheets. 🏡\n\nBig thanks to our sponsor @longhorn_investments for helping make nights like this happen. 🤝\n\nWant to be part of the next cohort? Comment \"Showcase\" 👇 to join our free real estate showcase.\n\n#realestateinvesting #mentorship #dfwrealestate #debaflipstexas #realestatecommunity #generationalwealth"
+    ],
+    [
+     "Facebook",
+     "Happy Hour with our latest cohort 🥂\n\nThere's nothing like getting our Principles of Real Estate family together — good people, good energy, and a whole lot of laughs. This is what the journey looks like off the spreadsheets. 🏡\n\nBig thanks to our sponsor Longhorn Investments (facebook.com/longhorninvestments) for helping make nights like this happen. 🤝\n\nWant to be part of the next cohort? Comment \"Showcase\" and we'll send you the link to join our free real estate showcase. 👇"
+    ],
+    [
+     "LinkedIn",
+     "Happy Hour with our latest cohort. 🥂\n\nBuilding wealth in real estate is about more than deals — it's about community. Getting our Principles of Real Estate family together is a reminder of why we do this work.\n\nGrateful to our sponsor Longhorn Investments for partnering with us on this.\n\nWant to learn what the mentorship is about? Join our next free showcase: douglasdwellings.com/mentor"
+    ]
+   ]
+  },
+  {
+   "date": "Wed · Jun 24",
+   "title": "How to make money with one skill",
+   "chips": [
+    "Facebook",
+    "Instagram",
+    "TikTok",
+    "LinkedIn",
+    "YouTube"
+   ],
+   "media": {
+    "type": "video",
+    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076678/previews/day23_wholesaling.jpg",
+    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782076678/previews/day23_wholesaling.mp4"
+   },
+   "caps": [
+    [
+     "Instagram · Facebook · TikTok",
+     "How to make money with one skill. 💰\n\nWholesaling is one of the most powerful strategies we teach inside the Roadmap because you do not need money, credit, or experience to get started.\nYou find the deal. You put it under contract. You sell that contract to an investor. You collect the fee.\n\nOne of my mentees made $50K doing exactly this.\nNo renovation. No mortgage. No risk. Just the skill of finding and evaluating a deal.\n\n👉🏾 Comment INVESTOR and I'll DM you the link to book a free strategy call.\n\n#realestateinvesting #wholesaling #dfwrealestate #mentorship"
+    ],
+    [
+     "LinkedIn · YouTube",
+     "Same copy with 👉🏾 https://buff.ly/np3lEka link instead of the comment CTA."
+    ]
+   ]
+  },
+  {
+   "date": "Thu · Jun 25",
+   "title": "What makes Deba a great fit?",
+   "chips": [
+    "Facebook",
+    "Instagram",
+    "TikTok",
+    "LinkedIn",
+    "YouTube"
+   ],
+   "media": {
+    "type": "video",
+    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076756/previews/clip2_bluejacket.jpg",
+    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/f_mp4,vc_h264,ac_aac,w_720,q_auto/v1782076756/previews/clip2_bluejacket.mp4"
+   },
+   "caps": [
+    [
+     "Instagram",
+     "\"What makes Deba a great fit?\" 🎤 Our clients say it best.\n\nFrom first-deal nerves to flipping houses — the right guide changes everything. 🏚️➡️🏡\n\nWant that for yourself? Comment \"Investor\" 👇 to book a free 1-on-1 with Deba."
+    ],
+    [
+     "LinkedIn",
+     "\"What makes Deba a great fit for you?\" We asked our clients — their answers say more than we ever could. … Book a free 1-on-1 strategy call with Deba (link in post)."
+    ]
+   ]
+  },
+  {
+   "date": "Fri · Jun 26",
+   "title": "The importance of getting started",
+   "chips": [
+    "Facebook",
+    "Instagram",
+    "TikTok",
+    "LinkedIn",
+    "YouTube"
+   ],
+   "media": {
+    "type": "video",
+    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076753/previews/clip1_showcase.jpg",
+    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/f_mp4,vc_h264,ac_aac,w_720,q_auto/v1782076753/previews/clip1_showcase.mp4"
+   },
+   "caps": [
+    [
+     "Instagram",
+     "The hardest part of real estate? Starting. 🏡\n\nOne buy & hold deal we broke down in class:\n• Purchase: $340K\n• Cash to close (15%): $51K\n• Rent: $3,400/mo\n• Cash flow: ~$350/mo\n\nYou don't need to be perfect — you need to begin. Comment \"Investor\" 👇 and Deba will send you a link to book your free 1-on-1 strategy call."
+    ],
+    [
+     "LinkedIn",
+     "Most people don't lose in real estate because they pick the wrong property. They lose because they never start. … Book a free 1-on-1 strategy call with Deba (Calendly link in post)."
+    ]
+   ]
+  },
+  {
+   "date": "Sat · Jun 27",
+   "title": "I'm going to figure this out!",
+   "chips": [
+    "Facebook",
+    "Instagram",
+    "TikTok",
+    "LinkedIn",
+    "YouTube"
+   ],
+   "media": {
+    "type": "video",
+    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782137139/Event_Reel_Trial_eia412.jpg",
+    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782137139/Event_Reel_Trial_eia412.mp4"
+   },
+   "caps": [
+    [
+     "Instagram",
+     "\"I'm going to figure this out!\" 💪🏾\n\nThat's the energy we want every mentee to bring to the mentorship. I was there too — grinding a 9-to-5 while taking care of my family. I figured it out, and I'll show you how.\n\nComment \"Investor\" 👇 to learn more and book a call with me."
+    ],
+    [
+     "LinkedIn",
+     "\"I'm going to figure this out.\" That's the energy we expect our mentees to bring. I was working a 9-to-5 while taking care of my family when I started. Book a 1-on-1 call with me (link in post)."
+    ]
+   ]
+  },
+  {
+   "date": "Sun · Jun 28",
+   "title": "From the bays to the table",
+   "chips": [
+    "Facebook",
+    "Instagram",
+    "LinkedIn"
+   ],
+   "media": {
+    "type": "gallery",
+    "images": [
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201244_tu2ssj.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138659/FX201072_t9911u.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201082_mvfcpt.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201144_x6rqk8.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138660/FX201070_mbwzh0.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138659/FX201071_q6bwib.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201208_osqu7x.jpg",
+     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201159_qbrwg8.jpg"
+    ]
+   },
+   "caps": [
+    [
+     "Instagram",
+     "From the bays to the table 🏌️🍹\n\nOur latest cohort's Happy Hour was all about celebrating wins and making memories. The best part of this business? The people you build it with.\n\nReady to start your journey? Comment \"Showcase\" 👇 to join our free real estate showcase.\n\n#realestateinvesting #mentorship #dfwrealestate #debaflipstexas #topgolf #realestatecommunity"
+    ],
+    [
+     "LinkedIn",
+     "From the bays to the table — celebrating our latest cohort. 🏌️ Behind every deal is a community of people pushing each other forward. Join our next free showcase: douglasdwellings.com/mentor"
+    ]
+   ]
+  }
+ ]
+}

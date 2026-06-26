@@ -1,0 +1,65 @@
+{
+  "slug": "deba",
+  "display_name": "Deba Douglas",
+  "brand": {
+    "name": "Principles of Real Estate — with Deba Douglas",
+    "tagline": "Changing the world, one house at a time.",
+    "colors": {
+      "teal": "#0D5F6E",
+      "gold": "#D4A020",
+      "salmon": "#E8A090",
+      "cream": "#FBF5EE"
+    },
+    "color_ratio": "60% teal / 25% gold / 10% salmon / 5% cream (one dominates per piece)",
+    "fonts": { "display": "Georgia Bold", "body": "Lato", "display_substitute_pil": "LiberationSerif-Bold" },
+    "voice": "empowering, educational, authentic (bus-driver origin), energetic, mission-driven, inclusive",
+    "hard_rules": [
+      "never use demographic-specific stats",
+      "never promise specific ROI/returns",
+      "never post private client/deal details",
+      "never recolor/alter the logo"
+    ],
+    "cta_keyword": "INVESTOR",
+    "link_in_bio": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1",
+    "course_platform": "Kajabi",
+    "canva_brand_kit_id": "kAHMyuJfyMM"
+  },
+  "buffer": {
+    "org_name": "Island Forge Studio",
+    "org_id": "67e362b288f79c93410af3fb",
+    "timezone": "America/Chicago",
+    "channels": {
+      "facebook":  { "id": "6a1cb55dc687a22dd4484430", "name": "Douglas Dwellings - Principles of Real Estate", "type": "page" },
+      "instagram": { "id": "6a1cb662c687a22dd4484705", "handle": "debaflipstexas", "type": "business" },
+      "tiktok":    { "id": "6a1cb855c687a22dd4484c34", "handle": "debaflipstexas", "type": "account" },
+      "linkedin":  { "id": "6a1cb7a4c687a22dd4484a78", "name": "Deba Douglas", "type": "profile" },
+      "youtube":   { "id": "6a1cbd9ac687a22dd44859a6", "name": "Principles of Real Estate", "type": "channel" }
+    }
+  },
+  "schedule": {
+    "feed": {
+      "per_day": 1,
+      "default_time": "15:00",
+      "reels_channels": ["facebook", "instagram", "tiktok", "linkedin", "youtube"],
+      "image_channels": ["facebook", "instagram", "linkedin"]
+    },
+    "stories": {
+      "per_day": 1,
+      "default_time": "07:00",
+      "channel": "instagram",
+      "scheduling_type": "notification",
+      "theme_rotation": {
+        "Mon": "Testimonial", "Tue": "Mentee", "Wed": "Wealth-Building",
+        "Thu": "Transformation", "Fri": "Teaching", "Sat": "Community", "Sun": "Faith & Freedom"
+      }
+    }
+  },
+  "s3": { "bucket": "debadouglas", "region": "us-east-2", "block_public_access": true, "delivery": "presigned" },
+  "preview": {
+    "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
+    "data_file": "content-preview/clients/deba/config.json"
+  },
+  "partners": [
+    { "name": "Longhorn Investments", "ig": "@longhorn_investments", "fb": "facebook.com/longhorninvestments", "relationship": "sponsor" }
+  ]
+}
