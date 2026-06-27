@@ -1,103 +1,94 @@
-"""publish.py — upload to S3 and schedule posts to Buffer."""
-import subprocess
+"""publish.py — upload media to S3 (boto3) and schedule posts to Buffer.
+
+S3 upload uses boto3 directly so it runs cross-platform (Mac/Windows/Linux) with
+no bash dependency. The shell uploader (uploader/push_to_s3.sh) remains for
+terminal users; this module is what the CLI and web UI call.
+"""
+import mimetypes
 from pathlib import Path
 
-import requests
+import boto3
 from rich.console import Console
+
+from buffer_api import create_post
 
 console = Console()
 
-BUFFER_GRAPHQL = "https://api.buffer.com/graphql"
-
-# Buffer's GraphQL mutation for creating a post.
-# If Buffer changes their schema, introspect via: POST BUFFER_GRAPHQL with {"query": "{__schema{types{name}}}"}
-_CREATE_POST = """
-mutation CreatePost($input: CreatePostInput!) {
-  createPost(input: $input) {
-    ... on CreatePostSuccess {
-      post { id status dueAt }
-    }
-    ... on InvalidInput {
-      message
-    }
-  }
-}
-"""
+PRESIGN_TTL = 7 * 24 * 3600  # 7 days, matches push_to_s3.sh --share default
 
 
-def upload_to_s3(file_path: str, client: dict, dry_run: bool = False) -> str:
-    """Upload file to S3 and return a presigned URL."""
+def upload_to_s3(file_path: str, client: dict, dry_run: bool = False, key_prefix: str = "") -> str:
+    """Upload a file to the client's S3 bucket and return a presigned URL.
+
+    Block Public Access stays ON; we hand out short-lived presigned URLs that
+    Buffer/Canva download at schedule time.
+    """
     bucket = client["s3"]["bucket"]
     region = client["s3"]["region"]
-    uploader = Path(__file__).parent.parent / "uploader" / "push_to_s3.sh"
+    name = Path(file_path).name
+    key = f"{key_prefix.rstrip('/')}/{name}" if key_prefix else name
 
     if dry_run:
-        return f"https://{bucket}.s3.{region}.amazonaws.com/[dry-run/{Path(file_path).name}]"
+        return f"https://{bucket}.s3.{region}.amazonaws.com/[dry-run]/{key}"
 
-    result = subprocess.run(
-        ["bash", str(uploader), file_path, "--share", "--bucket", bucket, "--region", region],
-        capture_output=True,
-        text=True,
+    s3 = boto3.client("s3", region_name=region)
+    content_type = mimetypes.guess_type(file_path)[0] or "application/octet-stream"
+    with open(file_path, "rb") as f:
+        s3.put_object(Bucket=bucket, Key=key, Body=f, ContentType=content_type)
+
+    return s3.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": bucket, "Key": key},
+        ExpiresIn=PRESIGN_TTL,
     )
-    if result.returncode != 0:
-        raise RuntimeError(f"S3 upload failed:\n{result.stderr}")
-
-    # push_to_s3.sh prints the presigned URL as the last line of stdout
-    lines = [l.strip() for l in result.stdout.splitlines() if l.strip()]
-    if not lines:
-        raise RuntimeError("S3 uploader produced no output")
-    return lines[-1]
 
 
-def _post_to_channel(channel_id: str, caption: str, media_url: str, due_at: str, kind: str, token: str) -> dict:
-    asset_type = "VIDEO" if kind == "reel" else "IMAGE"
-    variables = {
-        "input": {
-            "channelId": channel_id,
-            "text": caption,
-            "dueAt": due_at,
-            "assets": [{"type": asset_type, "url": media_url}],
-        }
-    }
-    resp = requests.post(
-        BUFFER_GRAPHQL,
-        json={"query": _CREATE_POST, "variables": variables},
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-        timeout=30,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    if "errors" in data:
-        raise RuntimeError(f"Buffer API error: {data['errors']}")
-    result = data.get("data", {}).get("createPost", {})
-    if "message" in result:
-        raise RuntimeError(f"Buffer rejected post: {result['message']}")
-    return result.get("post", {})
+def target_channels(client: dict, kind: str) -> list:
+    """Return the platform names this kind of post should go to, per config."""
+    feed = client["schedule"]["feed"]
+    return feed["reels_channels"] if kind == "reel" else feed["image_channels"]
 
 
-def publish(file_path: str, client: dict, captions: dict, post_datetime: str, kind: str, token: str, dry_run: bool = False):
-    """Upload to S3 and create Buffer posts for all approved captions."""
+def publish(file_path, client, captions, post_datetime, kind, token, dry_run=False, on_event=None):
+    """Upload to S3 and create Buffer posts for all approved captions.
+
+    on_event(kind, payload) is an optional callback for UI progress:
+      ('upload', url) / ('post', {platform, status, id|error})
+    Returns a result dict: {media_url, posts: [{platform, ok, id|error}]}.
+    """
+    def emit(ev, payload):
+        if on_event:
+            on_event(ev, payload)
+
     console.print("\n[bold]Uploading to S3...[/bold]")
     media_url = upload_to_s3(file_path, client, dry_run)
     console.print(f"[green]✓[/green] {media_url}")
+    emit("upload", media_url)
 
-    schedule = client["schedule"]["feed"]
-    targets = schedule["reels_channels"] if kind == "reel" else schedule["image_channels"]
     channels = client["buffer"]["channels"]
+    results = []
 
-    console.print(f"\n[bold]Scheduling to Buffer...[/bold]")
-    for platform in targets:
+    console.print("\n[bold]Scheduling to Buffer...[/bold]")
+    for platform in target_channels(client, kind):
         if platform not in captions:
             console.print(f"  [dim]{platform}: skipped (no caption)[/dim]")
             continue
         channel_id = channels[platform]["id"]
 
         if dry_run:
-            console.print(f"  [dim]{platform}: would post to channel {channel_id} ({len(captions[platform])} chars)[/dim]")
+            console.print(f"  [dim]{platform}: would post to {channel_id} ({len(captions[platform])} chars)[/dim]")
+            results.append({"platform": platform, "ok": True, "id": "(dry-run)"})
+            emit("post", results[-1])
             continue
 
         try:
-            post = _post_to_channel(channel_id, captions[platform], media_url, post_datetime, kind, token)
-            console.print(f"  [green]✓[/green] {platform} — Buffer id {post.get('id', '?')}")
+            post = create_post(channel_id, captions[platform], media_url, post_datetime, kind, token)
+            entry = {"platform": platform, "ok": True, "id": post.get("id", "?")}
+            console.print(f"  [green]✓[/green] {platform} — Buffer id {entry['id']}")
         except Exception as e:
+            entry = {"platform": platform, "ok": False, "error": str(e)}
             console.print(f"  [red]✗[/red] {platform}: {e}")
+        results.append(entry)
+        emit("post", entry)
+
+    return {"media_url": media_url, "posts": results}

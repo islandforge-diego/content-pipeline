@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content Pipeline</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <span>Content Pipeline</span>
+    </div>
+    <div class="client-picker">
+      <select id="clientSelect" aria-label="Select client"></select>
+      <button id="addClientBtn" class="ghost" title="Add a new client">+ Add client</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Client workspace -->
+    <section id="workspace" class="workspace hidden">
+      <!-- Step 1: choose media -->
+      <div class="step">
+        <h2><span class="num">1</span> Choose a file</h2>
+        <div id="dropzone" class="dropzone">
+          <p class="dz-big">Drag &amp; drop a photo or video here</p>
+          <p class="dz-or">or</p>
+          <div class="dz-buttons">
+            <button id="browseFileBtn" class="primary">Browse file…</button>
+            <button id="browseFolderBtn" class="ghost">Browse folder…</button>
+          </div>
+          <input type="file" id="fileInput" hidden accept="video/*,image/*">
+        </div>
+        <div id="folderList" class="folder-list hidden"></div>
+        <div id="chosen" class="chosen hidden">
+          <span class="chosen-label">Selected:</span>
+          <code id="chosenPath"></code>
+          <span id="chosenKind" class="pill"></span>
+        </div>
+        <div id="briefRow" class="brief-row hidden">
+          <label for="briefInput">Brief (required for photos)</label>
+          <input type="text" id="briefInput" placeholder="e.g. Deba at the Garland flip — before/after">
+        </div>
+      </div>
+
+      <!-- Step 2: generate -->
+      <div class="step">
+        <h2><span class="num">2</span> Transcribe &amp; generate captions</h2>
+        <button id="generateBtn" class="primary" disabled>Generate captions</button>
+        <div id="genStatus" class="status"></div>
+        <details id="transcriptBox" class="transcript hidden">
+          <summary>Transcript</summary>
+          <p id="transcriptText"></p>
+        </details>
+      </div>
+
+      <!-- Step 3: review captions -->
+      <div class="step hidden" id="captionsStep">
+        <h2><span class="num">3</span> Review &amp; edit captions</h2>
+        <div id="captionCards"></div>
+      </div>
+
+      <!-- Step 4: schedule -->
+      <div class="step hidden" id="scheduleStep">
+        <h2><span class="num">4</span> Schedule to Buffer</h2>
+        <div class="schedule-row">
+          <label for="dtInput">Post time</label>
+          <input type="datetime-local" id="dtInput">
+        </div>
+        <label class="check"><input type="checkbox" id="dryRun" checked> Preview only (don't post yet)</label>
+        <button id="publishBtn" class="primary">Schedule</button>
+        <div id="pubStatus" class="status"></div>
+      </div>
+    </section>
+
+    <div id="empty" class="empty">
+      <p>Select a client above to get started, or add a new one.</p>
+    </div>
+  </main>
+
+  <!-- Onboarding modal -->
+  <div id="onboardModal" class="modal hidden">
+    <div class="modal-card">
+      <button class="modal-close" id="onboardClose">✕</button>
+      <h2>Add a new client</h2>
+      <div class="form-grid">
+        <label>Slug <input id="ob_slug" placeholder="acme"></label>
+        <label>Display name <input id="ob_name" placeholder="Acme Co."></label>
+        <label>Brand name <input id="ob_brand" placeholder="Brand / show title"></label>
+        <label>Tagline <input id="ob_tagline" placeholder="Tagline"></label>
+        <label class="wide">Voice <input id="ob_voice" placeholder="empowering, educational, energetic…"></label>
+        <label>CTA keyword <input id="ob_cta" placeholder="INVESTOR"></label>
+        <label>Link in bio <input id="ob_link" placeholder="https://…"></label>
+        <label>S3 bucket <input id="ob_bucket" placeholder="acme-media"></label>
+        <label>S3 region <input id="ob_region" placeholder="us-east-2"></label>
+      </div>
+
+      <div class="channels-block">
+        <div class="channels-head">
+          <h3>Buffer channels</h3>
+          <button id="fetchChannels" class="ghost">Fetch from Buffer</button>
+        </div>
+        <p class="hint">Map each platform to a Buffer channel. Fetch pulls your org's channels so you don't paste IDs.</p>
+        <div id="channelMap" class="channel-map"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="onboardSave" class="primary">Create client</button>
+        <span id="onboardStatus" class="status"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

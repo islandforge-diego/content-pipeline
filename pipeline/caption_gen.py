@@ -59,3 +59,42 @@ Return ONLY a valid JSON object — no markdown fences, no explanation. Keys are
         raw = "\n".join(lines[1:-1] if lines[-1].strip() == "```" else lines[1:])
 
     return json.loads(raw)
+
+
+def revise_caption(client: dict, platform: str, current_text: str, feedback: str, context: str = "") -> str:
+    """Revise a single caption based on quick user feedback. Returns plain text.
+
+    Args:
+        client:       Parsed config/clients/<slug>.json
+        platform:     Platform name (instagram, facebook, ...)
+        current_text: The caption as it stands now
+        feedback:     User's instruction (e.g. "make it punchier", "drop the emojis")
+        context:      Optional transcript/brief for grounding
+    """
+    brand = client["brand"]
+    style = PLATFORM_STYLES.get(platform, "engaging, on-brand, 100–200 words")
+
+    prompt = f"""Revise this {platform} caption for {brand['name']}.
+
+Brand voice: {brand['voice']}
+Hard rules (never break these):
+{chr(10).join('  - ' + r for r in brand['hard_rules'])}
+CTA keyword: {brand['cta_keyword']}
+Link in bio: {brand['link_in_bio']}
+Platform style: {style}
+{f'Content context: {context}' if context else ''}
+
+Current caption:
+{current_text}
+
+Requested change: {feedback}
+
+Return ONLY the revised caption text — no quotes, no markdown, no explanation."""
+
+    api = anthropic.Anthropic()
+    message = api.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=1000,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return message.content[0].text.strip()

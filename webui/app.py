@@ -1,0 +1,296 @@
+#!/usr/bin/env python3
+"""app.py — local web UI for the content pipeline.
+
+Run:  python webui/app.py
+Opens http://127.0.0.1:5000 in your browser. Everything runs on your machine,
+so it can reach ffmpeg, S3, Buffer and the Anthropic API.
+"""
+import json
+import os
+import subprocess
+import sys
+import threading
+import webbrowser
+from pathlib import Path
+
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request, send_from_directory
+from werkzeug.utils import secure_filename
+
+ROOT = Path(__file__).resolve().parent.parent
+CLIENTS_DIR = ROOT / "config" / "clients"
+PREVIEW_DIR = ROOT / "content-preview"
+SCRATCH = ROOT / "webui" / ".uploads"
+SCRATCH.mkdir(exist_ok=True)
+
+load_dotenv(ROOT / ".env")
+
+# Make the pipeline modules importable
+sys.path.insert(0, str(ROOT / "pipeline"))
+from transcribe import transcribe                       # noqa: E402
+from caption_gen import generate_captions, revise_caption  # noqa: E402
+from publish import publish, target_channels            # noqa: E402
+import buffer_api                                        # noqa: E402
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import jobs              # noqa: E402
+import native_dialog     # noqa: E402
+
+app = Flask(__name__, static_folder="static", template_folder="templates")
+
+VIDEO_EXTS = {".mp4", ".mov", ".avi", ".mkv", ".webm", ".m4v"}
+IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".heic"}
+MEDIA_EXTS = VIDEO_EXTS | IMAGE_EXTS
+
+
+def kind_for(path: str) -> str:
+    ext = Path(path).suffix.lower()
+    if ext in VIDEO_EXTS:
+        return "reel"
+    if ext in IMAGE_EXTS:
+        return "image"
+    return ""
+
+
+# ---------------------------------------------------------------- pages
+
+@app.get("/")
+def index():
+    return send_from_directory("templates", "index.html")
+
+
+# ---------------------------------------------------------------- clients
+
+@app.get("/api/clients")
+def list_clients():
+    out = []
+    for cf in sorted(CLIENTS_DIR.glob("*.json")):
+        if cf.stem.startswith("_"):
+            continue
+        cfg = json.loads(cf.read_text())
+        out.append({"slug": cfg.get("slug", cf.stem), "display_name": cfg.get("display_name", cf.stem)})
+    return jsonify(out)
+
+
+@app.get("/api/clients/<slug>")
+def get_client(slug):
+    cf = CLIENTS_DIR / f"{secure_filename(slug)}.json"
+    if not cf.exists():
+        return jsonify({"error": "not found"}), 404
+    return jsonify(json.loads(cf.read_text()))
+
+
+@app.post("/api/clients")
+def create_client():
+    """Onboard a new client by filling the template with form values."""
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("slug", "").strip().lower())
+    if not slug:
+        return jsonify({"error": "slug required"}), 400
+    cf = CLIENTS_DIR / f"{slug}.json"
+    if cf.exists():
+        return jsonify({"error": f"client '{slug}' already exists"}), 409
+
+    cfg = json.loads((CLIENTS_DIR / "_template.json").read_text())
+    cfg["slug"] = slug
+    cfg["display_name"] = body.get("display_name", slug)
+
+    brand = cfg["brand"]
+    for k in ("name", "tagline", "voice", "cta_keyword", "link_in_bio"):
+        if body.get(k):
+            brand[k] = body[k]
+
+    # Channel ids: {platform: {id, name/handle}} mapped in the UI from Buffer
+    for platform, info in (body.get("channels") or {}).items():
+        if platform in cfg["buffer"]["channels"] and info.get("id"):
+            cfg["buffer"]["channels"][platform]["id"] = info["id"]
+            if info.get("name"):
+                cfg["buffer"]["channels"][platform]["name"] = info["name"]
+            if info.get("handle"):
+                cfg["buffer"]["channels"][platform]["handle"] = info["handle"]
+
+    if body.get("bucket"):
+        cfg["s3"]["bucket"] = body["bucket"]
+    if body.get("region"):
+        cfg["s3"]["region"] = body["region"]
+
+    cfg["preview"]["data_file"] = f"content-preview/clients/{slug}/config.json"
+
+    cf.write_text(json.dumps(cfg, indent=2))
+    return jsonify({"slug": slug, "display_name": cfg["display_name"]}), 201
+
+
+@app.get("/api/buffer/channels")
+def buffer_channels():
+    """List the org's Buffer channels so onboarding can map them with clicks."""
+    token = os.environ.get("BUFFER_TOKEN", "")
+    if not token:
+        return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
+    org_id = request.args.get("org_id") or None
+    try:
+        return jsonify(buffer_api.list_channels(token, org_id))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
+# ---------------------------------------------------------------- file selection
+
+@app.post("/api/pick")
+def pick():
+    """Open the native OS file or folder dialog (server-side, no upload)."""
+    what = (request.get_json(silent=True) or {}).get("what", "file")
+    path = native_dialog.pick_folder() if what == "folder" else native_dialog.pick_file()
+    if not path:
+        return jsonify({"path": "", "cancelled": True})
+    return jsonify({"path": path, "kind": kind_for(path), "is_dir": os.path.isdir(path)})
+
+
+@app.get("/api/folder")
+def folder():
+    """List media files inside a folder so the user can choose one."""
+    path = request.args.get("path", "")
+    p = Path(path)
+    if not p.is_dir():
+        return jsonify({"error": "not a folder"}), 400
+    files = [
+        {"path": str(f), "name": f.name, "kind": kind_for(str(f))}
+        for f in sorted(p.iterdir())
+        if f.is_file() and f.suffix.lower() in MEDIA_EXTS
+    ]
+    return jsonify({"folder": str(p), "files": files})
+
+
+@app.post("/api/upload")
+def upload():
+    """Drag-and-drop upload → save to scratch dir → return local path."""
+    if "file" not in request.files:
+        return jsonify({"error": "no file"}), 400
+    f = request.files["file"]
+    name = secure_filename(f.filename or "upload")
+    dest = SCRATCH / name
+    f.save(dest)
+    return jsonify({"path": str(dest), "name": name, "kind": kind_for(str(dest))})
+
+
+# ---------------------------------------------------------------- pipeline jobs
+
+@app.post("/api/transcribe")
+def api_transcribe():
+    path = request.get_json(force=True).get("path", "")
+    if not Path(path).exists():
+        return jsonify({"error": "file not found"}), 400
+
+    def work(progress):
+        progress("Transcribing… (first run downloads the Whisper model)")
+        return {"transcript": transcribe(path)}
+
+    return jsonify({"job_id": jobs.start(work)})
+
+
+@app.post("/api/captions")
+def api_captions():
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    kind = body.get("kind") or "reel"
+    context = body.get("transcript") or body.get("brief") or ""
+    platforms = target_channels(cfg, kind)
+
+    def work(progress):
+        progress(f"Drafting captions for {len(platforms)} platforms…")
+        return {"captions": generate_captions(cfg, context, kind, platforms)}
+
+    return jsonify({"job_id": jobs.start(work)})
+
+
+@app.post("/api/revise")
+def api_revise():
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    try:
+        text = revise_caption(
+            cfg, body["platform"], body["text"], body["feedback"], body.get("context", "")
+        )
+        return jsonify({"text": text})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
+@app.post("/api/publish")
+def api_publish():
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    path = body["path"]
+    captions = body["captions"]
+    when = body["datetime"]
+    kind = body.get("kind") or kind_for(path)
+    dry_run = bool(body.get("dry_run"))
+    token = os.environ.get("BUFFER_TOKEN", "")
+    if not token and not dry_run:
+        return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
+
+    def work(progress):
+        progress("Uploading to S3…")
+        result = publish(
+            path, cfg, captions, when, kind, token, dry_run=dry_run,
+            on_event=lambda ev, p: progress(f"{ev}: {p}"),
+        )
+        if not dry_run:
+            progress("Updating preview…")
+            _append_to_preview(slug, cfg, when, kind, captions, result["media_url"])
+            _rebuild_preview()
+        return result
+
+    return jsonify({"job_id": jobs.start(work)})
+
+
+@app.get("/api/job/<job_id>")
+def api_job(job_id):
+    return jsonify(jobs.get(job_id))
+
+
+# ---------------------------------------------------------------- preview
+
+def _append_to_preview(slug, cfg, when, kind, captions, media_url):
+    """Append a scheduled feed item (with ISO date) to the client's preview data."""
+    data_path = PREVIEW_DIR / "clients" / slug / "config.json"
+    data_path.parent.mkdir(parents=True, exist_ok=True)
+    if data_path.exists():
+        data = json.loads(data_path.read_text())
+    else:
+        th = cfg.get("preview", {}).get("theme", {})
+        data = {
+            "slug": slug, "title": f"{cfg['display_name']} — Content Preview",
+            "theme": th, "feed": [], "banner": "", "footer": "",
+        }
+    iso_date = when[:10]  # YYYY-MM-DD from the ISO datetime
+    media = {"type": "video", "src": media_url, "poster": ""} if kind == "reel" \
+        else {"type": "gallery", "images": [media_url]}
+    data.setdefault("feed", []).append({
+        "iso_date": iso_date,
+        "time": when[11:16],
+        "title": (captions.get("instagram") or next(iter(captions.values()), ""))[:60],
+        "chips": list(captions.keys()),
+        "media": media,
+        "caps": [[p, t] for p, t in captions.items()],
+    })
+    data_path.write_text(json.dumps(data, indent=2))
+
+
+def _rebuild_preview():
+    subprocess.run([sys.executable, "generate.py"], cwd=str(PREVIEW_DIR),
+                   capture_output=True, text=True)
+
+
+# ---------------------------------------------------------------- launch
+
+def _open_browser():
+    webbrowser.open("http://127.0.0.1:5000")
+
+
+if __name__ == "__main__":
+    if os.environ.get("WERKZEUG_RUN_MAIN") != "true":
+        threading.Timer(1.0, _open_browser).start()
+    app.run(host="127.0.0.1", port=5000, debug=True)
