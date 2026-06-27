@@ -54,6 +54,24 @@ Long-running steps run as background jobs (`webui/jobs.py`); the page polls for
 status. The native file dialog runs tkinter in a subprocess
 (`webui/native_dialog.py`) so it works alongside Flask on macOS.
 
+## Brand voice store (edit these to shape the captions)
+
+The captions are only as good as the brand store. Everything is plain text you can
+edit anytime — no code changes needed:
+
+- **`config/clients/<slug>.brand.md`** — voice, mission, hard rules, post structure,
+  CTA philosophy. Referenced by `brand.context_file` in the client config.
+- **`config/clients/<slug>.examples.md`** — approved captions used as voice anchors
+  (few-shot). **This is the highest-leverage file** — add your best real posts here
+  and the model mimics them. Referenced by `brand.examples_file`.
+- **`cta` block** in `<slug>.json` — which platforms use a ManyChat comment-keyword
+  vs. the booking link, the default keyword, and the link.
+- **`models` block** in `<slug>.json` — which model writes drafts vs. revisions
+  (default: Sonnet for the first draft, Haiku for cheap revisions).
+
+The brand store is sent as the model's **system prompt** (binding instruction), so
+voice holds up far better than stuffing it into the request.
+
 ## Notes
 
 - `webui/.uploads/` holds drag-and-dropped files temporarily (gitignored).

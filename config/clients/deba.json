@@ -23,7 +23,12 @@
     "link_in_bio": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1",
     "course_platform": "Kajabi",
     "canva_brand_kit_id": "kAHMyuJfyMM",
-    "context_file": "config/clients/deba.brand.md"
+    "context_file": "config/clients/deba.brand.md",
+    "examples_file": "config/clients/deba.examples.md"
+  },
+  "models": {
+    "caption": "claude-sonnet-4-6",
+    "revise": "claude-haiku-4-5-20251001"
   },
   "cta": {
     "manychat_platforms": ["instagram", "facebook", "tiktok"],

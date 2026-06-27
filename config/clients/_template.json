@@ -13,7 +13,12 @@
     "link_in_bio": "https://...",
     "course_platform": "",
     "canva_brand_kit_id": "",
-    "context_file": ""
+    "context_file": "",
+    "examples_file": ""
+  },
+  "models": {
+    "caption": "claude-sonnet-4-6",
+    "revise": "claude-haiku-4-5-20251001"
   },
   "cta": {
     "manychat_platforms": ["instagram", "facebook", "tiktok"],

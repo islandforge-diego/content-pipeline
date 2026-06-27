@@ -10,10 +10,19 @@ from pathlib import Path
 
 import anthropic
 
-MODEL = "claude-haiku-4-5-20251001"
+# Sonnet writes the first draft (voice fidelity where it matters); Haiku handles
+# the cheap quick-feedback revisions. Overridable per client via config "models".
+DEFAULT_MODELS = {
+    "caption": "claude-sonnet-4-6",
+    "revise": "claude-haiku-4-5-20251001",
+}
 
 # Repo root = two levels up from this file (pipeline/ -> repo)
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def _model(client: dict, task: str) -> str:
+    return client.get("models", {}).get(task) or DEFAULT_MODELS[task]
 
 PLATFORM_STYLES = {
     "instagram": "conversational, emoji-forward, punchy hook first line, 125–200 words, hashtag block at end",
@@ -24,9 +33,8 @@ PLATFORM_STYLES = {
 }
 
 
-def _load_brand_context(client: dict) -> str:
-    """Return the long-form brand context file contents, or '' if none."""
-    ref = client.get("brand", {}).get("context_file")
+def _load_file(ref: str) -> str:
+    """Load a config-referenced file (relative to repo root), or '' if missing."""
     if not ref:
         return ""
     p = (ROOT / ref) if not Path(ref).is_absolute() else Path(ref)
@@ -71,18 +79,34 @@ def _content_blocks(text_prompt: str, frames: list = None) -> list:
     return blocks
 
 
-def _brand_header(client: dict) -> str:
+def _system_prompt(client: dict) -> str:
+    """The authoritative brand voice. Sent as the API system prompt so the model
+    treats it as binding instruction, not just content to consider."""
     brand = client["brand"]
-    ctx = _load_brand_context(client)
-    return f"""You are writing social media captions for {brand['name']}.
+    ctx = _load_file(brand.get("context_file"))
+    examples = _load_file(brand.get("examples_file"))
 
-Brand voice: {brand['voice']}
-Tagline: {brand['tagline']}
-Hard rules (never break these):
-{chr(10).join('  - ' + r for r in brand['hard_rules'])}
-
-EXTENDED BRAND CONTEXT:
-{ctx if ctx else '(none provided)'}"""
+    parts = [
+        f"You are the social media copywriter for {brand['name']}.",
+        f"You write in this brand's voice and never break character.",
+        "",
+        f"BRAND VOICE: {brand['voice']}",
+        f"TAGLINE: {brand['tagline']}",
+        "",
+        "HARD RULES (never break these):",
+        *[f"  - {r}" for r in brand["hard_rules"]],
+    ]
+    if ctx:
+        parts += ["", "BRAND GUIDELINES & CONTEXT:", ctx]
+    if examples:
+        parts += [
+            "",
+            "APPROVED EXAMPLES — study these closely and match their voice, structure, "
+            "rhythm, emoji use and CTA style. Write FRESH copy that sounds like them; "
+            "never copy verbatim.",
+            examples,
+        ]
+    return "\n".join(parts)
 
 
 def _strip_fences(raw: str) -> str:
@@ -140,7 +164,7 @@ def generate_captions(client: dict, transcript: str, kind: str, platforms: list,
         for p in platforms
     )
 
-    prompt = f"""{_brand_header(client)}
+    prompt = f"""Write captions for this new post.
 
 Content type: {kind}
 {f'Creator-supplied context: {extra_context}' if extra_context else ''}
@@ -154,15 +178,17 @@ Write a caption for each platform. Match these per-platform styles:
 CTA rules (follow exactly — this matters):
 {_cta_rules(client, platforms)}
 
-Make every CTA specific to THIS post's topic.
+Make every CTA specific to THIS post's topic, and keep the brand voice from the
+system instructions and approved examples.
 
 Platforms to write for: {', '.join(platforms)}.
 {_FORMAT_INSTRUCTIONS}"""
 
     api = anthropic.Anthropic()
     message = api.messages.create(
-        model=MODEL,
+        model=_model(client, "caption"),
         max_tokens=2000,
+        system=_system_prompt(client),
         messages=[{"role": "user", "content": _content_blocks(prompt, frames)}],
     )
     return _parse_sections(message.content[0].text, platforms)
@@ -171,9 +197,10 @@ Platforms to write for: {', '.join(platforms)}.
 def revise_caption(client: dict, platform: str, current_text: str, feedback: str, context: str = "") -> str:
     """Revise a single caption based on quick user feedback. Returns plain text."""
     style = PLATFORM_STYLES.get(platform, "engaging, on-brand, 100–200 words")
-    prompt = f"""{_brand_header(client)}
+    prompt = f"""Revise this {platform} caption, keeping the brand voice from the
+system instructions and approved examples.
 
-Revise this {platform} caption. Platform style: {style}
+Platform style: {style}
 CTA rules:
 {_cta_rules(client, [platform])}
 {f'Content context: {context}' if context else ''}
@@ -187,7 +214,8 @@ Return ONLY the revised caption text — no quotes, no markdown, no explanation.
 
     api = anthropic.Anthropic()
     message = api.messages.create(
-        model=MODEL, max_tokens=1000,
+        model=_model(client, "revise"), max_tokens=1000,
+        system=_system_prompt(client),
         messages=[{"role": "user", "content": prompt}],
     )
     return message.content[0].text.strip()
@@ -200,12 +228,11 @@ def revise_all(client: dict, captions: dict, feedback: str, context: str = "") -
     """
     platforms = list(captions.keys())
     current = "\n".join(f"@@@{p}@@@\n{t}" for p, t in captions.items())
-    prompt = f"""{_brand_header(client)}
-
-Here are the current captions (each preceded by its @@@platform@@@ marker):
+    prompt = f"""Here are the current captions (each preceded by its @@@platform@@@ marker):
 {current}
 
-Apply this change to EVERY caption, keeping each platform's style and CTA rules:
+Apply this change to EVERY caption, keeping each platform's style, CTA rules, and
+the brand voice from the system instructions and approved examples:
 {_cta_rules(client, platforms)}
 
 Requested change (applies to all platforms): {feedback}
@@ -216,7 +243,8 @@ Platforms: {', '.join(platforms)}.
 
     api = anthropic.Anthropic()
     message = api.messages.create(
-        model=MODEL, max_tokens=2000,
+        model=_model(client, "revise"), max_tokens=2000,
+        system=_system_prompt(client),
         messages=[{"role": "user", "content": prompt}],
     )
     return _parse_sections(message.content[0].text, platforms)
