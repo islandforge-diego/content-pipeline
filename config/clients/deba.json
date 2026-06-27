@@ -22,7 +22,14 @@
     "cta_keyword": "INVESTOR",
     "link_in_bio": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1",
     "course_platform": "Kajabi",
-    "canva_brand_kit_id": "kAHMyuJfyMM"
+    "canva_brand_kit_id": "kAHMyuJfyMM",
+    "context_file": "config/clients/deba.brand.md"
+  },
+  "cta": {
+    "manychat_platforms": ["instagram", "facebook", "tiktok"],
+    "link_platforms": ["linkedin", "youtube"],
+    "default_keyword": "INVESTOR",
+    "book_link": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1"
   },
   "buffer": {
     "org_name": "Island Forge Studio",

@@ -39,9 +39,9 @@
           <code id="chosenPath"></code>
           <span id="chosenKind" class="pill"></span>
         </div>
-        <div id="briefRow" class="brief-row hidden">
-          <label for="briefInput">Brief (required for photos)</label>
-          <input type="text" id="briefInput" placeholder="e.g. Deba at the Garland flip — before/after">
+        <div id="contextRow" class="brief-row">
+          <label for="contextInput">Context for the AI <span class="req-note" id="reqNote"></span></label>
+          <textarea id="contextInput" rows="3" placeholder="Anything that helps the captions: what's happening, who's on camera, the key point, the offer… (required for photos)"></textarea>
         </div>
       </div>
 
@@ -59,6 +59,11 @@
       <!-- Step 3: review captions -->
       <div class="step hidden" id="captionsStep">
         <h2><span class="num">3</span> Review &amp; edit captions</h2>
+        <div class="revise-all">
+          <input type="text" id="reviseAllInput" placeholder="Update ALL captions at once — e.g. 'tie the CTA to first-time buyers', 'shorter', 'more energy'">
+          <button id="reviseAllBtn" class="primary">Update all</button>
+        </div>
+        <div id="reviseAllStatus" class="status"></div>
         <div id="captionCards"></div>
       </div>
 

@@ -109,7 +109,13 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .pill { background: var(--teal); color: var(--cream); padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
 
 .brief-row { margin-top: 14px; display: flex; flex-direction: column; gap: 5px; }
-.brief-row input { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; }
+.brief-row input, .brief-row textarea { padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; font: inherit; resize: vertical; }
+.req-note { color: var(--salmon); font-weight: 600; font-size: 12px; }
+
+/* update-all-captions box */
+.revise-all { display: flex; gap: 8px; margin-bottom: 6px; }
+.revise-all input { flex: 1; padding: 9px 12px; border: 1px solid var(--gold); border-radius: 8px; }
+.revise-all button { white-space: nowrap; }
 
 /* ---- status ---- */
 .status { margin-top: 10px; font-size: 13.5px; color: var(--muted); min-height: 18px; }

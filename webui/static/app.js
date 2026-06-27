@@ -50,12 +50,14 @@ function resetFlow() {
   state.path = ""; state.kind = ""; state.transcript = ""; state.captions = {};
   $("chosen").classList.add("hidden");
   $("folderList").classList.add("hidden");
-  $("briefRow").classList.add("hidden");
+  $("contextInput").value = "";
+  $("reqNote").textContent = "";
   $("transcriptBox").classList.add("hidden");
   $("captionsStep").classList.add("hidden");
   $("scheduleStep").classList.add("hidden");
   $("genStatus").textContent = "";
   $("pubStatus").textContent = "";
+  $("reviseAllStatus").textContent = "";
   $("generateBtn").disabled = true;
 }
 
@@ -67,7 +69,8 @@ function setChosen(path, kind) {
   $("chosenPath").textContent = path;
   $("chosenKind").textContent = state.kind === "image" ? "photo" : "video";
   $("chosen").classList.remove("hidden");
-  $("briefRow").classList.toggle("hidden", state.kind !== "image");
+  // context field is always shown; only the "required" note depends on kind
+  $("reqNote").textContent = state.kind === "image" ? "(required for photos)" : "(optional)";
   $("generateBtn").disabled = false;
 }
 
@@ -144,29 +147,26 @@ async function pollJob(jobId, onProgress) {
 
 $("generateBtn").onclick = async () => {
   $("generateBtn").disabled = true;
+  const context = $("contextInput").value.trim();
   try {
-    // images: require brief; videos: transcribe first (unless a brief is given)
+    state.transcript = "";
     if (state.kind === "image") {
-      state.transcript = $("briefInput").value.trim();
-      if (!state.transcript) { setStatus("genStatus", "Add a brief for photos.", "err"); $("generateBtn").disabled = false; return; }
+      if (!context) { setStatus("genStatus", "Add some context for photos.", "err"); $("generateBtn").disabled = false; return; }
     } else {
-      const brief = $("briefInput").value.trim();
-      if (brief) {
-        state.transcript = brief;
-      } else {
-        setStatus("genStatus", "Transcribing…", "spinner");
-        const t = await pollJob((await api.post("/api/transcribe", { path: state.path })).job_id,
-          (p) => setStatus("genStatus", p, "spinner"));
-        state.transcript = t.transcript;
-        $("transcriptText").textContent = state.transcript;
-        $("transcriptBox").classList.remove("hidden");
-      }
+      // videos: always transcribe locally (free); context is supplementary
+      setStatus("genStatus", "Transcribing…", "spinner");
+      const t = await pollJob((await api.post("/api/transcribe", { path: state.path })).job_id,
+        (p) => setStatus("genStatus", p, "spinner"));
+      state.transcript = t.transcript;
+      $("transcriptText").textContent = state.transcript;
+      $("transcriptBox").classList.remove("hidden");
     }
 
     setStatus("genStatus", "Drafting captions…", "spinner");
     const res = await pollJob(
       (await api.post("/api/captions", {
-        client: state.client, kind: state.kind, transcript: state.transcript,
+        client: state.client, kind: state.kind, path: state.path,
+        transcript: state.transcript, context,
       })).job_id,
       (p) => setStatus("genStatus", p, "spinner"));
     state.captions = res.captions;
@@ -176,6 +176,27 @@ $("generateBtn").onclick = async () => {
     setStatus("genStatus", e.message, "err");
   }
   $("generateBtn").disabled = false;
+};
+
+// update ALL captions at once
+$("reviseAllBtn").onclick = async () => {
+  const fb = $("reviseAllInput").value.trim();
+  if (!fb) return;
+  $("reviseAllBtn").disabled = true;
+  setStatus("reviseAllStatus", "Updating all captions…", "spinner");
+  try {
+    const r = await api.post("/api/revise_all", {
+      client: state.client, captions: state.captions, feedback: fb, context: state.transcript,
+    });
+    if (r.error) throw new Error(r.error);
+    state.captions = r.captions;
+    renderCaptions();
+    $("reviseAllInput").value = "";
+    setStatus("reviseAllStatus", "All captions updated.", "ok");
+  } catch (e) {
+    setStatus("reviseAllStatus", e.message, "err");
+  }
+  $("reviseAllBtn").disabled = false;
 };
 
 function renderCaptions() {

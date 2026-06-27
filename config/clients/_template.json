@@ -12,7 +12,14 @@
     "cta_keyword": "KEYWORD",
     "link_in_bio": "https://...",
     "course_platform": "",
-    "canva_brand_kit_id": ""
+    "canva_brand_kit_id": "",
+    "context_file": ""
+  },
+  "cta": {
+    "manychat_platforms": ["instagram", "facebook", "tiktok"],
+    "link_platforms": ["linkedin", "youtube"],
+    "default_keyword": "KEYWORD",
+    "book_link": "https://..."
   },
   "buffer": {
     "org_name": "Island Forge Studio",

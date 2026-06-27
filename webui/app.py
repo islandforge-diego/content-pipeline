@@ -28,8 +28,9 @@ load_dotenv(ROOT / ".env")
 # Make the pipeline modules importable
 sys.path.insert(0, str(ROOT / "pipeline"))
 from transcribe import transcribe                       # noqa: E402
-from caption_gen import generate_captions, revise_caption  # noqa: E402
+from caption_gen import generate_captions, revise_caption, revise_all  # noqa: E402
 from publish import publish, target_channels            # noqa: E402
+from frames import extract_frames                        # noqa: E402
 import buffer_api                                        # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -193,12 +194,20 @@ def api_captions():
     slug = secure_filename(body.get("client", ""))
     cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
     kind = body.get("kind") or "reel"
-    context = body.get("transcript") or body.get("brief") or ""
+    transcript = body.get("transcript") or ""
+    extra_context = body.get("context") or ""
+    path = body.get("path") or ""
     platforms = target_channels(cfg, kind)
 
     def work(progress):
+        frames = []
+        if kind == "reel" and path and Path(path).exists():
+            progress("Grabbing frames for visual context…")
+            frames = extract_frames(path, count=3)
         progress(f"Drafting captions for {len(platforms)} platforms…")
-        return {"captions": generate_captions(cfg, context, kind, platforms)}
+        caps = generate_captions(cfg, transcript, kind, platforms,
+                                 frames=frames, extra_context=extra_context)
+        return {"captions": caps}
 
     return jsonify({"job_id": jobs.start(work)})
 
@@ -213,6 +222,18 @@ def api_revise():
             cfg, body["platform"], body["text"], body["feedback"], body.get("context", "")
         )
         return jsonify({"text": text})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
+@app.post("/api/revise_all")
+def api_revise_all():
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    try:
+        captions = revise_all(cfg, body["captions"], body["feedback"], body.get("context", ""))
+        return jsonify({"captions": captions})
     except Exception as e:
         return jsonify({"error": str(e)}), 502
 
