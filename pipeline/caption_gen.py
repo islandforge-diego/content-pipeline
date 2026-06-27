@@ -109,6 +109,16 @@ def _system_prompt(client: dict) -> str:
     return "\n".join(parts)
 
 
+def _system_blocks(client: dict) -> list:
+    """System prompt as a cacheable block. The brand store is identical across
+    calls, so prompt caching avoids re-billing those input tokens within ~5 min."""
+    return [{
+        "type": "text",
+        "text": _system_prompt(client),
+        "cache_control": {"type": "ephemeral"},
+    }]
+
+
 def _strip_fences(raw: str) -> str:
     raw = raw.strip()
     if raw.startswith("```"):
@@ -188,7 +198,7 @@ Platforms to write for: {', '.join(platforms)}.
     message = api.messages.create(
         model=_model(client, "caption"),
         max_tokens=2000,
-        system=_system_prompt(client),
+        system=_system_blocks(client),
         messages=[{"role": "user", "content": _content_blocks(prompt, frames)}],
     )
     return _parse_sections(message.content[0].text, platforms)
@@ -215,7 +225,7 @@ Return ONLY the revised caption text — no quotes, no markdown, no explanation.
     api = anthropic.Anthropic()
     message = api.messages.create(
         model=_model(client, "revise"), max_tokens=1000,
-        system=_system_prompt(client),
+        system=_system_blocks(client),
         messages=[{"role": "user", "content": prompt}],
     )
     return message.content[0].text.strip()
@@ -244,7 +254,7 @@ Platforms: {', '.join(platforms)}.
     api = anthropic.Anthropic()
     message = api.messages.create(
         model=_model(client, "revise"), max_tokens=2000,
-        system=_system_prompt(client),
+        system=_system_blocks(client),
         messages=[{"role": "user", "content": prompt}],
     )
     return _parse_sections(message.content[0].text, platforms)
