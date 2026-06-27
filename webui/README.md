@@ -21,7 +21,8 @@ configured for S3 (`aws configure`, or set `AWS_PROFILE` in `.env`).
 python webui/app.py
 ```
 
-A browser opens at http://127.0.0.1:5000.
+A browser opens at http://127.0.0.1:5050. (Port 5000 is taken by macOS AirPlay
+Receiver, so we default to 5050; override with `PORT=... python webui/app.py`.)
 
 ## What you can do
 

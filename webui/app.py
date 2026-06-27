@@ -286,11 +286,16 @@ def _rebuild_preview():
 
 # ---------------------------------------------------------------- launch
 
+# Port 5000 is taken by AirPlay Receiver (Control Center) on macOS, so default
+# to 5050. Override with PORT=... if you like.
+PORT = int(os.environ.get("PORT", "5050"))
+
+
 def _open_browser():
-    webbrowser.open("http://127.0.0.1:5000")
+    webbrowser.open(f"http://127.0.0.1:{PORT}")
 
 
 if __name__ == "__main__":
     if os.environ.get("WERKZEUG_RUN_MAIN") != "true":
         threading.Timer(1.0, _open_browser).start()
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=PORT, debug=True)
