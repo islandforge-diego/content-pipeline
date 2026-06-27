@@ -5,6 +5,7 @@ context file (brand.context_file). Can use video frames for visual grounding and
 applies platform-aware CTAs (ManyChat comment-keyword vs. real booking link).
 """
 import json
+import re
 from pathlib import Path
 
 import anthropic
@@ -92,6 +93,36 @@ def _strip_fences(raw: str) -> str:
     return raw
 
 
+# Captions are multi-line and full of quotes/emojis/hashtags, which routinely
+# break strict JSON. We have the model delimit each caption with a sentinel line
+# instead, then split on it — robust to any caption content.
+_SECTION_RE = re.compile(r"^@@@\s*([A-Za-z]+)\s*@@@\s*$", re.MULTILINE)
+
+_FORMAT_INSTRUCTIONS = (
+    "Format your reply as plain text (NOT JSON). Before each platform's caption, "
+    "put a line containing exactly `@@@platform@@@` (lowercase platform name). "
+    "Example:\n@@@instagram@@@\n<caption>\n@@@facebook@@@\n<caption>\n"
+    "No other commentary."
+)
+
+
+def _parse_sections(text: str, platforms: list) -> dict:
+    """Split a `@@@platform@@@`-delimited reply into {platform: caption}.
+
+    Falls back to JSON if no sentinels are present (older-style replies).
+    """
+    matches = list(_SECTION_RE.finditer(text))
+    if not matches:
+        return json.loads(_strip_fences(text))
+    out = {}
+    for i, m in enumerate(matches):
+        name = m.group(1).lower()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        out[name] = text[m.end():end].strip()
+    # keep only requested platforms (ignore any stray sections)
+    return {p: out[p] for p in platforms if p in out} or out
+
+
 def generate_captions(client: dict, transcript: str, kind: str, platforms: list,
                       frames: list = None, extra_context: str = "") -> dict:
     """Return {platform: caption_text}.
@@ -125,8 +156,8 @@ CTA rules (follow exactly — this matters):
 
 Make every CTA specific to THIS post's topic.
 
-Return ONLY a valid JSON object — no markdown fences, no commentary. Keys are the
-platform names ({', '.join(platforms)}); values are the caption strings."""
+Platforms to write for: {', '.join(platforms)}.
+{_FORMAT_INSTRUCTIONS}"""
 
     api = anthropic.Anthropic()
     message = api.messages.create(
@@ -134,7 +165,7 @@ platform names ({', '.join(platforms)}); values are the caption strings."""
         max_tokens=2000,
         messages=[{"role": "user", "content": _content_blocks(prompt, frames)}],
     )
-    return json.loads(_strip_fences(message.content[0].text))
+    return _parse_sections(message.content[0].text, platforms)
 
 
 def revise_caption(client: dict, platform: str, current_text: str, feedback: str, context: str = "") -> str:
@@ -168,10 +199,10 @@ def revise_all(client: dict, captions: dict, feedback: str, context: str = "") -
     Returns an updated {platform: caption_text} dict (same keys as input).
     """
     platforms = list(captions.keys())
-    current = json.dumps(captions, indent=2)
+    current = "\n".join(f"@@@{p}@@@\n{t}" for p, t in captions.items())
     prompt = f"""{_brand_header(client)}
 
-Here are the current captions as JSON:
+Here are the current captions (each preceded by its @@@platform@@@ marker):
 {current}
 
 Apply this change to EVERY caption, keeping each platform's style and CTA rules:
@@ -180,12 +211,12 @@ Apply this change to EVERY caption, keeping each platform's style and CTA rules:
 Requested change (applies to all platforms): {feedback}
 {f'Content context: {context}' if context else ''}
 
-Return ONLY a valid JSON object with the same keys ({', '.join(platforms)}) and the
-revised caption strings — no markdown fences, no commentary."""
+Platforms: {', '.join(platforms)}.
+{_FORMAT_INSTRUCTIONS}"""
 
     api = anthropic.Anthropic()
     message = api.messages.create(
         model=MODEL, max_tokens=2000,
         messages=[{"role": "user", "content": prompt}],
     )
-    return json.loads(_strip_fences(message.content[0].text))
+    return _parse_sections(message.content[0].text, platforms)
