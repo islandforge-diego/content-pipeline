@@ -1,0 +1,7 @@
+openai-whisper
+anthropic
+rich
+boto3
+requests
+python-dotenv
+pytz
