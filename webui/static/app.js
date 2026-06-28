@@ -63,6 +63,8 @@ function resetFlow() {
   $("genStatus").textContent = "";
   $("pubStatus").textContent = "";
   $("reviseAllStatus").textContent = "";
+  $("pubResults").innerHTML = "";
+  $("pubBar").classList.add("hidden");
   $("generateBtn").disabled = true;
 }
 
@@ -265,6 +267,9 @@ $("publishBtn").onclick = async () => {
   if (!when) { setStatus("pubStatus", "Pick a post time.", "err"); return; }
   $("publishBtn").disabled = true;
   const dryRun = $("dryRun").checked;
+  $("pubResults").innerHTML = "";
+  $("pubBar").classList.remove("hidden");
+  setBar(0);
   try {
     setStatus("pubStatus", dryRun ? "Previewing…" : "Publishing…", "spinner");
     const res = await pollJob(
@@ -272,16 +277,36 @@ $("publishBtn").onclick = async () => {
         client: state.client, path: state.path, kind: state.kind,
         captions: state.captions, datetime: toISO(when), dry_run: dryRun,
       })).job_id,
-      (p) => setStatus("pubStatus", p, "spinner"));
-    const ok = res.posts.filter((p) => p.ok).length;
-    setStatus("pubStatus",
-      `${dryRun ? "Preview" : "Scheduled"}: ${ok}/${res.posts.length} channels. ${dryRun ? "Uncheck 'Preview only' to post for real." : ""}`,
-      "ok");
+      onPublishProgress);
+    setBar(100);
+    renderPubResults(res, dryRun);
   } catch (e) {
     setStatus("pubStatus", e.message, "err");
   }
   $("publishBtn").disabled = false;
 };
+
+function setBar(pct) { $("pubBarFill").style.width = pct + "%"; }
+
+function onPublishProgress(msg) {
+  const m = msg.match(/(\d+)%/);
+  if (m) setBar(parseInt(m[1], 10));
+  setStatus("pubStatus", msg, "spinner");
+}
+
+function renderPubResults(res, dryRun) {
+  const posts = res.posts || [];
+  const ok = posts.filter((p) => p.ok).length;
+  const draftNote = res.as_draft && !dryRun ? " as drafts (review/approve in Buffer)" : "";
+  setStatus("pubStatus",
+    `${dryRun ? "Preview" : "Done"}: ${ok}/${posts.length} channels${dryRun ? " — uncheck 'Preview only' to post for real" : draftNote}.`,
+    ok === posts.length ? "ok" : "err");
+  $("pubResults").innerHTML = posts.map((p) =>
+    p.ok
+      ? `<div class="pub-result ok">✓ ${p.platform}${p.id && p.id !== "(dry-run)" ? " — " + p.id : ""}</div>`
+      : `<div class="pub-result err">✗ ${p.platform}: ${escapeHtml(p.error || "failed")}</div>`
+  ).join("");
+}
 
 // ---------------------------------------------------------------- onboarding
 

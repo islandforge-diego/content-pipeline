@@ -30,6 +30,7 @@
     "org_name": "Island Forge Studio",
     "org_id": "67e362b288f79c93410af3fb",
     "timezone": "America/Chicago",
+    "create_as_draft": true,
     "channels": {
       "facebook":  { "id": "", "name": "", "type": "page" },
       "instagram": { "id": "", "handle": "", "type": "business" },

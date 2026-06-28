@@ -127,7 +127,10 @@ def buffer_channels():
     token = os.environ.get("BUFFER_TOKEN", "")
     if not token:
         return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
-    org_id = request.args.get("org_id") or None
+    org_id = request.args.get("org_id")
+    if not org_id:  # default to the studio org from the template
+        tmpl = json.loads((CLIENTS_DIR / "_template.json").read_text())
+        org_id = tmpl.get("buffer", {}).get("org_id")
     try:
         return jsonify(buffer_api.list_channels(token, org_id))
     except Exception as e:
@@ -257,10 +260,18 @@ def api_publish():
         return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
 
     def work(progress):
-        progress("Uploading to S3…")
+        def on_event(ev, p):
+            if ev == "upload_progress":
+                progress(f"Uploading to S3… {p}%")
+            elif ev == "upload":
+                progress("Upload complete. Scheduling to Buffer…")
+            elif ev == "post":
+                where = p.get("platform", "")
+                progress(f"{'✓' if p.get('ok') else '✗'} {where}")
+        progress("Uploading to S3… 0%")
         result = publish(
             path, cfg, captions, when, kind, token, dry_run=dry_run,
-            on_event=lambda ev, p: progress(f"{ev}: {p}"),
+            on_event=on_event,
         )
         if not dry_run:
             progress("Updating preview…")

@@ -3,14 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Content Pipeline</title>
+  <title>Content Pipeline · Island Forge Studio</title>
+  <link rel="icon" type="image/png" href="/static/logos/palm-orange.png">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="logo">◆</span>
-      <span>Content Pipeline</span>
+      <img src="/static/logos/wordmark-white.png" alt="Island Forge Studio" class="wordmark">
+      <span class="tool-name">Content Pipeline</span>
     </div>
     <div class="client-picker">
       <select id="clientSelect" aria-label="Select client"></select>
@@ -80,7 +81,9 @@
         </div>
         <label class="check"><input type="checkbox" id="dryRun" checked> Preview only (don't post yet)</label>
         <button id="publishBtn" class="primary">Schedule</button>
+        <div id="pubBar" class="progress hidden"><div id="pubBarFill"></div></div>
         <div id="pubStatus" class="status"></div>
+        <div id="pubResults" class="pub-results"></div>
       </div>
     </section>
 

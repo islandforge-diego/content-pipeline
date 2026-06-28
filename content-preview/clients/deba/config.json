@@ -1,247 +1,325 @@
 {
- "slug": "deba",
- "name": "Deba Douglas",
- "title": "Content Preview — Deba Douglas",
- "range_label": "Jun 23–28",
- "feed_time": "3:00 PM CT",
- "theme": {
-  "accent": "#1f6f54",
-  "soft": "#e8f1ec",
-  "soft_border": "#cfe2d8",
-  "accent_text": "#16503c",
-  "story_bg": "#0d5f6e"
- },
- "banner": "👀 <b>For your review.</b> Everything below is scheduled. Feed posts go out at 3:00 PM CT; Instagram Stories run once a day (7:00 AM CT). Tap a video to watch, swipe the photos, or tap “Captions” to read each platform's copy.",
- "footer": "Scheduled by Diego · Island Forge Studio · feed posts 3:00 PM CT · stories 7:00 AM CT (Tue 2:00 PM)",
- "stories": {
-  "channel": "debaflipstexas",
-  "month_label": "June 2026",
-  "year": 2026,
-  "month": 6,
-  "items": [
-   {
-    "day": 23,
-    "dow": "Tue",
-    "time": "2:00 PM CT",
-    "title": "Mentee Tuesday",
-    "sticker": "🗳️ Poll · “Could you see yourself doing this?”",
-    "img": "stories/Day2_Tue_Mentee.png"
-   },
-   {
-    "day": 24,
-    "dow": "Wed",
-    "time": "7:00 AM CT",
-    "title": "Wealth-Building Wednesday",
-    "sticker": "💬 DM “INVESTOR”",
-    "img": "stories/Day3_Wed_WealthBuilding.png"
-   },
-   {
-    "day": 25,
-    "dow": "Thu",
-    "time": "7:00 AM CT",
-    "title": "Transformation Thursday",
-    "sticker": "🗳️ Poll · “Flip it or rent it out?”",
-    "img": "stories/Day4_Thu_Transformation.png"
-   },
-   {
-    "day": 26,
-    "dow": "Fri",
-    "time": "7:00 AM CT",
-    "title": "Teaching Friday",
-    "sticker": "❓ Question box · “Ask me anything”",
-    "img": "stories/Day5_Fri_Teaching.png"
-   },
-   {
-    "day": 27,
-    "dow": "Sat",
-    "time": "7:00 AM CT",
-    "title": "Community Saturday",
-    "sticker": "🗳️ Poll · “Come to an event like this?”",
-    "img": "stories/Day6_Sat_Community.png"
-   },
-   {
-    "day": 28,
-    "dow": "Sun",
-    "time": "7:00 AM CT",
-    "title": "Faith & Freedom Sunday",
-    "sticker": "❓ Question box · “What would freedom let you do?”",
-    "img": "stories/Day7_Sun_FaithFreedom.png"
-   }
+  "slug": "deba",
+  "name": "Deba Douglas",
+  "title": "Content Preview \u2014 Deba Douglas",
+  "range_label": "Jun 23\u201328",
+  "feed_time": "3:00 PM CT",
+  "theme": {
+    "accent": "#1f6f54",
+    "soft": "#e8f1ec",
+    "soft_border": "#cfe2d8",
+    "accent_text": "#16503c",
+    "story_bg": "#0d5f6e"
+  },
+  "banner": "\ud83d\udc40 <b>For your review.</b> Everything below is scheduled. Feed posts go out at 3:00 PM CT; Instagram Stories run once a day (7:00 AM CT). Tap a video to watch, swipe the photos, or tap \u201cCaptions\u201d to read each platform's copy.",
+  "footer": "Scheduled by Diego \u00b7 Island Forge Studio \u00b7 feed posts 3:00 PM CT \u00b7 stories 7:00 AM CT (Tue 2:00 PM)",
+  "stories": {
+    "channel": "debaflipstexas",
+    "month_label": "June 2026",
+    "year": 2026,
+    "month": 6,
+    "items": [
+      {
+        "day": 23,
+        "dow": "Tue",
+        "time": "2:00 PM CT",
+        "title": "Mentee Tuesday",
+        "sticker": "\ud83d\uddf3\ufe0f Poll \u00b7 \u201cCould you see yourself doing this?\u201d",
+        "img": "stories/Day2_Tue_Mentee.png"
+      },
+      {
+        "day": 24,
+        "dow": "Wed",
+        "time": "7:00 AM CT",
+        "title": "Wealth-Building Wednesday",
+        "sticker": "\ud83d\udcac DM \u201cINVESTOR\u201d",
+        "img": "stories/Day3_Wed_WealthBuilding.png"
+      },
+      {
+        "day": 25,
+        "dow": "Thu",
+        "time": "7:00 AM CT",
+        "title": "Transformation Thursday",
+        "sticker": "\ud83d\uddf3\ufe0f Poll \u00b7 \u201cFlip it or rent it out?\u201d",
+        "img": "stories/Day4_Thu_Transformation.png"
+      },
+      {
+        "day": 26,
+        "dow": "Fri",
+        "time": "7:00 AM CT",
+        "title": "Teaching Friday",
+        "sticker": "\u2753 Question box \u00b7 \u201cAsk me anything\u201d",
+        "img": "stories/Day5_Fri_Teaching.png"
+      },
+      {
+        "day": 27,
+        "dow": "Sat",
+        "time": "7:00 AM CT",
+        "title": "Community Saturday",
+        "sticker": "\ud83d\uddf3\ufe0f Poll \u00b7 \u201cCome to an event like this?\u201d",
+        "img": "stories/Day6_Sat_Community.png"
+      },
+      {
+        "day": 28,
+        "dow": "Sun",
+        "time": "7:00 AM CT",
+        "title": "Faith & Freedom Sunday",
+        "sticker": "\u2753 Question box \u00b7 \u201cWhat would freedom let you do?\u201d",
+        "img": "stories/Day7_Sun_FaithFreedom.png"
+      }
+    ]
+  },
+  "feed": [
+    {
+      "date": "Tue \u00b7 Jun 23",
+      "title": "Happy Hour with our latest cohort",
+      "chips": [
+        "Facebook",
+        "Instagram",
+        "LinkedIn",
+        "\ud83e\udd1d Collab: @longhorn_investments"
+      ],
+      "media": {
+        "type": "gallery",
+        "images": [
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201234_mljavq.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201069_q6nfaa.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201119_qbiam1.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201130_ummfqw.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201167_qhwgf5.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201169_txinjm.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201206_sxk1hs.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201178_thzf7o.jpg"
+        ]
+      },
+      "caps": [
+        [
+          "Instagram",
+          "Happy Hour with our latest cohort \ud83e\udd42\n\nThere's nothing like getting our Principles of Real Estate family together \u2014 good people, good energy, and a whole lot of laughs. This is what the journey looks like off the spreadsheets. \ud83c\udfe1\n\nBig thanks to our sponsor @longhorn_investments for helping make nights like this happen. \ud83e\udd1d\n\nWant to be part of the next cohort? Comment \"Showcase\" \ud83d\udc47 to join our free real estate showcase.\n\n#realestateinvesting #mentorship #dfwrealestate #debaflipstexas #realestatecommunity #generationalwealth"
+        ],
+        [
+          "Facebook",
+          "Happy Hour with our latest cohort \ud83e\udd42\n\nThere's nothing like getting our Principles of Real Estate family together \u2014 good people, good energy, and a whole lot of laughs. This is what the journey looks like off the spreadsheets. \ud83c\udfe1\n\nBig thanks to our sponsor Longhorn Investments (facebook.com/longhorninvestments) for helping make nights like this happen. \ud83e\udd1d\n\nWant to be part of the next cohort? Comment \"Showcase\" and we'll send you the link to join our free real estate showcase. \ud83d\udc47"
+        ],
+        [
+          "LinkedIn",
+          "Happy Hour with our latest cohort. \ud83e\udd42\n\nBuilding wealth in real estate is about more than deals \u2014 it's about community. Getting our Principles of Real Estate family together is a reminder of why we do this work.\n\nGrateful to our sponsor Longhorn Investments for partnering with us on this.\n\nWant to learn what the mentorship is about? Join our next free showcase: douglasdwellings.com/mentor"
+        ]
+      ]
+    },
+    {
+      "date": "Wed \u00b7 Jun 24",
+      "title": "How to make money with one skill",
+      "chips": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "LinkedIn",
+        "YouTube"
+      ],
+      "media": {
+        "type": "video",
+        "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076678/previews/day23_wholesaling.jpg",
+        "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782076678/previews/day23_wholesaling.mp4"
+      },
+      "caps": [
+        [
+          "Instagram \u00b7 Facebook \u00b7 TikTok",
+          "How to make money with one skill. \ud83d\udcb0\n\nWholesaling is one of the most powerful strategies we teach inside the Roadmap because you do not need money, credit, or experience to get started.\nYou find the deal. You put it under contract. You sell that contract to an investor. You collect the fee.\n\nOne of my mentees made $50K doing exactly this.\nNo renovation. No mortgage. No risk. Just the skill of finding and evaluating a deal.\n\n\ud83d\udc49\ud83c\udffe Comment INVESTOR and I'll DM you the link to book a free strategy call.\n\n#realestateinvesting #wholesaling #dfwrealestate #mentorship"
+        ],
+        [
+          "LinkedIn \u00b7 YouTube",
+          "Same copy with \ud83d\udc49\ud83c\udffe https://buff.ly/np3lEka link instead of the comment CTA."
+        ]
+      ]
+    },
+    {
+      "date": "Thu \u00b7 Jun 25",
+      "title": "What makes Deba a great fit?",
+      "chips": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "LinkedIn",
+        "YouTube"
+      ],
+      "media": {
+        "type": "video",
+        "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076756/previews/clip2_bluejacket.jpg",
+        "src": "https://res.cloudinary.com/dpwh4baly/video/upload/f_mp4,vc_h264,ac_aac,w_720,q_auto/v1782076756/previews/clip2_bluejacket.mp4"
+      },
+      "caps": [
+        [
+          "Instagram",
+          "\"What makes Deba a great fit?\" \ud83c\udfa4 Our clients say it best.\n\nFrom first-deal nerves to flipping houses \u2014 the right guide changes everything. \ud83c\udfda\ufe0f\u27a1\ufe0f\ud83c\udfe1\n\nWant that for yourself? Comment \"Investor\" \ud83d\udc47 to book a free 1-on-1 with Deba."
+        ],
+        [
+          "LinkedIn",
+          "\"What makes Deba a great fit for you?\" We asked our clients \u2014 their answers say more than we ever could. \u2026 Book a free 1-on-1 strategy call with Deba (link in post)."
+        ]
+      ]
+    },
+    {
+      "date": "Fri \u00b7 Jun 26",
+      "title": "The importance of getting started",
+      "chips": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "LinkedIn",
+        "YouTube"
+      ],
+      "media": {
+        "type": "video",
+        "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076753/previews/clip1_showcase.jpg",
+        "src": "https://res.cloudinary.com/dpwh4baly/video/upload/f_mp4,vc_h264,ac_aac,w_720,q_auto/v1782076753/previews/clip1_showcase.mp4"
+      },
+      "caps": [
+        [
+          "Instagram",
+          "The hardest part of real estate? Starting. \ud83c\udfe1\n\nOne buy & hold deal we broke down in class:\n\u2022 Purchase: $340K\n\u2022 Cash to close (15%): $51K\n\u2022 Rent: $3,400/mo\n\u2022 Cash flow: ~$350/mo\n\nYou don't need to be perfect \u2014 you need to begin. Comment \"Investor\" \ud83d\udc47 and Deba will send you a link to book your free 1-on-1 strategy call."
+        ],
+        [
+          "LinkedIn",
+          "Most people don't lose in real estate because they pick the wrong property. They lose because they never start. \u2026 Book a free 1-on-1 strategy call with Deba (Calendly link in post)."
+        ]
+      ]
+    },
+    {
+      "date": "Sat \u00b7 Jun 27",
+      "title": "I'm going to figure this out!",
+      "chips": [
+        "Facebook",
+        "Instagram",
+        "TikTok",
+        "LinkedIn",
+        "YouTube"
+      ],
+      "media": {
+        "type": "video",
+        "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782137139/Event_Reel_Trial_eia412.jpg",
+        "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782137139/Event_Reel_Trial_eia412.mp4"
+      },
+      "caps": [
+        [
+          "Instagram",
+          "\"I'm going to figure this out!\" \ud83d\udcaa\ud83c\udffe\n\nThat's the energy we want every mentee to bring to the mentorship. I was there too \u2014 grinding a 9-to-5 while taking care of my family. I figured it out, and I'll show you how.\n\nComment \"Investor\" \ud83d\udc47 to learn more and book a call with me."
+        ],
+        [
+          "LinkedIn",
+          "\"I'm going to figure this out.\" That's the energy we expect our mentees to bring. I was working a 9-to-5 while taking care of my family when I started. Book a 1-on-1 call with me (link in post)."
+        ]
+      ]
+    },
+    {
+      "date": "Sun \u00b7 Jun 28",
+      "title": "From the bays to the table",
+      "chips": [
+        "Facebook",
+        "Instagram",
+        "LinkedIn"
+      ],
+      "media": {
+        "type": "gallery",
+        "images": [
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201244_tu2ssj.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138659/FX201072_t9911u.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201082_mvfcpt.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201144_x6rqk8.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138660/FX201070_mbwzh0.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138659/FX201071_q6bwib.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201208_osqu7x.jpg",
+          "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201159_qbrwg8.jpg"
+        ]
+      },
+      "caps": [
+        [
+          "Instagram",
+          "From the bays to the table \ud83c\udfcc\ufe0f\ud83c\udf79\n\nOur latest cohort's Happy Hour was all about celebrating wins and making memories. The best part of this business? The people you build it with.\n\nReady to start your journey? Comment \"Showcase\" \ud83d\udc47 to join our free real estate showcase.\n\n#realestateinvesting #mentorship #dfwrealestate #debaflipstexas #topgolf #realestatecommunity"
+        ],
+        [
+          "LinkedIn",
+          "From the bays to the table \u2014 celebrating our latest cohort. \ud83c\udfcc\ufe0f Behind every deal is a community of people pushing each other forward. Join our next free showcase: douglasdwellings.com/mentor"
+        ]
+      ]
+    },
+    {
+      "iso_date": "2026-06-29",
+      "time": "15:00",
+      "title": "CEO vs. Employee at 11AM, 3PM, and 7PM. \ud83d\udc40\n\nOkay but real tal",
+      "chips": [
+        "facebook",
+        "instagram",
+        "linkedin",
+        "tiktok",
+        "youtube"
+      ],
+      "media": {
+        "type": "video",
+        "src": "https://debadouglas.s3.amazonaws.com/skit%203.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIARCP7INTZTG6GO75H%2F20260628%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20260628T194518Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604800&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIBSNkw7HJ4A6WfMm4qn6xFkNptFdkBC2x4EP9B7n1%2B1aAiEAslV08SIE2A8NchjNEkGXuxVsO0bfZ34%2BAS4KdZ1L56MqsAMInf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARAAGgwwNzQwODY2NDA4ODMiDO%2BgDLJI72UWlLEjBiqEAxCk6AAKXuPuwh3IJEJHeR9zZGRXSyKw%2F1SaADns64OQaPjbKOjkI3CEadKBCHSjeVs2%2BUlL6d0jdrit51GNwmgfeJzBI4Ep3kSdpASlqU6PHnQ4C3P7NgrVQHoFeC7CdZMuW432%2BcZA0FlfauUSAh8SA%2FY4gD0wHrp%2FD9GNRKpRcafz3nsTpjC1Nsv1r1WGohfUuaZcr%2BLQrzmXsaOKC%2BSuTO4vTPdt0t1Y3CQfPNSId2QA4JuB0GVZd%2F99oBRw%2BnkfRVPnhsYu%2BSXoRYCVqeG%2FQ1pFlMhR2Kyay2T6a7bPguZ1dMam0B%2By3g8xetAXAX8CkUMLsBxjbZHeTT6jkd%2FEWYc5jcTGMtA7CnomjmTF6A1DbG0IEkRSDawwOxm5%2B9pdrmnvOaK1%2BcqfUrrimQWI%2FSLzVLE9PwBpzw3ZJ7R40cp%2F%2BFJsXx14zY88WhCpoxJ84yvhRkJnHffI95wkLc6j1Sv%2FvEU%2FGi%2B5NbiREnTdceGhkOxRv2on2pm6y3htNTzhQlww%2Fe6F0gY6rQJJpSBAW%2FX0alenK54g8fVQpjrbLzz%2B4qhTyYUEU27AAEs2%2FM1oETEkPx9npcaThQ4729h5%2BDyoxUGI11oXhsWTldGpI25WQhpPRD5YSlcIhnAyTa2Ofn5X57sxGNkVmA4bBozdUQjn%2FYX2nDM%2BPCZpBRapfe90ePm2cJi7C0hNcCkVz9C%2FVhimZwDo8QAkq6XFAgiwAE%2BDNl9kSFY%2Ftc6np3AG%2FQ%2FEZolt2%2FcRanU7HmXK6eFkwGY2OHaRGJ8YUTZWG7xq7oyChJTZjpW4fo%2FbjH4ikrfdy9bksC%2F5jOPI4jeDPFNGBXXZ1svsNb7BoTYvK5tTkoEwey3Gxoia29Bq9Tju5jZQdZo2hX1mF0i9zHOmPY0LR8hawyM2pZpgwbpCjmU6d4brIkG4klNH&X-Amz-Signature=480951605079ba96d681cbf326f8f68c574f75fa3f08a250e1def6f5b4980bd1",
+        "poster": ""
+      },
+      "caps": [
+        [
+          "facebook",
+          "Real talk about what this life actually looks like. \ud83c\udfe1\n\nThis video started as a fun CEO vs. Employee comparison with Leanna, but I have to be honest: Leanna is absolutely incredible at her job. Don't let the video fool you.\n\nWhat I want you to see is the full picture of what building a real estate business looks like from the inside.\n\nMy day started with journaling, scripture, and quiet time before the sun came up. By mid-morning I was walking houses and negotiating with wholesalers. By afternoon I was on the mentee call helping people run numbers and chase their first deal. By evening I was still analyzing properties while my kids were winding down for bed.\n\nIt's not glamorous every hour. There are alarms getting snoozed, fires getting escalated, and fast food runs between property walkthroughs.\n\nBut there are also deals getting under contract. Mentees getting unstuck. Lives changing, one house at a time.\n\nIf you've been watching from the sidelines and wondering if real estate investing is really for someone like you, it is. You just need a starting point and someone who's been exactly where you are.\n\nComment \"INVESTOR\" \ud83d\udc47 and let's talk about your next move."
+        ],
+        [
+          "instagram",
+          "CEO vs. Employee at 11AM, 3PM, and 7PM. \ud83d\udc40\n\nOkay but real talk. Leanna is absolutely amazing at her job. This video just shows that we both bring different energy to the same mission.\n\nHere's what a full day actually looks like behind the scenes:\n\nJournaling and Bible time before the city wakes up. Walking houses, chasing wholesalers, putting deals under contract. Five fires put out before lunch. Mentee calls, title companies, partner check-ins, and kids' practice pickups all in the same afternoon. Still analyzing deals at 10PM.\n\nNobody tells you that building something real means your brain never fully clocks out. But I wouldn't trade it.\n\nThe freedom on the other side of that grind? Worth every alarm I snoozed and every cold protein shake.\n\nIf you're a W-2 worker wondering what it actually takes to build wealth through real estate, this is it. Messy, full, and purpose-driven.\n\nComment \"INVESTOR\" \ud83d\udc47 and let's map your first step.\n\n#PrinciplesOfRealEstate #DebaDouglas #W2ToFreedom #RealEstateInvesting #BehindTheScenes #WealthBuilder #DallasRealEstate #RealEstateCoach #FixAndFlip #BuyAndHold"
+        ],
+        [
+          "linkedin",
+          "What does a full day in real estate investing actually look like? Here's mine.\n\nIt starts before sunrise with journaling and intention-setting. By mid-morning I'm walking properties and negotiating with wholesalers. Afternoons bring mentee calls, partner check-ins, and a handful of problems to solve that nobody put on the calendar. Evenings? Still analyzing deals while the kids are winding down.\n\nOur team member Leanna carries her own weight through all of it, and then some. The side-by-side comparison in this video is playful, but the truth underneath it is serious: building a real estate business takes sustained effort across every hour of the day.\n\nMost people only see the properties and the closed deals. They don't see the five fires before lunch, the cold protein shake for dinner, or the late-night wholesaler calls that move the needle.\n\nI share this not to impress you, but to be honest with you. If you're considering real estate investing and want to understand what the journey really looks like, I'd love to walk you through it.\n\nBook a call and let's build your roadmap together.\nhttps://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1\n\n#RealEstateInvesting #PrinciplesOfRealEstate #W2ToFreedom #WealthBuilder"
+        ],
+        [
+          "tiktok",
+          "CEO vs. Employee energy is NOT the same at 7PM. \ud83d\ude05\n\nAnd before you come for Leanna, she is genuinely one of the best. This is just what building something real looks like.\n\nMy day: journaling at dawn, walking houses by noon, mentee calls in the afternoon, analyzing deals after the kids are in bed. Wholesalers, title companies, fires to put out, and still finding ways to get deals under contract.\n\nFreedom doesn't mean easy. It means working for something that's actually yours.\n\nIf you're ready to start building, comment \"INVESTOR\" \ud83d\udc47\n\n#PrinciplesOfRealEstate #RealEstateInvesting #W2ToFreedom #DebaDouglas #BehindTheScenes"
+        ],
+        [
+          "youtube",
+          "A day in the life of a real estate investor looks nothing like the highlight reel. This video shows what actually happens from 11AM to 7PM, and far beyond, when you're building a real estate business from the ground up.\n\nFrom early-morning journaling and Bible time to walking houses in the afternoon, running mentee calls, negotiating with wholesalers, and still analyzing deals after the kids are asleep, this is the full, unfiltered picture.\n\nAnd yes, our incredible team member Leanna holds things down on her end too. The CEO vs. Employee comparison is all in good fun. What it really shows is two people, two roles, and one shared mission.\n\nPrinciples of Real Estate exists to help W-2 workers take their first real step into investing. Not the perfect step. The first one. Whether it's a fix and flip, a buy and hold, or wholesaling your way to capital, the path forward starts with a single decision.\n\nIf you've been watching and wondering whether this is for you, it is. Let's sit down and build your personal roadmap together.\n\nBook your strategy call here: https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1"
+        ]
+      ]
+    },
+    {
+      "iso_date": "2026-06-29",
+      "time": "15:00",
+      "title": "CEO vs. Employee at 11AM, 3PM, and 7PM. \ud83d\udc40\n\nOkay but real tal",
+      "chips": [
+        "facebook",
+        "instagram",
+        "linkedin",
+        "tiktok",
+        "youtube"
+      ],
+      "media": {
+        "type": "video",
+        "src": "https://debadouglas.s3.amazonaws.com/skit%203.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIARCP7INTZUM432WPU%2F20260628%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20260628T194935Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604800&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJGMEQCIBruGP6SiGOgF6nQQsg%2B7OlsLhHfsypu5OBu%2BTue1iqcAiBeNSxlfTV09jIs1A%2F7jsGequ8pAV0Q5BMkJHLiYqDYISqwAwid%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDA3NDA4NjY0MDg4MyIMBfmdmPTubbbHRXdlKoQD7YYJJcb9V8Uz631DKMASunBecukg3OGSkBSl3YgF8zLXQE8NILw51Jndds44D3%2FTopzjASL%2Bae0FZt2WfHN58NIZLW3PYZGTOztfq9UecusVEJIDaPMubrr%2BBfvYcNaIdQGOlewqKJHKMpvxqqYD3favEgnYTyDsXH4dXbtp%2Fp2lqoiDu58VMyb4v0f8fy%2BX3bAu1Izii%2Ft%2FUmQaYcqnpFiSS32uy2si4KLUjgOImn4w85YP%2BV1Q45bMaTLjLT2O9%2FHoQE7Veg%2F7qxS1%2BXZlTVBkDkTiugzphaDt1pa5RauBR0nugp7lmT09%2FVicLEmTIRzc3U6qGh3lJ%2FqRJ1jRw%2B35yQLRufG8P02V42nHarkD5MWXvuBZYhWAZJJLancOJgQ0tE%2BkVuGuPpdNlUCaj35OdWQfuGuOxKny5yzkXDBBzApEAhuLvTMzr2aK%2BoTvCYFhk3wKiUKoXl%2FZw5oXtzr9XB8LQajmV8S7GVbGJvAfwNvEohkRiT7SOrzntlp%2BGS%2FXiDD97oXSBjquAt%2FFj4LVgCmkP0E5rg5hFWytS3uP4wIZjNX9OqMGLN0JDgpIIjdN5vYgycSmkU2FEl9%2BVWbtdjCFvcQPvS2cYDXvbBuLYLzpUvbK5nOqRPbObj%2FqyvI3dSj1kL6Vty1wHNYf39gcfmE2HhiPfbzbC3dQ30oga0vNaLcl2GLMgqnx2sXvLqVsrQtLKKkRMV%2Bz4CH06H6MUAjiP8i9SCLottP2UK2SycoWfcl9G4KkMS49SJGq%2FajqRrpmD0p2oGQcEo%2BLpaOzdwanJls5CytdEP2PNEcq137NRi%2FG43KpJkQKR5nfB68wlq82rhUWAsauX2DEUH%2FPqhnuj6QxKa%2FL8AXY%2B8lGqwZ6kB99ykDi1PPamrAwkuAUVdcPVhm9ijQCCFOBqXdeoQ9Mho8y6E20&X-Amz-Signature=7e3b172222282be532f5fdcd2d01ecd6bfdbda48f17ce0eb65452664482d5de1",
+        "poster": ""
+      },
+      "caps": [
+        [
+          "facebook",
+          "Real talk about what this life actually looks like. \ud83c\udfe1\n\nThis video started as a fun CEO vs. Employee comparison with Leanna, but I have to be honest: Leanna is absolutely incredible at her job. Don't let the video fool you.\n\nWhat I want you to see is the full picture of what building a real estate business looks like from the inside.\n\nMy day started with journaling, scripture, and quiet time before the sun came up. By mid-morning I was walking houses and negotiating with wholesalers. By afternoon I was on the mentee call helping people run numbers and chase their first deal. By evening I was still analyzing properties while my kids were winding down for bed.\n\nIt's not glamorous every hour. There are alarms getting snoozed, fires getting escalated, and fast food runs between property walkthroughs.\n\nBut there are also deals getting under contract. Mentees getting unstuck. Lives changing, one house at a time.\n\nIf you've been watching from the sidelines and wondering if real estate investing is really for someone like you, it is. You just need a starting point and someone who's been exactly where you are.\n\nComment \"INVESTOR\" \ud83d\udc47 and let's talk about your next move."
+        ],
+        [
+          "instagram",
+          "CEO vs. Employee at 11AM, 3PM, and 7PM. \ud83d\udc40\n\nOkay but real talk. Leanna is absolutely amazing at her job. This video just shows that we both bring different energy to the same mission.\n\nHere's what a full day actually looks like behind the scenes:\n\nJournaling and Bible time before the city wakes up. Walking houses, chasing wholesalers, putting deals under contract. Five fires put out before lunch. Mentee calls, title companies, partner check-ins, and kids' practice pickups all in the same afternoon. Still analyzing deals at 10PM.\n\nNobody tells you that building something real means your brain never fully clocks out. But I wouldn't trade it.\n\nThe freedom on the other side of that grind? Worth every alarm I snoozed and every cold protein shake.\n\nIf you're a W-2 worker wondering what it actually takes to build wealth through real estate, this is it. Messy, full, and purpose-driven.\n\nComment \"INVESTOR\" \ud83d\udc47 and let's map your first step.\n\n#PrinciplesOfRealEstate #DebaDouglas #W2ToFreedom #RealEstateInvesting #BehindTheScenes #WealthBuilder #DallasRealEstate #RealEstateCoach #FixAndFlip #BuyAndHold"
+        ],
+        [
+          "linkedin",
+          "What does a full day in real estate investing actually look like? Here's mine.\n\nIt starts before sunrise with journaling and intention-setting. By mid-morning I'm walking properties and negotiating with wholesalers. Afternoons bring mentee calls, partner check-ins, and a handful of problems to solve that nobody put on the calendar. Evenings? Still analyzing deals while the kids are winding down.\n\nOur team member Leanna carries her own weight through all of it, and then some. The side-by-side comparison in this video is playful, but the truth underneath it is serious: building a real estate business takes sustained effort across every hour of the day.\n\nMost people only see the properties and the closed deals. They don't see the five fires before lunch, the cold protein shake for dinner, or the late-night wholesaler calls that move the needle.\n\nI share this not to impress you, but to be honest with you. If you're considering real estate investing and want to understand what the journey really looks like, I'd love to walk you through it.\n\nBook a call and let's build your roadmap together.\nhttps://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1\n\n#RealEstateInvesting #PrinciplesOfRealEstate #W2ToFreedom #WealthBuilder"
+        ],
+        [
+          "tiktok",
+          "CEO vs. Employee energy is NOT the same at 7PM. \ud83d\ude05\n\nAnd before you come for Leanna, she is genuinely one of the best. This is just what building something real looks like.\n\nMy day: journaling at dawn, walking houses by noon, mentee calls in the afternoon, analyzing deals after the kids are in bed. Wholesalers, title companies, fires to put out, and still finding ways to get deals under contract.\n\nFreedom doesn't mean easy. It means working for something that's actually yours.\n\nIf you're ready to start building, comment \"INVESTOR\" \ud83d\udc47\n\n#PrinciplesOfRealEstate #RealEstateInvesting #W2ToFreedom #DebaDouglas #BehindTheScenes"
+        ],
+        [
+          "youtube",
+          "A day in the life of a real estate investor looks nothing like the highlight reel. This video shows what actually happens from 11AM to 7PM, and far beyond, when you're building a real estate business from the ground up.\n\nFrom early-morning journaling and Bible time to walking houses in the afternoon, running mentee calls, negotiating with wholesalers, and still analyzing deals after the kids are asleep, this is the full, unfiltered picture.\n\nAnd yes, our incredible team member Leanna holds things down on her end too. The CEO vs. Employee comparison is all in good fun. What it really shows is two people, two roles, and one shared mission.\n\nPrinciples of Real Estate exists to help W-2 workers take their first real step into investing. Not the perfect step. The first one. Whether it's a fix and flip, a buy and hold, or wholesaling your way to capital, the path forward starts with a single decision.\n\nIf you've been watching and wondering whether this is for you, it is. Let's sit down and build your personal roadmap together.\n\nBook your strategy call here: https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1"
+        ]
+      ]
+    }
   ]
- },
- "feed": [
-  {
-   "date": "Tue · Jun 23",
-   "title": "Happy Hour with our latest cohort",
-   "chips": [
-    "Facebook",
-    "Instagram",
-    "LinkedIn",
-    "🤝 Collab: @longhorn_investments"
-   ],
-   "media": {
-    "type": "gallery",
-    "images": [
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201234_mljavq.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201069_q6nfaa.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201119_qbiam1.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201130_ummfqw.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201167_qhwgf5.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201169_txinjm.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201206_sxk1hs.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201178_thzf7o.jpg"
-    ]
-   },
-   "caps": [
-    [
-     "Instagram",
-     "Happy Hour with our latest cohort 🥂\n\nThere's nothing like getting our Principles of Real Estate family together — good people, good energy, and a whole lot of laughs. This is what the journey looks like off the spreadsheets. 🏡\n\nBig thanks to our sponsor @longhorn_investments for helping make nights like this happen. 🤝\n\nWant to be part of the next cohort? Comment \"Showcase\" 👇 to join our free real estate showcase.\n\n#realestateinvesting #mentorship #dfwrealestate #debaflipstexas #realestatecommunity #generationalwealth"
-    ],
-    [
-     "Facebook",
-     "Happy Hour with our latest cohort 🥂\n\nThere's nothing like getting our Principles of Real Estate family together — good people, good energy, and a whole lot of laughs. This is what the journey looks like off the spreadsheets. 🏡\n\nBig thanks to our sponsor Longhorn Investments (facebook.com/longhorninvestments) for helping make nights like this happen. 🤝\n\nWant to be part of the next cohort? Comment \"Showcase\" and we'll send you the link to join our free real estate showcase. 👇"
-    ],
-    [
-     "LinkedIn",
-     "Happy Hour with our latest cohort. 🥂\n\nBuilding wealth in real estate is about more than deals — it's about community. Getting our Principles of Real Estate family together is a reminder of why we do this work.\n\nGrateful to our sponsor Longhorn Investments for partnering with us on this.\n\nWant to learn what the mentorship is about? Join our next free showcase: douglasdwellings.com/mentor"
-    ]
-   ]
-  },
-  {
-   "date": "Wed · Jun 24",
-   "title": "How to make money with one skill",
-   "chips": [
-    "Facebook",
-    "Instagram",
-    "TikTok",
-    "LinkedIn",
-    "YouTube"
-   ],
-   "media": {
-    "type": "video",
-    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076678/previews/day23_wholesaling.jpg",
-    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782076678/previews/day23_wholesaling.mp4"
-   },
-   "caps": [
-    [
-     "Instagram · Facebook · TikTok",
-     "How to make money with one skill. 💰\n\nWholesaling is one of the most powerful strategies we teach inside the Roadmap because you do not need money, credit, or experience to get started.\nYou find the deal. You put it under contract. You sell that contract to an investor. You collect the fee.\n\nOne of my mentees made $50K doing exactly this.\nNo renovation. No mortgage. No risk. Just the skill of finding and evaluating a deal.\n\n👉🏾 Comment INVESTOR and I'll DM you the link to book a free strategy call.\n\n#realestateinvesting #wholesaling #dfwrealestate #mentorship"
-    ],
-    [
-     "LinkedIn · YouTube",
-     "Same copy with 👉🏾 https://buff.ly/np3lEka link instead of the comment CTA."
-    ]
-   ]
-  },
-  {
-   "date": "Thu · Jun 25",
-   "title": "What makes Deba a great fit?",
-   "chips": [
-    "Facebook",
-    "Instagram",
-    "TikTok",
-    "LinkedIn",
-    "YouTube"
-   ],
-   "media": {
-    "type": "video",
-    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076756/previews/clip2_bluejacket.jpg",
-    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/f_mp4,vc_h264,ac_aac,w_720,q_auto/v1782076756/previews/clip2_bluejacket.mp4"
-   },
-   "caps": [
-    [
-     "Instagram",
-     "\"What makes Deba a great fit?\" 🎤 Our clients say it best.\n\nFrom first-deal nerves to flipping houses — the right guide changes everything. 🏚️➡️🏡\n\nWant that for yourself? Comment \"Investor\" 👇 to book a free 1-on-1 with Deba."
-    ],
-    [
-     "LinkedIn",
-     "\"What makes Deba a great fit for you?\" We asked our clients — their answers say more than we ever could. … Book a free 1-on-1 strategy call with Deba (link in post)."
-    ]
-   ]
-  },
-  {
-   "date": "Fri · Jun 26",
-   "title": "The importance of getting started",
-   "chips": [
-    "Facebook",
-    "Instagram",
-    "TikTok",
-    "LinkedIn",
-    "YouTube"
-   ],
-   "media": {
-    "type": "video",
-    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782076753/previews/clip1_showcase.jpg",
-    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/f_mp4,vc_h264,ac_aac,w_720,q_auto/v1782076753/previews/clip1_showcase.mp4"
-   },
-   "caps": [
-    [
-     "Instagram",
-     "The hardest part of real estate? Starting. 🏡\n\nOne buy & hold deal we broke down in class:\n• Purchase: $340K\n• Cash to close (15%): $51K\n• Rent: $3,400/mo\n• Cash flow: ~$350/mo\n\nYou don't need to be perfect — you need to begin. Comment \"Investor\" 👇 and Deba will send you a link to book your free 1-on-1 strategy call."
-    ],
-    [
-     "LinkedIn",
-     "Most people don't lose in real estate because they pick the wrong property. They lose because they never start. … Book a free 1-on-1 strategy call with Deba (Calendly link in post)."
-    ]
-   ]
-  },
-  {
-   "date": "Sat · Jun 27",
-   "title": "I'm going to figure this out!",
-   "chips": [
-    "Facebook",
-    "Instagram",
-    "TikTok",
-    "LinkedIn",
-    "YouTube"
-   ],
-   "media": {
-    "type": "video",
-    "poster": "https://res.cloudinary.com/dpwh4baly/video/upload/so_1,w_600,q_auto/v1782137139/Event_Reel_Trial_eia412.jpg",
-    "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782137139/Event_Reel_Trial_eia412.mp4"
-   },
-   "caps": [
-    [
-     "Instagram",
-     "\"I'm going to figure this out!\" 💪🏾\n\nThat's the energy we want every mentee to bring to the mentorship. I was there too — grinding a 9-to-5 while taking care of my family. I figured it out, and I'll show you how.\n\nComment \"Investor\" 👇 to learn more and book a call with me."
-    ],
-    [
-     "LinkedIn",
-     "\"I'm going to figure this out.\" That's the energy we expect our mentees to bring. I was working a 9-to-5 while taking care of my family when I started. Book a 1-on-1 call with me (link in post)."
-    ]
-   ]
-  },
-  {
-   "date": "Sun · Jun 28",
-   "title": "From the bays to the table",
-   "chips": [
-    "Facebook",
-    "Instagram",
-    "LinkedIn"
-   ],
-   "media": {
-    "type": "gallery",
-    "images": [
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201244_tu2ssj.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138659/FX201072_t9911u.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138663/FX201082_mvfcpt.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201144_x6rqk8.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138660/FX201070_mbwzh0.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138659/FX201071_q6bwib.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201208_osqu7x.jpg",
-     "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138661/FX201159_qbrwg8.jpg"
-    ]
-   },
-   "caps": [
-    [
-     "Instagram",
-     "From the bays to the table 🏌️🍹\n\nOur latest cohort's Happy Hour was all about celebrating wins and making memories. The best part of this business? The people you build it with.\n\nReady to start your journey? Comment \"Showcase\" 👇 to join our free real estate showcase.\n\n#realestateinvesting #mentorship #dfwrealestate #debaflipstexas #topgolf #realestatecommunity"
-    ],
-    [
-     "LinkedIn",
-     "From the bays to the table — celebrating our latest cohort. 🏌️ Behind every deal is a community of people pushing each other forward. Join our next free showcase: douglasdwellings.com/mentor"
-    ]
-   ]
-  }
- ]
 }
