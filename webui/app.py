@@ -196,6 +196,7 @@ def api_captions():
     kind = body.get("kind") or "reel"
     transcript = body.get("transcript") or ""
     extra_context = body.get("context") or ""
+    cta_keyword = body.get("cta_keyword") or ""
     path = body.get("path") or ""
     platforms = target_channels(cfg, kind)
 
@@ -206,7 +207,8 @@ def api_captions():
             frames = extract_frames(path, count=3)
         progress(f"Drafting captions for {len(platforms)} platforms…")
         caps = generate_captions(cfg, transcript, kind, platforms,
-                                 frames=frames, extra_context=extra_context)
+                                 frames=frames, extra_context=extra_context,
+                                 cta_keyword=cta_keyword)
         return {"captions": caps}
 
     return jsonify({"job_id": jobs.start(work)})
@@ -219,7 +221,8 @@ def api_revise():
     cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
     try:
         text = revise_caption(
-            cfg, body["platform"], body["text"], body["feedback"], body.get("context", "")
+            cfg, body["platform"], body["text"], body["feedback"],
+            body.get("context", ""), body.get("cta_keyword", "")
         )
         return jsonify({"text": text})
     except Exception as e:
@@ -232,7 +235,8 @@ def api_revise_all():
     slug = secure_filename(body.get("client", ""))
     cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
     try:
-        captions = revise_all(cfg, body["captions"], body["feedback"], body.get("context", ""))
+        captions = revise_all(cfg, body["captions"], body["feedback"],
+                              body.get("context", ""), body.get("cta_keyword", ""))
         return jsonify({"captions": captions})
     except Exception as e:
         return jsonify({"error": str(e)}), 502

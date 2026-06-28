@@ -24,6 +24,36 @@ ROOT = Path(__file__).resolve().parent.parent
 def _model(client: dict, task: str) -> str:
     return client.get("models", {}).get(task) or DEFAULT_MODELS[task]
 
+
+# --- Style enforcement (belt-and-suspenders; the prompt asks, this guarantees) ---
+
+STYLE_RULES = (
+    "STYLE RULES (strict, non-negotiable):\n"
+    "  - NEVER use em dashes (—) or long dashes. Use a comma, period, or new line.\n"
+    "  - NEVER place two or more emojis in a row. Use at most ONE emoji at a time, "
+    "separated by words. (e.g. `Comment \"INVESTOR\" 👇` is fine; `❤️🏡` is not.)\n"
+    "  - NEVER invent, change, shorten, or pluralize the ManyChat CTA keyword. Use the "
+    "exact keyword you are given."
+)
+
+_EMOJI = (
+    "[\U0001F300-\U0001FAFF\U00002600-\U000026FF\U00002700-\U000027BF"
+    "\U0001F1E6-\U0001F1FF\U00002190-\U000021FF\U00002B00-\U00002BFF"
+    "\U0001F000-\U0001F0FF]"
+    "[\U0001F3FB-\U0001F3FF]?️?"
+)
+_GRAPHEME = f"(?:{_EMOJI}(?:‍{_EMOJI})*)"
+_EMOJI_RUN = re.compile(f"({_GRAPHEME})(?:\\s*{_GRAPHEME})+")
+
+
+def _sanitize(text: str) -> str:
+    """Mechanically enforce the style rules the model may ignore:
+    strip em dashes and collapse any run of consecutive emojis to the first."""
+    text = re.sub(r"\s*[—―]\s*", ", ", text)   # em dash / horizontal bar -> comma
+    text = re.sub(r",\s*,", ",", text)           # tidy any doubled commas
+    text = _EMOJI_RUN.sub(lambda m: m.group(1), text)  # emoji run -> first emoji
+    return text.strip()
+
 PLATFORM_STYLES = {
     "instagram": "conversational, emoji-forward, punchy hook first line, 125–200 words, hashtag block at end",
     "facebook":  "warm and community-minded, 150–250 words, light on hashtags",
@@ -41,25 +71,30 @@ def _load_file(ref: str) -> str:
     return p.read_text() if p.exists() else ""
 
 
-def _cta_rules(client: dict, platforms: list) -> str:
-    """Build per-platform CTA instructions from the client's cta config."""
+def _cta_rules(client: dict, platforms: list, keyword: str = "") -> str:
+    """Build per-platform CTA instructions from the client's cta config.
+
+    `keyword` is the ManyChat keyword chosen for THIS post. The model must use it
+    exactly and never invent its own.
+    """
     cta = client.get("cta", {})
     manychat = set(cta.get("manychat_platforms", []))
     link_platforms = set(cta.get("link_platforms", []))
-    keyword = cta.get("default_keyword") or client.get("brand", {}).get("cta_keyword", "")
+    kw = (keyword or "").strip() or cta.get("default_keyword") or client.get("brand", {}).get("cta_keyword", "")
     book_link = cta.get("book_link") or client.get("brand", {}).get("link_in_bio", "")
 
     lines = []
     for p in platforms:
         if p in manychat:
             lines.append(
-                f"  {p}: END with a comment-keyword CTA like `Comment \"{keyword}\" 👇`. "
-                f"ManyChat auto-DMs commenters. Pick a SHORT keyword relevant to THIS post "
-                f"(e.g. START, INFO, ME) or use \"{keyword}\". Do NOT include a raw link."
+                f"  {p}: END with a comment-keyword CTA using EXACTLY this keyword: "
+                f"\"{kw}\" (e.g. `Comment \"{kw}\" 👇`). This keyword triggers a ManyChat "
+                f"automation, so do NOT invent, change, shorten, translate, or pluralize it. "
+                f"Do NOT include a raw link."
             )
         elif p in link_platforms:
             lines.append(
-                f"  {p}: ManyChat does NOT run here — do NOT say 'comment a word'. "
+                f"  {p}: ManyChat does NOT run here, so do NOT say 'comment a word'. "
                 f"END with a relevant invitation AND the booking link: {book_link}"
             )
         else:
@@ -95,6 +130,8 @@ def _system_prompt(client: dict) -> str:
         "",
         "HARD RULES (never break these):",
         *[f"  - {r}" for r in brand["hard_rules"]],
+        "",
+        STYLE_RULES,
     ]
     if ctx:
         parts += ["", "BRAND GUIDELINES & CONTEXT:", ctx]
@@ -158,7 +195,7 @@ def _parse_sections(text: str, platforms: list) -> dict:
 
 
 def generate_captions(client: dict, transcript: str, kind: str, platforms: list,
-                      frames: list = None, extra_context: str = "") -> dict:
+                      frames: list = None, extra_context: str = "", cta_keyword: str = "") -> dict:
     """Return {platform: caption_text}.
 
     Args:
@@ -168,9 +205,10 @@ def generate_captions(client: dict, transcript: str, kind: str, platforms: list,
         platforms:     Platforms to generate for
         frames:        Optional list of base64 image dicts (video screenshots) for vision
         extra_context: Optional user-supplied context about the piece
+        cta_keyword:   Exact ManyChat keyword to use for this post (never invented)
     """
     style_block = "\n".join(
-        f"  {p}: {PLATFORM_STYLES.get(p, 'engaging, on-brand, 100–200 words')}"
+        f"  {p}: {PLATFORM_STYLES.get(p, 'engaging, on-brand, 100-200 words')}"
         for p in platforms
     )
 
@@ -179,17 +217,17 @@ def generate_captions(client: dict, transcript: str, kind: str, platforms: list,
 Content type: {kind}
 {f'Creator-supplied context: {extra_context}' if extra_context else ''}
 Transcript / description:
-{transcript or '(none — rely on the attached frames and context)'}
-{'Attached: frames sampled from the video — use what you SEE for added detail.' if frames else ''}
+{transcript or '(none, rely on the attached frames and context)'}
+{'Attached: frames sampled from the video, use what you SEE for added detail.' if frames else ''}
 
 Write a caption for each platform. Match these per-platform styles:
 {style_block}
 
-CTA rules (follow exactly — this matters):
-{_cta_rules(client, platforms)}
+CTA rules (follow exactly, this matters):
+{_cta_rules(client, platforms, cta_keyword)}
 
 Make every CTA specific to THIS post's topic, and keep the brand voice from the
-system instructions and approved examples.
+system instructions and approved examples. Obey the STYLE RULES.
 
 Platforms to write for: {', '.join(platforms)}.
 {_FORMAT_INSTRUCTIONS}"""
@@ -201,18 +239,20 @@ Platforms to write for: {', '.join(platforms)}.
         system=_system_blocks(client),
         messages=[{"role": "user", "content": _content_blocks(prompt, frames)}],
     )
-    return _parse_sections(message.content[0].text, platforms)
+    caps = _parse_sections(message.content[0].text, platforms)
+    return {p: _sanitize(t) for p, t in caps.items()}
 
 
-def revise_caption(client: dict, platform: str, current_text: str, feedback: str, context: str = "") -> str:
+def revise_caption(client: dict, platform: str, current_text: str, feedback: str,
+                   context: str = "", cta_keyword: str = "") -> str:
     """Revise a single caption based on quick user feedback. Returns plain text."""
-    style = PLATFORM_STYLES.get(platform, "engaging, on-brand, 100–200 words")
+    style = PLATFORM_STYLES.get(platform, "engaging, on-brand, 100-200 words")
     prompt = f"""Revise this {platform} caption, keeping the brand voice from the
-system instructions and approved examples.
+system instructions and approved examples. Obey the STYLE RULES.
 
 Platform style: {style}
 CTA rules:
-{_cta_rules(client, [platform])}
+{_cta_rules(client, [platform], cta_keyword)}
 {f'Content context: {context}' if context else ''}
 
 Current caption:
@@ -220,7 +260,7 @@ Current caption:
 
 Requested change: {feedback}
 
-Return ONLY the revised caption text — no quotes, no markdown, no explanation."""
+Return ONLY the revised caption text, no quotes, no markdown, no explanation."""
 
     api = anthropic.Anthropic()
     message = api.messages.create(
@@ -228,10 +268,10 @@ Return ONLY the revised caption text — no quotes, no markdown, no explanation.
         system=_system_blocks(client),
         messages=[{"role": "user", "content": prompt}],
     )
-    return message.content[0].text.strip()
+    return _sanitize(message.content[0].text.strip())
 
 
-def revise_all(client: dict, captions: dict, feedback: str, context: str = "") -> dict:
+def revise_all(client: dict, captions: dict, feedback: str, context: str = "", cta_keyword: str = "") -> dict:
     """Apply one piece of feedback to ALL captions in a single API call.
 
     Returns an updated {platform: caption_text} dict (same keys as input).
@@ -241,9 +281,9 @@ def revise_all(client: dict, captions: dict, feedback: str, context: str = "") -
     prompt = f"""Here are the current captions (each preceded by its @@@platform@@@ marker):
 {current}
 
-Apply this change to EVERY caption, keeping each platform's style, CTA rules, and
-the brand voice from the system instructions and approved examples:
-{_cta_rules(client, platforms)}
+Apply this change to EVERY caption, keeping each platform's style, CTA rules, the
+brand voice from the system instructions and approved examples, and the STYLE RULES:
+{_cta_rules(client, platforms, cta_keyword)}
 
 Requested change (applies to all platforms): {feedback}
 {f'Content context: {context}' if context else ''}
@@ -257,4 +297,5 @@ Platforms: {', '.join(platforms)}.
         system=_system_blocks(client),
         messages=[{"role": "user", "content": prompt}],
     )
-    return _parse_sections(message.content[0].text, platforms)
+    caps = _parse_sections(message.content[0].text, platforms)
+    return {p: _sanitize(t) for p, t in caps.items()}

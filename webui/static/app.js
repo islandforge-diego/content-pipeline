@@ -20,6 +20,7 @@ const state = {
   kind: "",            // reel | image
   transcript: "",      // video transcript / brief
   captions: {},        // {platform: text}
+  ctaKeyword: "",      // ManyChat keyword for this post
 };
 
 // ---------------------------------------------------------------- clients
@@ -44,6 +45,10 @@ async function selectClient(slug) {
   $("empty").classList.add("hidden");
   $("workspace").classList.remove("hidden");
   resetFlow();
+  // prefill the CTA keyword with the client's default (editable per post)
+  const defKw = (state.config.cta && state.config.cta.default_keyword)
+    || (state.config.brand && state.config.brand.cta_keyword) || "";
+  $("ctaInput").value = defKw;
 }
 
 function resetFlow() {
@@ -148,6 +153,7 @@ async function pollJob(jobId, onProgress) {
 $("generateBtn").onclick = async () => {
   $("generateBtn").disabled = true;
   const context = $("contextInput").value.trim();
+  state.ctaKeyword = $("ctaInput").value.trim();
   try {
     state.transcript = "";
     if (state.kind === "image") {
@@ -166,7 +172,7 @@ $("generateBtn").onclick = async () => {
     const res = await pollJob(
       (await api.post("/api/captions", {
         client: state.client, kind: state.kind, path: state.path,
-        transcript: state.transcript, context,
+        transcript: state.transcript, context, cta_keyword: state.ctaKeyword,
       })).job_id,
       (p) => setStatus("genStatus", p, "spinner"));
     state.captions = res.captions;
@@ -186,7 +192,8 @@ $("reviseAllBtn").onclick = async () => {
   setStatus("reviseAllStatus", "Updating all captions…", "spinner");
   try {
     const r = await api.post("/api/revise_all", {
-      client: state.client, captions: state.captions, feedback: fb, context: state.transcript,
+      client: state.client, captions: state.captions, feedback: fb,
+      context: state.transcript, cta_keyword: state.ctaKeyword,
     });
     if (r.error) throw new Error(r.error);
     state.captions = r.captions;
@@ -237,7 +244,7 @@ async function reviseCaption(platform, btn) {
   try {
     const r = await api.post("/api/revise", {
       client: state.client, platform, text: state.captions[platform],
-      feedback: fb, context: state.transcript,
+      feedback: fb, context: state.transcript, cta_keyword: state.ctaKeyword,
     });
     if (r.error) throw new Error(r.error);
     state.captions[platform] = r.text;
