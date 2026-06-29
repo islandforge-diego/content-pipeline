@@ -3514,37 +3514,37 @@
     }
   ],
   "kpis": {
-    "posts": 198,
-    "reach": 110575,
-    "impressions": 3691,
-    "views": 49030,
-    "engagement": 3970,
-    "engagement_rate": 3.55,
+    "posts": 303,
+    "reach": 236361,
+    "impressions": 4362,
+    "views": 82945,
+    "engagement": 8763,
+    "engagement_rate": 4.42,
     "by_platform": {
       "instagram": {
-        "reach": 21507,
-        "engagement": 1395,
-        "posts": 65
+        "reach": 36969,
+        "engagement": 2604,
+        "posts": 105
       },
       "linkedin": {
-        "reach": 815,
-        "engagement": 55,
-        "posts": 75
+        "reach": 1180,
+        "engagement": 81,
+        "posts": 121
       },
       "facebook": {
-        "reach": 81869,
-        "engagement": 2239,
+        "reach": 183807,
+        "engagement": 5586,
         "posts": 14
       },
       "tiktok": {
-        "reach": 6384,
-        "engagement": 221,
-        "posts": 28
+        "reach": 14405,
+        "engagement": 428,
+        "posts": 46
       },
       "youtube": {
         "reach": 0,
-        "engagement": 60,
-        "posts": 16
+        "engagement": 64,
+        "posts": 17
       }
     },
     "top_posts": [
@@ -3593,39 +3593,38 @@
         }
       },
       {
-        "title": "Juneteenth Fashion Show. \ud83d\udda4\u2728 Thank you @legacyfoodhall &\u2026",
+        "title": "Reconnected with an old college friend \ud83e\udd1d\ud83d\udcda and\u2026",
         "platform": "instagram",
-        "reach": 1166,
-        "engagement": 62,
+        "reach": 1526,
+        "engagement": 139,
         "media": {
-          "type": "gallery",
-          "images": [
-            "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a376253fd669e9e435690f8_thumbnail.jpg"
-          ]
+          "type": "video",
+          "src": "https://scontent-iad3-1.cdninstagram.com/o1/v/t2/f2/m86/AQMAxfJdMC3iixGZJSUpxoq74Qpa7HdLf3ai7docAj5QFTRIogziqxMpvxRadD42FamoDtP6Jv4RB-dg4P0Y6yvimSxf8xlErpbLBdI.mp4?_nc_cat=110&_nc_sid=5e9851&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_ohc=I5x8yPJnhf4Q7kNvwFJwLcy&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MjM0MjQ3MDQwMjkxMTIyNywiYXNzZXRfYWdlX2RheXMiOjE4LCJ2aV91c2VjYXNlX2lkIjoxMDA5OSwiZHVyYXRpb25fcyI6MTAxLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&vs=ca8f63d697a910b4&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC9DMjRFNEQ3Qjg3MjQ0RUJCMEMwMTIyNzE4QUE1NDg4Nl92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyL0MyNEFBMzJFMjZCQ0I3QjFEOTc1OEY3QzA3QzFEMThGX2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACb2r5nE3J2pCBUCKAJDMywXQFllT987ZFoYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZeadAQA&_nc_gid=eET9RVmj-xAFAKhwfuJCPg&edm=ANo9K5cEAAAA&_nc_zt=28&_nc_tpa=Q5bMBQGAqRkeDZ2tc56LGRYFuV-TxpbM1I1DZpAHllChvdDGNK-VFlyA60yfon13fWMBhfIrsgIrVS6Zdg&oh=00_Af-UTk3mwHeglAxh_EUdmSQ009vfsahVHKd8KRSqWIV2AA&oe=6A1EAD6F",
+          "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a1cb66408fdc25786a47c7b_thumbnail.jpg"
         }
       }
     ],
     "followers": 7112,
     "by_platform_detail": {
       "instagram": {
-        "reach": 21507,
-        "engagement": 1395,
-        "posts": 65
+        "reach": 36969,
+        "engagement": 2604,
+        "posts": 105
       },
       "linkedin": {
-        "reach": 815,
-        "engagement": 55,
-        "posts": 75
+        "reach": 1180,
+        "engagement": 81,
+        "posts": 121
       },
       "tiktok": {
-        "reach": 6384,
-        "engagement": 221,
-        "posts": 28
+        "reach": 14405,
+        "engagement": 428,
+        "posts": 46
       },
       "youtube": {
         "reach": 0,
-        "engagement": 60,
-        "posts": 16
+        "engagement": 64,
+        "posts": 17
       },
       "facebook_page": {
         "reach": 0,
@@ -3633,14 +3632,14 @@
         "posts": 14
       },
       "facebook_personal": {
-        "reach": 81869,
-        "engagement": 2222,
+        "reach": 183807,
+        "engagement": 5569,
         "posts": 0,
         "followers": 7112
       }
     },
     "bookings": null,
-    "window_days": 30,
-    "updated": "Jun 29, 11:47 AM CT"
+    "window_days": 60,
+    "updated": "Jun 29, 12:33 PM CT"
   }
 }

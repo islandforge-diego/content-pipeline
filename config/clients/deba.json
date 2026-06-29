@@ -76,7 +76,7 @@
     "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
     "data_file": "content-preview/clients/deba/config.json",
     "history_since": "2026-06-01",
-    "kpi_window_days": 30,
+    "kpi_window_days": 60,
     "pages_repo": "https://github.com/islandforge-diego/deba-content-preview.git",
     "pages_url": "https://islandforge-diego.github.io/deba-content-preview/clients/deba/"
   },
@@ -84,9 +84,9 @@
   "manual_metrics": {
     "facebook_personal": {
       "followers": 7112,
-      "reach": 81869,
-      "engagement": 2222,
-      "window": "Last 28 days",
+      "reach": 183807,
+      "engagement": 5569,
+      "window": "Last 60 days",
       "updated": "2026-06-29"
     }
   },
