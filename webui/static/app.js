@@ -21,6 +21,7 @@ const state = {
   transcript: "",      // video transcript / brief
   captions: {},        // {platform: text}
   ctaKeyword: "",      // ManyChat keyword for this post
+  videoInfo: null,     // {duration, size} for pre-flight checks
 };
 
 // ---------------------------------------------------------------- clients
@@ -53,6 +54,8 @@ async function selectClient(slug) {
 
 function resetFlow() {
   state.path = ""; state.kind = ""; state.transcript = ""; state.captions = {};
+  state.videoInfo = null;
+  $("ytWarn").classList.add("hidden");
   $("chosen").classList.add("hidden");
   $("folderList").classList.add("hidden");
   $("contextInput").value = "";
@@ -184,6 +187,7 @@ $("generateBtn").onclick = async () => {
       })).job_id,
       (p) => setStatus("genStatus", p, "spinner"));
     state.captions = res.captions;
+    state.videoInfo = res.video || null;
     renderCaptions();
     setStatus("genStatus", "Captions ready — review below.", "ok");
   } catch (e) {
@@ -255,8 +259,27 @@ function renderPlatformPicker() {
     cb.onchange = () => {
       cb.closest(".plat-chip").classList.toggle("on", cb.checked);
       resetConflict();
+      updateYtWarn();
     };
   });
+  updateYtWarn();
+}
+
+// YouTube Shorts cap ~3 min; large/4K files also get rejected by Buffer.
+const YT_MAX_SEC = 180;
+const YT_MAX_MB = 256;
+function updateYtWarn() {
+  const warn = $("ytWarn");
+  const v = state.videoInfo;
+  const ytChecked = selectedPlatforms().includes("youtube");
+  if (!v || !ytChecked) { warn.classList.add("hidden"); return; }
+  const mins = v.duration / 60, mb = v.size / 1048576;
+  const reasons = [];
+  if (v.duration > YT_MAX_SEC) reasons.push(`it's ${mins.toFixed(1)} min (YouTube Shorts cap ~3 min)`);
+  if (mb > YT_MAX_MB) reasons.push(`it's ${Math.round(mb)} MB`);
+  if (!reasons.length) { warn.classList.add("hidden"); return; }
+  warn.textContent = `⚠ YouTube may reject this video — ${reasons.join(" and ")}. Consider unchecking YouTube or using a shorter/smaller cut.`;
+  warn.classList.remove("hidden");
 }
 
 function selectedPlatforms() {

@@ -11,6 +11,15 @@ import tempfile
 from pathlib import Path
 
 
+def probe_video(video_path: str) -> dict:
+    """Return {duration (sec), size (bytes)} for a video, for pre-flight checks."""
+    import os
+    return {
+        "duration": _duration(video_path),
+        "size": os.path.getsize(video_path) if os.path.exists(video_path) else 0,
+    }
+
+
 def _duration(video_path: str) -> float:
     """Return video duration in seconds (0.0 if it can't be probed)."""
     try:

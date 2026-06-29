@@ -30,7 +30,7 @@ sys.path.insert(0, str(ROOT / "pipeline"))
 from transcribe import transcribe                       # noqa: E402
 from caption_gen import generate_captions, revise_caption, revise_all  # noqa: E402
 from publish import publish, target_channels            # noqa: E402
-from frames import extract_frames                        # noqa: E402
+from frames import extract_frames, probe_video           # noqa: E402
 import buffer_api                                        # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -212,7 +212,10 @@ def api_captions():
         caps = generate_captions(cfg, transcript, kind, platforms,
                                  frames=frames, extra_context=extra_context,
                                  cta_keyword=cta_keyword)
-        return {"captions": caps}
+        result = {"captions": caps}
+        if kind == "reel" and path and Path(path).exists():
+            result["video"] = probe_video(path)
+        return result
 
     return jsonify({"job_id": jobs.start(work)})
 
