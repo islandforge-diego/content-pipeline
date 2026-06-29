@@ -40,6 +40,20 @@ Receiver, so we default to 5050; override with `PORT=... python webui/app.py`.)
   uncheck to upload to S3 and create the Buffer posts for real. A scheduled post
   is also added to the client's calendar preview.
 
+## Stories (authentic, not flyers)
+
+Toggle **Story** at the top of a client workspace. Stories are built from **real
+media** with only a light, native-style text overlay — no branded card:
+
+1. Pick a candid photo or short clip (drag-drop / Browse).
+2. Choose the day's theme (or give a brief); AI writes a short casual overlay line
+   plus an interactive sticker prompt (poll/question) in the brand voice.
+3. Edit the overlay/sticker, then **Render preview** — the overlay is burned onto
+   a 1080×1920 cover-cropped version of the media.
+4. Schedule as an Instagram **story reminder** (Buffer notification) at the story
+   time; Deba taps to post and adds the sticker in-app (the sticker prompt rides
+   along as the post note).
+
 ## How it fits together
 
 The UI is a thin Flask layer over the existing pipeline modules:

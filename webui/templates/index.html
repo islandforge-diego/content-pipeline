@@ -23,6 +23,12 @@
   <main id="main">
     <!-- Client workspace -->
     <section id="workspace" class="workspace hidden">
+      <div class="mode-toggle">
+        <button id="modeFeed" class="mode on">Feed post</button>
+        <button id="modeStory" class="mode">Story</button>
+      </div>
+
+      <div id="feedMode">
       <!-- Step 1: choose media -->
       <div class="step">
         <h2><span class="num">1</span> Choose a file</h2>
@@ -91,6 +97,68 @@
         <div id="pubStatus" class="status"></div>
         <div id="pubResults" class="pub-results"></div>
       </div>
+      </div><!-- /feedMode -->
+
+      <div id="storyMode" class="hidden">
+        <div class="step">
+          <h2><span class="num">1</span> Story media</h2>
+          <div id="storyDrop" class="dropzone">
+            <p class="dz-big">Drag &amp; drop a photo or short clip</p>
+            <p class="dz-or">or</p>
+            <div class="dz-buttons">
+              <button id="storyBrowse" class="primary">Browse…</button>
+            </div>
+            <input type="file" id="storyFileInput" hidden accept="video/*,image/*">
+          </div>
+          <div id="storyChosen" class="chosen hidden">
+            <span class="chosen-label">Selected:</span> <code id="storyPath"></code>
+            <span id="storyKind" class="pill"></span>
+          </div>
+        </div>
+
+        <div class="step">
+          <h2><span class="num">2</span> Story text</h2>
+          <div class="brief-row">
+            <label for="storyTheme">Theme</label>
+            <select id="storyTheme"></select>
+          </div>
+          <div class="brief-row">
+            <label for="storyBrief">Brief (optional)</label>
+            <input type="text" id="storyBrief" placeholder="what's happening in this story — who, where, the moment">
+          </div>
+          <button id="storyGenBtn" class="primary" disabled>Generate story text</button>
+          <div id="storyGenBar" class="progress hidden"><div class="indeterminate" style="height:100%;background:var(--accent);border-radius:999px"></div></div>
+          <div id="storyGenStatus" class="status"></div>
+        </div>
+
+        <div class="step hidden" id="storyTextStep">
+          <h2><span class="num">3</span> Review &amp; render</h2>
+          <div class="brief-row">
+            <label for="storyOverlay">Overlay text (shown on the media)</label>
+            <input type="text" id="storyOverlay">
+          </div>
+          <div class="brief-row">
+            <label for="storySticker">Interactive sticker (Deba adds in-app)</label>
+            <input type="text" id="storySticker">
+          </div>
+          <button id="storyRenderBtn" class="ghost">Render preview</button>
+          <div id="storyRenderBar" class="progress hidden"><div class="indeterminate" style="height:100%;background:var(--accent);border-radius:999px"></div></div>
+          <div id="storyRenderStatus" class="status"></div>
+          <div id="storyPreviewWrap" class="story-preview hidden"></div>
+        </div>
+
+        <div class="step hidden" id="storySchedStep">
+          <h2><span class="num">4</span> Schedule story reminder</h2>
+          <div class="schedule-row">
+            <label for="storyDt">Post time</label>
+            <input type="datetime-local" id="storyDt">
+          </div>
+          <label class="check"><input type="checkbox" id="storyDryRun" checked> Preview only (don't schedule yet)</label>
+          <button id="storyPublishBtn" class="primary">Schedule story reminder</button>
+          <div id="storyPubBar" class="progress hidden"><div id="storyPubFill"></div></div>
+          <div id="storyPubStatus" class="status"></div>
+        </div>
+      </div><!-- /storyMode -->
     </section>
 
     <div id="empty" class="empty">

@@ -46,6 +46,9 @@ async function selectClient(slug) {
   $("empty").classList.add("hidden");
   $("workspace").classList.remove("hidden");
   resetFlow();
+  fillStoryThemes();
+  resetStory();
+  setMode("feed");
   // prefill the CTA keyword with the client's default (editable per post)
   const defKw = (state.config.cta && state.config.cta.default_keyword)
     || (state.config.brand && state.config.brand.cta_keyword) || "";
@@ -481,6 +484,128 @@ $("previewBtn").onclick = async () => {
   }
   btn.disabled = false; btn.textContent = "Preview ↗";
 };
+
+// ============================ STORIES ============================
+const story = { path: "", kind: "", overlay: "", sticker: "", rendered: "", renderedKind: "" };
+
+$("modeFeed").onclick = () => setMode("feed");
+$("modeStory").onclick = () => setMode("story");
+function setMode(m) {
+  $("modeFeed").classList.toggle("on", m === "feed");
+  $("modeStory").classList.toggle("on", m === "story");
+  $("feedMode").classList.toggle("hidden", m !== "feed");
+  $("storyMode").classList.toggle("hidden", m !== "story");
+}
+
+function resetStory() {
+  story.path = ""; story.kind = ""; story.rendered = ""; story.renderedKind = "";
+  $("storyChosen").classList.add("hidden");
+  $("storyTextStep").classList.add("hidden");
+  $("storySchedStep").classList.add("hidden");
+  $("storyPreviewWrap").classList.add("hidden");
+  $("storyPreviewWrap").innerHTML = "";
+  ["storyGenStatus", "storyRenderStatus", "storyPubStatus"].forEach((id) => { $(id).textContent = ""; });
+  $("storyBrief").value = ""; $("storyOverlay").value = ""; $("storySticker").value = "";
+  $("storyGenBtn").disabled = true;
+}
+
+function fillStoryThemes() {
+  const rot = state.config?.schedule?.stories?.theme_rotation || {};
+  const themes = [...new Set(Object.values(rot))];
+  $("storyTheme").innerHTML = '<option value="">— no theme —</option>' +
+    themes.map((t) => `<option value="${t}">${t}</option>`).join("");
+}
+
+// story media selection
+$("storyBrowse").onclick = async () => {
+  const r = await api.post("/api/pick", { what: "file" });
+  if (r.cancelled || !r.path) return;
+  setStoryMedia(r.path, r.kind);
+};
+const sdz = $("storyDrop");
+["dragenter", "dragover"].forEach((e) => sdz.addEventListener(e, (ev) => { ev.preventDefault(); sdz.classList.add("drag"); }));
+["dragleave", "drop"].forEach((e) => sdz.addEventListener(e, (ev) => { ev.preventDefault(); sdz.classList.remove("drag"); }));
+sdz.addEventListener("drop", async (ev) => {
+  const f = ev.dataTransfer.files[0]; if (!f) return;
+  const fd = new FormData(); fd.append("file", f);
+  const r = await (await fetch("/api/upload", { method: "POST", body: fd })).json();
+  if (!r.error) setStoryMedia(r.path, r.kind);
+});
+function setStoryMedia(path, kind) {
+  story.path = path; story.kind = kind || "image";
+  $("storyPath").textContent = path;
+  $("storyKind").textContent = story.kind === "image" ? "photo" : "video";
+  $("storyChosen").classList.remove("hidden");
+  $("storyGenBtn").disabled = false;
+}
+
+// generate story text
+$("storyGenBtn").onclick = async () => {
+  $("storyGenBtn").disabled = true; $("storyGenBar").classList.remove("hidden");
+  setStatus("storyGenStatus", "Writing story text…", "spinner");
+  try {
+    const r = await api.post("/api/story/generate",
+      { client: state.client, theme: $("storyTheme").value, brief: $("storyBrief").value.trim() });
+    if (r.error) throw new Error(r.error);
+    story.overlay = r.overlay; story.sticker = r.sticker;
+    $("storyOverlay").value = r.overlay; $("storySticker").value = r.sticker;
+    $("storyTextStep").classList.remove("hidden");
+    setStatus("storyGenStatus", "Story text ready — review and render.", "ok");
+  } catch (e) { setStatus("storyGenStatus", e.message, "err"); }
+  $("storyGenBar").classList.add("hidden"); $("storyGenBtn").disabled = false;
+};
+
+// render preview
+$("storyRenderBtn").onclick = async () => {
+  story.overlay = $("storyOverlay").value;
+  $("storyRenderBtn").disabled = true; $("storyRenderBar").classList.remove("hidden");
+  setStatus("storyRenderStatus", "Rendering…", "spinner");
+  try {
+    const res = await pollJob((await api.post("/api/story/render",
+      { client: state.client, path: story.path, overlay: story.overlay, kind: story.kind })).job_id,
+      (p) => setStatus("storyRenderStatus", p, "spinner"));
+    story.rendered = res.rendered; story.renderedKind = res.kind;
+    const url = res.preview_url + "?t=" + Date.now();
+    $("storyPreviewWrap").innerHTML = res.kind === "image"
+      ? `<img src="${url}">` : `<video src="${url}" controls playsinline></video>`;
+    $("storyPreviewWrap").classList.remove("hidden");
+    $("storySchedStep").classList.remove("hidden");
+    if (!$("storyDt").value) $("storyDt").value = defaultStoryTime();
+    setStatus("storyRenderStatus", "Rendered — preview below.", "ok");
+  } catch (e) { setStatus("storyRenderStatus", e.message, "err"); }
+  $("storyRenderBar").classList.add("hidden"); $("storyRenderBtn").disabled = false;
+};
+
+// schedule story reminder
+$("storyPublishBtn").onclick = async () => {
+  if (!story.rendered) { setStatus("storyPubStatus", "Render the story first.", "err"); return; }
+  const when = $("storyDt").value;
+  if (!when) { setStatus("storyPubStatus", "Pick a time.", "err"); return; }
+  const dryRun = $("storyDryRun").checked;
+  $("storyPublishBtn").disabled = true; $("storyPubBar").classList.remove("hidden");
+  $("storyPubFill").style.width = "0%";
+  try {
+    setStatus("storyPubStatus", dryRun ? "Previewing…" : "Scheduling…", "spinner");
+    const res = await pollJob((await api.post("/api/story/publish", {
+      client: state.client, rendered: story.rendered, kind: story.renderedKind,
+      sticker: $("storySticker").value, datetime: toISO(when), dry_run: dryRun,
+    })).job_id, (p) => { const m = p.match(/(\d+)%/); if (m) $("storyPubFill").style.width = m[1] + "%"; setStatus("storyPubStatus", p, "spinner"); });
+    $("storyPubFill").style.width = "100%";
+    setStatus("storyPubStatus",
+      dryRun ? "Preview OK — uncheck 'Preview only' to schedule the reminder." : `Story reminder scheduled ✓ (${res.id || ""})`,
+      "ok");
+  } catch (e) { setStatus("storyPubStatus", e.message, "err"); }
+  $("storyPublishBtn").disabled = false;
+};
+
+function defaultStoryTime() {
+  const t = state.config?.schedule?.stories?.default_time || "07:00";
+  const [h, m] = t.split(":").map(Number);
+  const d = new Date(); d.setHours(h, m, 0, 0);
+  if (d <= new Date()) d.setDate(d.getDate() + 1);
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 // ---- init ----
 $("clientSelect").onchange = (e) => selectClient(e.target.value);

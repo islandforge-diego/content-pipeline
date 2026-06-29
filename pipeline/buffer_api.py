@@ -205,6 +205,29 @@ def posts_at(token, org_id, channel_ids, due_at):
     return [e["node"] for e in (data.get("posts", {}).get("edges", []) or [])]
 
 
+def create_story_reminder(channel_id, media_url, due_at, note, kind, token) -> dict:
+    """Schedule an Instagram STORY as a notification reminder.
+
+    schedulingType 'notification' = Buffer pings Deba at the time to post manually
+    and add the interactive sticker in-app. `note` carries the sticker prompt so she
+    knows what to add. Returns the created post dict.
+    """
+    asset_key = "video" if kind == "reel" else "image"
+    payload = {
+        "channelId": channel_id,
+        "text": note or "",
+        "schedulingType": "notification",
+        "mode": "customScheduled",
+        "dueAt": due_at,
+        "assets": [{asset_key: {"url": media_url}}],
+        "metadata": {"instagram": {"type": "story", "shouldShareToFeed": False}},
+    }
+    result = _graphql(_CREATE_POST, {"input": payload}, token).get("createPost", {})
+    if result.get("__typename") == "PostActionSuccess":
+        return result.get("post", {})
+    raise RuntimeError(result.get("message") or f"Buffer rejected story ({result.get('__typename','unknown')})")
+
+
 def create_post(channel_id, text, media_url, due_at, kind, token, platform="",
                 as_draft=True, opts=None) -> dict:
     """Schedule (or draft) a single post to one Buffer channel. Returns the post dict."""

@@ -29,10 +29,12 @@ load_dotenv(ROOT / ".env")
 sys.path.insert(0, str(ROOT / "pipeline"))
 from transcribe import transcribe                       # noqa: E402
 from caption_gen import generate_captions, revise_caption, revise_all  # noqa: E402
-from publish import publish, target_channels            # noqa: E402
+from publish import publish, target_channels, upload_to_s3  # noqa: E402
 from frames import extract_frames, probe_video           # noqa: E402
 import buffer_api                                        # noqa: E402
 import preview_sync                                      # noqa: E402
+from story_gen import generate_story                     # noqa: E402
+from story_render import render_story                     # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import jobs              # noqa: E402
@@ -314,6 +316,73 @@ def api_publish():
 @app.get("/api/job/<job_id>")
 def api_job(job_id):
     return jsonify(jobs.get(job_id))
+
+
+# ---------------------------------------------------------------- stories
+
+@app.post("/api/story/generate")
+def api_story_generate():
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    try:
+        return jsonify(generate_story(cfg, body.get("theme", ""), body.get("brief", "")))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
+@app.post("/api/story/render")
+def api_story_render():
+    body = request.get_json(force=True)
+    path = body.get("path", "")
+    overlay = body.get("overlay", "")
+    kind = body.get("kind") or kind_for(path)
+    if not Path(path).exists():
+        return jsonify({"error": "media not found"}), 400
+    ext = ".jpg" if kind == "image" else ".mp4"
+    out = SCRATCH / f"story_{Path(path).stem}{ext}"
+
+    def work(progress):
+        progress("Rendering story overlay…")
+        render_story(path, overlay, str(out), kind)
+        return {"rendered": str(out), "preview_url": f"/rendered/{out.name}", "kind": kind}
+
+    return jsonify({"job_id": jobs.start(work)})
+
+
+@app.post("/api/story/publish")
+def api_story_publish():
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    rendered = body["rendered"]
+    sticker = body.get("sticker", "")
+    when = body["datetime"]
+    kind = body.get("kind") or kind_for(rendered)
+    dry_run = bool(body.get("dry_run"))
+    token = os.environ.get("BUFFER_TOKEN", "")
+    if not token and not dry_run:
+        return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
+    ig = cfg["buffer"]["channels"].get("instagram", {}).get("id")
+    if not ig:
+        return jsonify({"error": "no Instagram channel configured"}), 400
+
+    def work(progress):
+        progress("Uploading story to S3… 0%")
+        url = upload_to_s3(rendered, cfg, dry_run,
+                           on_progress=lambda pct: progress(f"Uploading story to S3… {pct}%"))
+        if dry_run:
+            return {"ok": True, "media_url": url, "dry_run": True}
+        progress("Scheduling story reminder…")
+        post = buffer_api.create_story_reminder(ig, url, when, sticker, kind, token)
+        return {"ok": True, "id": post.get("id", "?"), "media_url": url}
+
+    return jsonify({"job_id": jobs.start(work)})
+
+
+@app.get("/rendered/<path:name>")
+def serve_rendered(name):
+    return send_from_directory(str(SCRATCH), name)
 
 
 # ---------------------------------------------------------------- preview
