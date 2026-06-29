@@ -3539,10 +3539,10 @@
     "posts": 302,
     "reach": 236913,
     "impressions": 4428,
-    "views": 267109,
+    "views": 271232,
     "engagement": 8761,
     "engagement_rate": 4.24,
-    "engagement_rate_total": 3.3,
+    "engagement_rate_total": 3.2,
     "by_platform": {
       "instagram": {
         "reach": 36650,
@@ -3554,13 +3554,13 @@
         "reach": 1227,
         "engagement": 74,
         "posts": 121,
-        "views": 305
+        "views": 1995
       },
       "facebook": {
         "reach": 184783,
         "engagement": 5607,
         "posts": 14,
-        "views": 184783
+        "views": 187216
       },
       "tiktok": {
         "reach": 14253,
@@ -3810,7 +3810,7 @@
           "asset_type": "Video",
           "date": "2026-05-21",
           "m": {
-            "views": 58,
+            "views": 181,
             "likes": 7,
             "comments": 0,
             "shares": 0,
@@ -3832,7 +3832,7 @@
           "asset_type": "Video",
           "date": "2026-06-04",
           "m": {
-            "views": 54,
+            "views": 147,
             "likes": 6,
             "comments": 0,
             "shares": 0,
@@ -3846,6 +3846,50 @@
           }
         },
         {
+          "title": "Happy Father's Day to the man who builds\u2026",
+          "platform": "linkedin",
+          "reach": 53,
+          "engagement": 9,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7474506548640210944",
+          "asset_type": "Image",
+          "date": "2026-06-21",
+          "m": {
+            "views": 85,
+            "likes": 9,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "gallery",
+            "images": [
+              "https://buffer-media-uploads.s3.amazonaws.com/6a38159ca66a5e7cd3038d6c/c0c915681ca26171b20778332ffae5c067bbd633_d4732352766b69287232e267c94f8475258aef68_linkedin"
+            ]
+          }
+        },
+        {
+          "title": "7 rules before you make your first real\u2026",
+          "platform": "linkedin",
+          "reach": 46,
+          "engagement": 1,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7472728386579378176",
+          "asset_type": "Image",
+          "date": "2026-06-16",
+          "m": {
+            "views": 73,
+            "likes": 1,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "gallery",
+            "images": []
+          }
+        },
+        {
           "title": "Raise your hand if you are tired of\u2026",
           "platform": "linkedin",
           "reach": 47,
@@ -3854,7 +3898,7 @@
           "asset_type": "Video",
           "date": "2026-05-28",
           "m": {
-            "views": 22,
+            "views": 68,
             "likes": 1,
             "comments": 0,
             "shares": 0,
@@ -3865,50 +3909,6 @@
             "type": "video",
             "src": "https://media.licdn.com/dms/image/v2/D5605AQGlP4A85DX20Q/videocover-high/B56Z5vXXf2HcBM-/0/1779984859535?e=1780873200&v=beta&t=LgvP2P4QsHAuz2L9v-zyl6kLBgMQgC4uhtuHuCwx5OQ&expires-ts=1780873200000",
             "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb7a4c687a22dd4484a78/6a1cb7b81620f20ca75311d7_thumbnail.jpg"
-          }
-        },
-        {
-          "title": "The June 2026 Hands-On Mentorship is officially SOLD\u2026",
-          "platform": "linkedin",
-          "reach": 19,
-          "engagement": 2,
-          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7471368253039357952",
-          "asset_type": "Video",
-          "date": "2026-06-13",
-          "m": {
-            "views": 17,
-            "likes": 2,
-            "comments": 0,
-            "shares": 0,
-            "saves": 0,
-            "watch_min": 4.2
-          },
-          "media": {
-            "type": "video",
-            "src": "https://media.licdn.com/dms/image/v2/D5605AQGOpxRbEMkhtg/videocover-high/B56Z6.h21fJsBM-/0/1781313008591?e=1782086400&v=beta&t=a2kvovyg-8bJLzAykhczhNSJlFgaUE_XXk4RQtu-yE0&expires-ts=1782086400000",
-            "poster": "https://media.licdn.com/dms/image/v2/D5605AQGOpxRbEMkhtg/videocover-high/B56Z6.h21fJsBM-/0/1781313008591?e=1782086400&v=beta&t=a2kvovyg-8bJLzAykhczhNSJlFgaUE_XXk4RQtu-yE0&expires-ts=1782086400000"
-          }
-        },
-        {
-          "title": "When Roger and Reina joined my mentorship program,\u2026",
-          "platform": "linkedin",
-          "reach": 28,
-          "engagement": 0,
-          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7474869512287268864",
-          "asset_type": "Video",
-          "date": "2026-06-22",
-          "m": {
-            "views": 15,
-            "likes": 0,
-            "comments": 0,
-            "shares": 0,
-            "saves": 0,
-            "watch_min": 2.7
-          },
-          "media": {
-            "type": "video",
-            "src": "https://media.licdn.com/dms/image/v2/D4E05AQHMG_2Ls6cxkw/videocover-high/B4EZ7wSUGjJEBQ-/0/1782147795885?e=1782903600&v=beta&t=ML7EZf4BGdVH-NgTmxyMRAGhK6u-Z8gzUcSD9vYP2yU&expires-ts=1782903600000",
-            "poster": "https://media.licdn.com/dms/image/v2/D4E05AQHMG_2Ls6cxkw/videocover-high/B4EZ7wSUGjJEBQ-/0/1782147795885?e=1782903600&v=beta&t=ML7EZf4BGdVH-NgTmxyMRAGhK6u-Z8gzUcSD9vYP2yU&expires-ts=1782903600000"
           }
         }
       ],
@@ -3922,7 +3922,7 @@
           "asset_type": "Video",
           "date": "2026-06-01",
           "m": {
-            "views": 0,
+            "views": 808,
             "likes": 2,
             "comments": 1,
             "shares": 4,
@@ -3944,7 +3944,7 @@
           "asset_type": "Video",
           "date": "2026-06-02",
           "m": {
-            "views": 0,
+            "views": 313,
             "likes": 2,
             "comments": 0,
             "shares": 1,
@@ -3958,26 +3958,47 @@
           }
         },
         {
-          "title": "Only 10 spots. \ud83d\udc49\ud83c\udffe Comment INVERTIR and I'll\u2026",
+          "title": "How to make money with one skill. \ud83d\udcb0\u2026",
           "platform": "facebook",
           "reach": 0,
-          "engagement": 2,
-          "externalLink": "https://facebook.com/324502310753290_122219978546357658",
-          "asset_type": "Image",
-          "date": "2026-06-19",
+          "engagement": 0,
+          "externalLink": "https://facebook.com/324502310753290_122220421094357658",
+          "asset_type": "Video",
+          "date": "2026-06-24",
           "m": {
-            "views": 0,
-            "likes": 1,
-            "comments": 1,
+            "views": 235,
+            "likes": 0,
+            "comments": 0,
             "shares": 0,
             "saves": 0,
             "watch_min": 0.0
           },
           "media": {
-            "type": "gallery",
-            "images": [
-              "https://buffer-media-uploads.s3.amazonaws.com/6a3591299fbef9953e0b5322/fc97975f39da5b02fb7fa4f45366913216322161_47de303b6b16b85afc4e52faf0b31dc232640fe1_facebook"
-            ]
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a38262648cf24cb7e0f8211/2714214a971af3c92007d44ea0e60d50.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1782064622986/8c320970-99ff-4e8e-acc1-22c511ac412d.jpeg"
+          }
+        },
+        {
+          "title": "We asked our clients: \"What makes Deba a\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 0,
+          "externalLink": "https://facebook.com/324502310753290_122220523802357658",
+          "asset_type": "Video",
+          "date": "2026-06-25",
+          "m": {
+            "views": 225,
+            "likes": 0,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782071184/Blue_Jacket_Interview_Clip_2_ma5qdo.mov",
+            "poster": "https://images.buffer.com/thumbnail/49YVsIskFzBUCkxMRCTl2AjtLymJX9CAP8iuBwSSUKg?url=https%3A%2F%2Fres.cloudinary.com%2Fdpwh4baly%2Fvideo%2Fupload%2Fv1782071184%2FBlue_Jacket_Interview_Clip_2_ma5qdo.mov"
           }
         },
         {
@@ -3989,7 +4010,7 @@
           "asset_type": "Video",
           "date": "2026-06-03",
           "m": {
-            "views": 0,
+            "views": 223,
             "likes": 2,
             "comments": 0,
             "shares": 0,
@@ -4000,29 +4021,6 @@
             "type": "video",
             "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a20225ea621c7e90f07d63c/fc0326cabcc00c9910ef894de6985862.original_transcoded.mp4",
             "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780490830237/3f7fc206-4d5a-449f-a6ba-54af2cea611b.jpeg"
-          }
-        },
-        {
-          "title": "From the bays to the table \ud83c\udfcc\ufe0f\ud83c\udf79 Our\u2026",
-          "platform": "facebook",
-          "reach": 0,
-          "engagement": 1,
-          "externalLink": "https://facebook.com/324502310753290_122220795446357658",
-          "asset_type": "Image",
-          "date": "2026-06-28",
-          "m": {
-            "views": 0,
-            "likes": 1,
-            "comments": 0,
-            "shares": 0,
-            "saves": 0,
-            "watch_min": 0.0
-          },
-          "media": {
-            "type": "gallery",
-            "images": [
-              "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201244_tu2ssj.jpg"
-            ]
           }
         }
       ],
@@ -4359,7 +4357,7 @@
         "reach": 1227,
         "engagement": 74,
         "posts": 121,
-        "views": 305
+        "views": 1995
       },
       "tiktok": {
         "reach": 14253,
@@ -4377,7 +4375,7 @@
         "reach": 0,
         "engagement": 17,
         "posts": 14,
-        "views": 0
+        "views": 2433
       },
       "facebook_personal": {
         "reach": 184783,
@@ -4389,6 +4387,6 @@
     },
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 2:28 PM CT"
+    "updated": "Jun 29, 2:35 PM CT"
   }
 }

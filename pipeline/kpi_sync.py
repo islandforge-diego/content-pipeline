@@ -37,7 +37,12 @@ def summarize_posts(posts):
     rates, per_platform, cards = [], {}, []
     for p in posts:
         md = _md(p)
-        r = md.get("reach", 0); imp = md.get("impressions", 0); v = md.get("views", 0)
+        r = md.get("reach", 0); imp = md.get("impressions", 0)
+        # "Views" is platform-inconsistent: IG/TikTok/YouTube report `views`, while
+        # Facebook pages and most LinkedIn posts report only `impressions` (no views).
+        # impressions >= views always, so take the larger as the post's view-count —
+        # otherwise FB-page and LinkedIn-image posts read 0.
+        v = max(md.get("views", 0) or 0, imp or 0)
         eng = sum(md.get(k, 0) for k in ENGAGE)
         reach += r; impressions += imp; views += v; engagement += eng
         if md.get("engagementRate"):

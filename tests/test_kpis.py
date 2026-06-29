@@ -36,6 +36,27 @@ def test_summarize_totals_top_and_platforms():
     assert s["top_posts"][0]["m"]["likes"] == 20          # per-post breakdown present
 
 
+def test_summarize_uses_impressions_when_no_views():
+    # Facebook pages / LinkedIn image posts report impressions, not views.
+    fb = {"channelService": "facebook", "text": "fb page post here now",
+          "assets": [{"type": "image", "source": "u", "thumbnail": ""}],
+          "metrics": [{"type": "impressions", "value": 808},
+                      {"type": "reactions", "value": 2}, {"type": "shares", "value": 4}]}
+    s = kpi_sync.summarize_posts([fb])
+    assert s["views"] == 808                                # impressions stand in for views
+    assert s["by_platform"]["facebook"]["views"] == 808
+    assert s["top_posts"][0]["m"]["views"] == 808
+
+
+def test_summarize_prefers_larger_of_views_impressions():
+    # LinkedIn video posts report both; impressions (>= views) is the headline.
+    li = {"channelService": "linkedin", "text": "li video post here now",
+          "assets": [{"type": "video", "source": "u", "thumbnail": ""}],
+          "metrics": [{"type": "views", "value": 2}, {"type": "impressions", "value": 39}]}
+    s = kpi_sync.summarize_posts([li])
+    assert s["views"] == 39
+
+
 def test_summarize_empty():
     s = kpi_sync.summarize_posts([])
     assert s["reach"] == 0 and s["top_posts"] == [] and s["engagement_rate"] is None
