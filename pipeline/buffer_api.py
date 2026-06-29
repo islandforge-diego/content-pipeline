@@ -129,6 +129,22 @@ def build_create_post_input(channel_id, text, media_url, due_at, kind, platform=
     return payload
 
 
+_DELETE_POST = """
+mutation DeletePost($input: DeletePostInput!) {
+  deletePost(input: $input) {
+    __typename
+    ... on DeletePostSuccess { id }
+    ... on VoidMutationError { message }
+  }
+}
+"""
+
+
+def delete_post(post_id, token):
+    """Delete a Buffer post by id (used to clean up validation test drafts)."""
+    return _graphql(_DELETE_POST, {"input": {"id": post_id}}, token).get("deletePost", {})
+
+
 _POSTS_QUERY = """
 query Posts($input: PostsInput!) {
   posts(input: $input, first: 100) {
