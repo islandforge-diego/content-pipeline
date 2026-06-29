@@ -229,8 +229,7 @@ def page(cfg):
  var DOW=["S","M","T","W","T","F","S"], MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
  var tab="posts", cur=startMonth();
  function startMonth(){{
-   var dates=Object.keys(DATA[tab]||{{}}).sort();
-   var d = dates.length ? new Date(dates[dates.length-1]+"T00:00:00") : new Date();
+   var d=new Date();  // always open on today's month
    return {{y:d.getFullYear(), m:d.getMonth()}};
  }}
  function fmtDay(iso){{var p=iso.split("-");var dt=new Date(p[0],p[1]-1,p[2]);
@@ -259,7 +258,7 @@ def page(cfg):
    m.querySelector('.mday').textContent=fmtDay(d);
    m.querySelector('.mbody').innerHTML=x.join('');
    m.hidden=false;document.body.style.overflow='hidden';}}
- function closeD(){{m.hidden=true;document.body.style.overflow='';}}
+ function closeD(){{m.querySelectorAll('video').forEach(function(v){{try{{v.pause();}}catch(e){{}}}});m.hidden=true;document.body.style.overflow='';}}
  m.querySelector('.mback').addEventListener('click',closeD);
  m.querySelector('.mclose').addEventListener('click',closeD);
  document.addEventListener('keydown',function(e){{if(e.key==='Escape')closeD();}});
@@ -267,6 +266,7 @@ def page(cfg):
  document.getElementById('next').addEventListener('click',function(){{cur.m++;if(cur.m>11){{cur.m=0;cur.y++;}}render();}});
  var perf=document.getElementById('perf'), calcard=document.getElementById('calcard');
  document.querySelectorAll('.tab').forEach(function(t){{t.addEventListener('click',function(){{
+   document.querySelectorAll('video').forEach(function(v){{try{{v.pause();}}catch(e){{}}}});
    document.querySelectorAll('.tab').forEach(function(x){{x.classList.remove('on');}});
    t.classList.add('on');
    if(t.dataset.tab==='performance'){{ if(perf) perf.hidden=false; calcard.hidden=true; return; }}
