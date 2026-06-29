@@ -245,6 +245,29 @@ def api_revise_all():
         return jsonify({"error": str(e)}), 502
 
 
+@app.post("/api/check_conflicts")
+def api_check_conflicts():
+    """Warn if any selected platform already has a post scheduled at that time."""
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    when = body["datetime"]
+    platforms = body.get("platforms") or []
+    token = os.environ.get("BUFFER_TOKEN", "")
+    if not token:
+        return jsonify({"conflicts": []})  # can't check without a token; don't block
+    channels = cfg["buffer"]["channels"]
+    org_id = cfg["buffer"]["org_id"]
+    id_to_platform = {channels[p]["id"]: p for p in platforms if p in channels}
+    try:
+        existing = buffer_api.posts_at(token, org_id, list(id_to_platform), when)
+        conflicts = sorted({id_to_platform[p["channelId"]] for p in existing
+                            if p.get("channelId") in id_to_platform})
+        return jsonify({"conflicts": conflicts})
+    except Exception as e:
+        return jsonify({"conflicts": [], "warning": str(e)})
+
+
 @app.post("/api/publish")
 def api_publish():
     body = request.get_json(force=True)

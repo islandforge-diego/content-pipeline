@@ -54,6 +54,7 @@
       <div class="step">
         <h2><span class="num">2</span> Transcribe &amp; generate captions</h2>
         <button id="generateBtn" class="primary" disabled>Generate captions</button>
+        <div id="genBar" class="progress hidden"><div id="genBarFill" class="indeterminate"></div></div>
         <div id="genStatus" class="status"></div>
         <details id="transcriptBox" class="transcript hidden">
           <summary>Transcript</summary>
@@ -75,11 +76,14 @@
       <!-- Step 4: schedule -->
       <div class="step hidden" id="scheduleStep">
         <h2><span class="num">4</span> Schedule to Buffer</h2>
+        <div class="picker-label">Post to</div>
+        <div id="platformPicker" class="platform-picker"></div>
         <div class="schedule-row">
           <label for="dtInput">Post time</label>
           <input type="datetime-local" id="dtInput">
         </div>
         <label class="check"><input type="checkbox" id="dryRun" checked> Preview only (don't post yet)</label>
+        <div id="conflictWarn" class="conflict-warn hidden"></div>
         <button id="publishBtn" class="primary">Schedule</button>
         <div id="pubBar" class="progress hidden"><div id="pubBarFill"></div></div>
         <div id="pubStatus" class="status"></div>

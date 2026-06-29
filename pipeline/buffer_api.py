@@ -6,6 +6,8 @@ onboarding (list channels) and publishing (create posts).
 Auth: a Buffer access token (BUFFER_TOKEN) sent as a Bearer header. Create one at
 https://publish.buffer.com/settings/api.
 """
+from datetime import datetime, timedelta
+
 import requests
 
 GRAPHQL_URL = "https://api.buffer.com/graphql"
@@ -125,6 +127,36 @@ def build_create_post_input(channel_id, text, media_url, due_at, kind, platform=
     if meta:
         payload["metadata"] = meta
     return payload
+
+
+_POSTS_QUERY = """
+query Posts($input: PostsInput!) {
+  posts(input: $input, first: 100) {
+    edges { node { id channelId dueAt status } }
+  }
+}
+"""
+
+
+def posts_at(token, org_id, channel_ids, due_at):
+    """Return existing posts on the given channels scheduled within the same minute
+    as due_at (used to warn about double-booking a time slot).
+    """
+    start = due_at
+    try:
+        end = (datetime.fromisoformat(due_at) + timedelta(minutes=1)).isoformat()
+    except Exception:
+        end = due_at
+    variables = {"input": {
+        "organizationId": org_id,
+        "filter": {
+            "channelIds": channel_ids,
+            "dueAt": {"start": start, "end": end},
+            "status": ["scheduled", "draft", "needs_approval"],
+        },
+    }}
+    data = _graphql(_POSTS_QUERY, variables, token)
+    return [e["node"] for e in (data.get("posts", {}).get("edges", []) or [])]
 
 
 def create_post(channel_id, text, media_url, due_at, kind, token, platform="",

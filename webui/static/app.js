@@ -65,6 +65,11 @@ function resetFlow() {
   $("reviseAllStatus").textContent = "";
   $("pubResults").innerHTML = "";
   $("pubBar").classList.add("hidden");
+  $("genBar").classList.add("hidden");
+  $("platformPicker").innerHTML = "";
+  $("conflictWarn").classList.add("hidden");
+  conflictAck = false;
+  $("publishBtn").textContent = "Schedule";
   $("generateBtn").disabled = true;
 }
 
@@ -154,6 +159,7 @@ async function pollJob(jobId, onProgress) {
 
 $("generateBtn").onclick = async () => {
   $("generateBtn").disabled = true;
+  $("genBar").classList.remove("hidden");
   const context = $("contextInput").value.trim();
   state.ctaKeyword = $("ctaInput").value.trim();
   try {
@@ -183,6 +189,7 @@ $("generateBtn").onclick = async () => {
   } catch (e) {
     setStatus("genStatus", e.message, "err");
   }
+  $("genBar").classList.add("hidden");
   $("generateBtn").disabled = false;
 };
 
@@ -236,6 +243,32 @@ function renderCaptions() {
   $("captionsStep").classList.remove("hidden");
   $("scheduleStep").classList.remove("hidden");
   if (!$("dtInput").value) $("dtInput").value = defaultDateTime();
+  renderPlatformPicker();
+}
+
+function renderPlatformPicker() {
+  const picker = $("platformPicker");
+  picker.innerHTML = Object.keys(state.captions).map((p) =>
+    `<label class="plat-chip on"><input type="checkbox" checked data-plat="${p}"> ${p}</label>`
+  ).join("");
+  picker.querySelectorAll("input[data-plat]").forEach((cb) => {
+    cb.onchange = () => {
+      cb.closest(".plat-chip").classList.toggle("on", cb.checked);
+      resetConflict();
+    };
+  });
+}
+
+function selectedPlatforms() {
+  return [...document.querySelectorAll("#platformPicker input[data-plat]:checked")]
+    .map((c) => c.dataset.plat);
+}
+
+let conflictAck = false;
+function resetConflict() {
+  conflictAck = false;
+  $("publishBtn").textContent = "Schedule";
+  $("conflictWarn").classList.add("hidden");
 }
 
 async function reviseCaption(platform, btn) {
@@ -262,11 +295,36 @@ async function reviseCaption(platform, btn) {
 
 // ---------------------------------------------------------------- publish
 
+$("dtInput").onchange = resetConflict;
+
 $("publishBtn").onclick = async () => {
   const when = $("dtInput").value;
   if (!when) { setStatus("pubStatus", "Pick a post time.", "err"); return; }
-  $("publishBtn").disabled = true;
+  const platforms = selectedPlatforms();
+  if (!platforms.length) { setStatus("pubStatus", "Pick at least one platform.", "err"); return; }
   const dryRun = $("dryRun").checked;
+
+  // warn on double-booking a time slot (live posts only; one acknowledgement)
+  if (!dryRun && !conflictAck) {
+    setStatus("pubStatus", "Checking for conflicts…", "spinner");
+    const c = await api.post("/api/check_conflicts",
+      { client: state.client, datetime: toISO(when), platforms });
+    if (c.conflicts && c.conflicts.length) {
+      $("conflictWarn").textContent =
+        `⚠ Already scheduled at this time on: ${c.conflicts.join(", ")}. Click "Schedule anyway" to add another.`;
+      $("conflictWarn").classList.remove("hidden");
+      $("publishBtn").textContent = "Schedule anyway";
+      conflictAck = true;
+      setStatus("pubStatus", "", "");
+      return;
+    }
+  }
+
+  // only the selected platforms' captions
+  const captions = {};
+  platforms.forEach((p) => { captions[p] = state.captions[p]; });
+
+  $("publishBtn").disabled = true;
   $("pubResults").innerHTML = "";
   $("pubBar").classList.remove("hidden");
   setBar(0);
@@ -275,11 +333,12 @@ $("publishBtn").onclick = async () => {
     const res = await pollJob(
       (await api.post("/api/publish", {
         client: state.client, path: state.path, kind: state.kind,
-        captions: state.captions, datetime: toISO(when), dry_run: dryRun,
+        captions, datetime: toISO(when), dry_run: dryRun,
       })).job_id,
       onPublishProgress);
     setBar(100);
     renderPubResults(res, dryRun);
+    resetConflict();
   } catch (e) {
     setStatus("pubStatus", e.message, "err");
   }
