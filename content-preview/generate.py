@@ -85,10 +85,13 @@ def render_performance(cfg):
         ("Bookings", (str(bookings) if bookings is not None else "—"),
          "Calendly" if bookings is not None else "connect Calendly"),
         ("Reach", fmt(k.get("reach", 0)), f"last {k.get('window_days', 30)} days"),
-        ("Impressions", fmt(k.get("impressions", 0)), ""),
         ("Engagement", fmt(k.get("engagement", 0)),
          (f"{k['engagement_rate']}% rate" if k.get("engagement_rate") else "")),
     ]
+    if k.get("followers"):
+        cards.append(("Followers", fmt(k.get("followers", 0)), "Facebook"))
+    else:
+        cards.append(("Impressions", fmt(k.get("impressions", 0)), ""))
     kpi_cards = "".join(
         f'<div class="kpi"><div class="kval">{esc(v)}</div><div class="klabel">{esc(lbl)}</div>'
         f'{(chr(60)+"div class=ksub"+chr(62)+esc(sub)+chr(60)+"/div"+chr(62)) if sub else ""}</div>'
@@ -109,8 +112,11 @@ def render_performance(cfg):
     plat = "".join(
         f'<tr><td>{esc(p)}</td><td>{v.get("reach",0):,}</td><td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
         for p, v in k.get("by_platform", {}).items())
+    fb_note = ('<p class="snote">Facebook totals include her personal profile + page.</p>'
+               if "facebook_personal" in (k.get("by_platform_detail") or {}) else "")
     return f"""<section class="card" id="perf" hidden>
       <div class="kpis">{kpi_cards}</div>
+      {fb_note}
       {carousel}
       <details><summary>By platform</summary>
         <table class="ptable"><tr><th>Platform</th><th>Reach</th><th>Eng</th><th>Posts</th></tr>{plat}</table>

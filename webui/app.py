@@ -391,6 +391,30 @@ def serve_rendered(name):
 
 # ---------------------------------------------------------------- preview
 
+@app.post("/api/manual_metrics")
+def api_manual_metrics():
+    """Save manually-captured metrics (e.g. Facebook personal profile) to the client config.
+
+    Body: {client, facebook_personal: {followers, reach, engagement}}. Read from her
+    Professional Dashboard (no API exists for personal profiles).
+    """
+    from datetime import date
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cf = CLIENTS_DIR / f"{slug}.json"
+    if not cf.exists():
+        return jsonify({"error": "client not found"}), 404
+    cfg = json.loads(cf.read_text())
+    fbp = body.get("facebook_personal") or {}
+    cur = cfg.setdefault("manual_metrics", {}).setdefault("facebook_personal", {})
+    for key in ("followers", "reach", "engagement"):
+        if fbp.get(key) not in (None, ""):
+            cur[key] = int(fbp[key])
+    cur["updated"] = date.today().isoformat()
+    cf.write_text(json.dumps(cfg, indent=2))
+    return jsonify({"ok": True, "facebook_personal": cur})
+
+
 @app.post("/api/preview/sync")
 def api_preview_sync():
     """Rebuild a client's preview page from Buffer's actual scheduled posts."""

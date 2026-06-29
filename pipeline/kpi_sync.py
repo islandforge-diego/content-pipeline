@@ -65,6 +65,34 @@ def summarize_posts(posts):
     }
 
 
+def merge_manual(summary, client):
+    """Fold manually-captured metrics (e.g., Facebook personal profile) into totals.
+
+    Backend keeps the split in `by_platform_detail` (facebook_page vs
+    facebook_personal); the displayed `by_platform` merges them into one 'facebook'.
+    """
+    detail = {p: dict(v) for p, v in summary["by_platform"].items()}
+    fbp = (client.get("manual_metrics", {}) or {}).get("facebook_personal")
+    if fbp:
+        r = fbp.get("reach", 0) or 0
+        e = fbp.get("engagement", 0) or 0
+        f = fbp.get("followers", 0) or 0
+        # preserve the distinction in the backend detail
+        if "facebook" in detail:
+            detail["facebook_page"] = detail.pop("facebook")
+        detail["facebook_personal"] = {"reach": r, "engagement": e, "posts": 0, "followers": f}
+        # add into the top-line totals
+        summary["reach"] += r
+        summary["engagement"] += e
+        summary["followers"] = (summary.get("followers", 0) or 0) + f
+        # merged single 'facebook' line for display
+        fb = summary["by_platform"].setdefault("facebook", {"reach": 0, "engagement": 0, "posts": 0})
+        fb["reach"] += r
+        fb["engagement"] += e
+    summary["by_platform_detail"] = detail
+    return summary
+
+
 def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
     org_id = client["buffer"]["org_id"]
     channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
@@ -74,6 +102,7 @@ def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
 
     posts = buffer_api.posts_with_metrics(buffer_token, org_id, channel_ids, since)
     summary = summarize_posts(posts)
+    summary = merge_manual(summary, client)
 
     bookings = None
     cal = client.get("calendly", {})

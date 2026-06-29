@@ -54,5 +54,6 @@
     "pages_url": ""
   },
   "calendly": { "user_uri": "", "booking_slug": "" },
+  "manual_metrics": {},
   "partners": []
 }

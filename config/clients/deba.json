@@ -81,6 +81,15 @@
     "pages_url": "https://islandforge-diego.github.io/deba-content-preview/clients/deba/"
   },
   "calendly": { "user_uri": "", "booking_slug": "bookdeba" },
+  "manual_metrics": {
+    "facebook_personal": {
+      "followers": 7112,
+      "reach": 81869,
+      "engagement": 2222,
+      "window": "Last 28 days",
+      "updated": "2026-06-29"
+    }
+  },
   "partners": [
     { "name": "Longhorn Investments", "ig": "@longhorn_investments", "fb": "facebook.com/longhorninvestments", "relationship": "sponsor" }
   ]

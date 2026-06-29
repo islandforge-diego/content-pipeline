@@ -3515,15 +3515,15 @@
   ],
   "kpis": {
     "posts": 198,
-    "reach": 28463,
-    "impressions": 3569,
-    "views": 48532,
-    "engagement": 1729,
-    "engagement_rate": 5.55,
+    "reach": 110575,
+    "impressions": 3691,
+    "views": 49030,
+    "engagement": 3970,
+    "engagement_rate": 3.55,
     "by_platform": {
       "instagram": {
-        "reach": 21264,
-        "engagement": 1377,
+        "reach": 21507,
+        "engagement": 1395,
         "posts": 65
       },
       "linkedin": {
@@ -3532,8 +3532,8 @@
         "posts": 75
       },
       "facebook": {
-        "reach": 0,
-        "engagement": 16,
+        "reach": 81869,
+        "engagement": 2239,
         "posts": 14
       },
       "tiktok": {
@@ -3595,8 +3595,8 @@
       {
         "title": "Juneteenth Fashion Show. \ud83d\udda4\u2728 Thank you @legacyfoodhall &\u2026",
         "platform": "instagram",
-        "reach": 1161,
-        "engagement": 60,
+        "reach": 1166,
+        "engagement": 62,
         "media": {
           "type": "gallery",
           "images": [
@@ -3605,8 +3605,42 @@
         }
       }
     ],
+    "followers": 7112,
+    "by_platform_detail": {
+      "instagram": {
+        "reach": 21507,
+        "engagement": 1395,
+        "posts": 65
+      },
+      "linkedin": {
+        "reach": 815,
+        "engagement": 55,
+        "posts": 75
+      },
+      "tiktok": {
+        "reach": 6384,
+        "engagement": 221,
+        "posts": 28
+      },
+      "youtube": {
+        "reach": 0,
+        "engagement": 60,
+        "posts": 16
+      },
+      "facebook_page": {
+        "reach": 0,
+        "engagement": 17,
+        "posts": 14
+      },
+      "facebook_personal": {
+        "reach": 81869,
+        "engagement": 2222,
+        "posts": 0,
+        "followers": 7112
+      }
+    },
     "bookings": null,
     "window_days": 30,
-    "updated": "Jun 29, 11:21 AM CT"
+    "updated": "Jun 29, 11:47 AM CT"
   }
 }
