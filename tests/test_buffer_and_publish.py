@@ -38,11 +38,20 @@ def test_metadata_facebook_image_is_post():
     assert p["metadata"]["facebook"]["type"] == "post"
 
 
-def test_metadata_youtube_has_title_and_category():
+def test_metadata_youtube_has_required_fields():
     p = buffer_api.build_create_post_input("c", "Big hook line\nrest", "u", "d", "reel",
-                                           platform="youtube", yt_category="27")
-    assert p["metadata"]["youtube"]["title"] == "Big hook line"
-    assert p["metadata"]["youtube"]["categoryId"] == "27"
+                                           platform="youtube", opts={"youtube_category_id": "27"})
+    yt = p["metadata"]["youtube"]
+    assert yt["title"] == "Big hook line"
+    assert yt["categoryId"] == "27"
+    # privacy + madeForKids are required to avoid Buffer's UnexpectedError
+    assert yt["privacy"] == "public"
+    assert yt["madeForKids"] is False
+
+
+def test_metadata_facebook_video_defaults_to_post():
+    p = buffer_api.build_create_post_input("c", "t", "u", "d", "reel", platform="facebook")
+    assert p["metadata"]["facebook"]["type"] == "post"  # reels error; default to post
 
 
 def test_metadata_absent_for_linkedin_tiktok():

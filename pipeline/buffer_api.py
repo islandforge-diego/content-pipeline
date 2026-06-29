@@ -67,33 +67,48 @@ mutation CreatePost($input: CreatePostInput!) {
 """
 
 
-def _platform_metadata(platform, kind, text, yt_category="22"):
+DEFAULT_META_OPTS = {
+    "facebook_post_type": "post",   # FB Reels via API are unreliable; a video 'post' is safe
+    "youtube_category_id": "22",
+    "youtube_privacy": "public",
+    "youtube_made_for_kids": False,
+}
+
+
+def _platform_metadata(platform, kind, text, opts=None):
     """Per-network metadata Buffer requires. Returns a PostInputMetaData dict or None.
 
-    - Instagram/Facebook need a post type (video -> reel, image -> post).
-    - Instagram also needs shouldShareToFeed.
-    - YouTube needs a title and a category id.
+    - Instagram needs a post type (video -> reel, image -> post) + shouldShareToFeed.
+    - Facebook needs a type; default 'post' (Reels error with UnexpectedError).
+    - YouTube needs title, category, privacy, and madeForKids — omitting the last two
+      makes Buffer's resolver fail with a generic UnexpectedError.
+    - TikTok / LinkedIn need none.
     """
-    post_type = "reel" if kind == "reel" else "post"
+    o = {**DEFAULT_META_OPTS, **(opts or {})}
     if platform == "instagram":
-        return {"instagram": {"type": post_type, "shouldShareToFeed": True}}
+        return {"instagram": {"type": "reel" if kind == "reel" else "post", "shouldShareToFeed": True}}
     if platform == "facebook":
-        return {"facebook": {"type": post_type}}
+        ftype = o["facebook_post_type"] if kind == "reel" else "post"
+        return {"facebook": {"type": ftype}}
     if platform == "youtube":
-        # First non-empty line of the caption makes a sensible Short title (<=95 chars).
         first = next((ln.strip() for ln in (text or "").splitlines() if ln.strip()), "New video")
-        return {"youtube": {"title": first[:95], "categoryId": yt_category}}
-    return None  # tiktok / linkedin need no extra metadata
+        return {"youtube": {
+            "title": first[:95],
+            "categoryId": o["youtube_category_id"],
+            "privacy": o["youtube_privacy"],
+            "madeForKids": bool(o["youtube_made_for_kids"]),
+        }}
+    return None
 
 
 def build_create_post_input(channel_id, text, media_url, due_at, kind, platform="",
-                            as_draft=True, yt_category="22"):
+                            as_draft=True, opts=None):
     """Build the CreatePostInput payload (pure; unit-tested separately).
 
     - schedulingType 'automatic' = Buffer publishes for you (vs 'notification' reminders).
     - mode 'customScheduled' + dueAt = scheduled for a specific time.
     - assets use Buffer's @oneOf shape: {image|video: {url}}.
-    - metadata carries per-network requirements (post type, YouTube title/category).
+    - metadata carries per-network requirements (see _platform_metadata).
     - saveToDraft keeps it as a draft for approval (honors the 'drafts for approval' rule).
     """
     asset_key = "video" if kind == "reel" else "image"
@@ -106,17 +121,17 @@ def build_create_post_input(channel_id, text, media_url, due_at, kind, platform=
         "assets": [{asset_key: {"url": media_url}}],
         "saveToDraft": bool(as_draft),
     }
-    meta = _platform_metadata(platform, kind, text, yt_category)
+    meta = _platform_metadata(platform, kind, text, opts)
     if meta:
         payload["metadata"] = meta
     return payload
 
 
 def create_post(channel_id, text, media_url, due_at, kind, token, platform="",
-                as_draft=True, yt_category="22") -> dict:
+                as_draft=True, opts=None) -> dict:
     """Schedule (or draft) a single post to one Buffer channel. Returns the post dict."""
     variables = {"input": build_create_post_input(
-        channel_id, text, media_url, due_at, kind, platform, as_draft, yt_category)}
+        channel_id, text, media_url, due_at, kind, platform, as_draft, opts)}
     result = _graphql(_CREATE_POST, variables, token).get("createPost", {})
     if result.get("__typename") == "PostActionSuccess":
         return result.get("post", {})

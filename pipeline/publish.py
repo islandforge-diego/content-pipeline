@@ -88,8 +88,14 @@ def publish(file_path, client, captions, post_datetime, kind, token, dry_run=Fal
         if on_event:
             on_event(ev, payload)
 
-    as_draft = client.get("buffer", {}).get("create_as_draft", True)
-    yt_category = client.get("buffer", {}).get("youtube_category_id", "22")
+    bcfg = client.get("buffer", {})
+    as_draft = bcfg.get("create_as_draft", True)
+    meta_opts = {
+        "facebook_post_type": bcfg.get("facebook_post_type", "post"),
+        "youtube_category_id": bcfg.get("youtube_category_id", "22"),
+        "youtube_privacy": bcfg.get("youtube_privacy", "public"),
+        "youtube_made_for_kids": bcfg.get("youtube_made_for_kids", False),
+    }
 
     console.print("\n[bold]Uploading to S3...[/bold]")
     media_url = upload_to_s3(file_path, client, dry_run,
@@ -116,7 +122,7 @@ def publish(file_path, client, captions, post_datetime, kind, token, dry_run=Fal
         try:
             post = create_post(channel_id, captions[platform], media_url, post_datetime,
                                kind, token, platform=platform, as_draft=as_draft,
-                               yt_category=yt_category)
+                               opts=meta_opts)
             entry = {"platform": platform, "ok": True, "id": post.get("id", "?"),
                      "status": post.get("status", "")}
             console.print(f"  [green]✓[/green] {platform} — Buffer id {entry['id']}")

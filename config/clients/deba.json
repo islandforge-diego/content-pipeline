@@ -41,7 +41,10 @@
     "org_id": "67e362b288f79c93410af3fb",
     "timezone": "America/Chicago",
     "create_as_draft": true,
+    "facebook_post_type": "post",
     "youtube_category_id": "27",
+    "youtube_privacy": "public",
+    "youtube_made_for_kids": false,
     "channels": {
       "facebook":  { "id": "6a1cb55dc687a22dd4484430", "name": "Douglas Dwellings - Principles of Real Estate", "type": "page" },
       "instagram": { "id": "6a1cb662c687a22dd4484705", "handle": "debaflipstexas", "type": "business" },
