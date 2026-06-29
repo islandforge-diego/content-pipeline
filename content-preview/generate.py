@@ -109,16 +109,12 @@ def render_performance(cfg):
         f'<div class="topcar">{slides}</div>'
         f'<p class="snote">swipe to see the top {len(top)} →</p>'
     ) if top else '<p class="snote">No posts with metrics yet.</p>'
-    # Break the breakdown down by the detailed sources (page vs personal kept split),
-    # sorted by reach so the big drivers read first.
-    LABELS = {"facebook_page": "facebook (page)", "facebook_personal": "facebook (personal)"}
-    detail = k.get("by_platform_detail") or k.get("by_platform", {})
-    rows = sorted(detail.items(), key=lambda kv: kv[1].get("reach", 0), reverse=True)
+    # Merged platforms (facebook = page + personal), sorted by reach.
+    rows = sorted(k.get("by_platform", {}).items(), key=lambda kv: kv[1].get("reach", 0), reverse=True)
     plat = "".join(
-        f'<tr><td>{esc(LABELS.get(p, p))}</td><td>{v.get("reach",0):,}</td>'
-        f'<td>{v.get("engagement",0):,}</td>'
-        f'<td>{"—" if p == "facebook_personal" else v.get("posts",0)}</td></tr>'
+        f'<tr><td>{esc(p)}</td><td>{v.get("reach",0):,}</td><td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
         for p, v in rows)
+    fb_drill = render_fb_drilldown(k)
     fb_note = ('<p class="snote">Facebook totals include her personal profile + page.</p>'
                if "facebook_personal" in (k.get("by_platform_detail") or {}) else "")
     return f"""<section class="card" id="perf" hidden>
@@ -128,8 +124,30 @@ def render_performance(cfg):
       <details><summary>By platform</summary>
         <table class="ptable"><tr><th>Platform</th><th>Reach</th><th>Eng</th><th>Posts</th></tr>{plat}</table>
       </details>
+      {fb_drill}
       <p class="snote">Updated {esc(k.get('updated',''))}</p>
     </section>"""
+
+
+def render_fb_drilldown(k):
+    """Drill into what drives the Facebook personal-profile reach."""
+    fb = k.get("facebook_personal_detail")
+    if not fb:
+        return ""
+    bars = "".join(
+        f'<div class="bar"><span class="blabel">{esc(t)}</span>'
+        f'<span class="btrack"><span class="bfill" style="width:{pct}%"></span></span>'
+        f'<span class="bpct">{pct}%</span></div>'
+        for t, pct in fb.get("views_by_type", []))
+    tops = "".join(f'<tr><td>{esc(d)}</td><td>{v:,}</td></tr>' for d, v in fb.get("top_posts", []))
+    split = " · ".join(f"{esc(s)} {p}%" for s, p in fb.get("followers_split", []))
+    return f"""<details>
+      <summary>Facebook reach breakdown ({esc(fb.get('window',''))})</summary>
+      <div class="subhead">Views by content type</div>{bars}
+      {f'<div class="subhead">Audience</div><p class="snote" style="text-align:left;margin:2px 0">{split}</p>' if split else ''}
+      <div class="subhead">Top Facebook posts (by views)</div>
+      <table class="ptable"><tr><th>Post</th><th>Views</th></tr>{tops}</table>
+    </details>"""
 
 
 def _by_date(items, render):
@@ -193,6 +211,12 @@ def page(cfg):
  .ptable{{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}}
  .ptable th,.ptable td{{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}}
  .ptable td:not(:first-child),.ptable th:not(:first-child){{text-align:right}}
+ .subhead{{font-weight:600;font-size:13px;margin:12px 0 4px}}
+ .bar{{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:13px}}
+ .blabel{{width:88px;color:var(--muted)}}
+ .btrack{{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden}}
+ .bfill{{display:block;height:100%;background:var(--accent)}}
+ .bpct{{width:44px;text-align:right;color:var(--muted)}}
  video,.gallery img{{width:100%;max-width:320px;display:block;margin:0 auto 10px;border-radius:14px;background:#000;aspect-ratio:9/16;object-fit:cover}}
  .gallery{{display:flex;gap:8px;overflow-x:auto}} .gallery img{{height:300px;width:auto}}
  .count{{font-size:12.5px;color:var(--muted);margin-bottom:6px}}

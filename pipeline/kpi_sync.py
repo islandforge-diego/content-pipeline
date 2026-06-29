@@ -89,6 +89,14 @@ def merge_manual(summary, client):
         fb = summary["by_platform"].setdefault("facebook", {"reach": 0, "engagement": 0, "posts": 0})
         fb["reach"] += r
         fb["engagement"] += e
+        # pass through the richer drill-down (what drives the personal-profile reach)
+        summary["facebook_personal_detail"] = {
+            "window": fbp.get("window", ""),
+            "reach": r, "engagement": e, "followers": f,
+            "views_by_type": fbp.get("views_by_type", []),
+            "top_posts": fbp.get("top_posts", []),
+            "followers_split": fbp.get("followers_split", []),
+        }
     summary["by_platform_detail"] = detail
     return summary
 

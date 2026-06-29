@@ -87,7 +87,10 @@
       "reach": 183807,
       "engagement": 5569,
       "window": "Last 60 days",
-      "updated": "2026-06-29"
+      "updated": "2026-06-29",
+      "views_by_type": [["Photo", 29.6], ["Reel", 28.5], ["Text", 20.2], ["Multi photo", 17.5], ["Link", 2.2], ["Multi media", 2.0]],
+      "followers_split": [["Followers", 72.5], ["Non-followers", 27.5]],
+      "top_posts": [["May 11", 7396], ["May 14", 3592], ["May 20", 3437], ["May 20", 3410], ["Jun 20", 2925]]
     }
   },
   "partners": [

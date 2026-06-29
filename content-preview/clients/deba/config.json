@@ -3605,6 +3605,70 @@
       }
     ],
     "followers": 7112,
+    "facebook_personal_detail": {
+      "window": "Last 60 days",
+      "reach": 183807,
+      "engagement": 5569,
+      "followers": 7112,
+      "views_by_type": [
+        [
+          "Photo",
+          29.6
+        ],
+        [
+          "Reel",
+          28.5
+        ],
+        [
+          "Text",
+          20.2
+        ],
+        [
+          "Multi photo",
+          17.5
+        ],
+        [
+          "Link",
+          2.2
+        ],
+        [
+          "Multi media",
+          2.0
+        ]
+      ],
+      "top_posts": [
+        [
+          "May 11",
+          7396
+        ],
+        [
+          "May 14",
+          3592
+        ],
+        [
+          "May 20",
+          3437
+        ],
+        [
+          "May 20",
+          3410
+        ],
+        [
+          "Jun 20",
+          2925
+        ]
+      ],
+      "followers_split": [
+        [
+          "Followers",
+          72.5
+        ],
+        [
+          "Non-followers",
+          27.5
+        ]
+      ]
+    },
     "by_platform_detail": {
       "instagram": {
         "reach": 36969,
@@ -3640,6 +3704,6 @@
     },
     "bookings": null,
     "window_days": 60,
-    "updated": "Jun 29, 12:37 PM CT"
+    "updated": "Jun 29, 12:42 PM CT"
   }
 }
