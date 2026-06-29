@@ -3347,6 +3347,28 @@
     },
     {
       "iso_date": "2026-06-29",
+      "time": "12:46 PM CT",
+      "title": "\u201cWe always wanted to get into\u2026",
+      "chips": [
+        "instagram"
+      ],
+      "media": {
+        "type": "video",
+        "src": "https://scontent-iad6-1.cdninstagram.com/o1/v/t2/f2/m86/AQNR6KA9es7d3uXeaOpMUK78V04l_uaTEOybwitoytZ7nGlz1j5n0cDq61t1YkBNcdJubCT6c20_XUmMlud3YOgyjiSSk_hylMPedos.mp4?_nc_cat=106&_nc_sid=5e9851&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_ohc=K2VAQKixmMUQ7kNvwFg9qYG&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MjI1MTU2Mzc0NTI1MDc2MiwiYXNzZXRfYWdlX2RheXMiOjAsInZpX3VzZWNhc2VfaWQiOjEwMDk5LCJkdXJhdGlvbl9zIjoxMTUsInVybGdlbl9zb3VyY2UiOiJ3d3cifQ%3D%3D&ccb=17-1&vs=d57310ea167c6fe8&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC83ODQwNDJBMUNCREI5REQzM0VGMjFCRjBGRDk4RUE4NV92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyL0Q1NDZFN0ZBNUNCM0UzNEFCMzlBRUJBMDZDRjhBNzhEX2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACaUt8yTofL_BxUCKAJDMywXQFz4AAAAAAAYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZeadAQA&_nc_gid=BeBjzdDd-Z3Mj6b-wDHZ2g&edm=AEQ6tj4EAAAA&_nc_zt=28&oh=00_Af-1y1K6F1_p9i91M6AjPI2H3cMX2J21kRSIu41pRFqLcQ&oe=6A447CCF",
+        "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a42afe1fef2b67c3eaf1f9b_thumbnail.jpg"
+      },
+      "caps": [
+        [
+          "instagram",
+          "\u201cWe always wanted to get into real estate\u2026 but seeing someone else do it made us believe it was actually possible.\u201d\n\nDavid and Danielle joined the mentorship after seeing Shawn\u2019s real estate journey and realizing this was something they wanted to pursue too.\n\nThrough the modules, Facebook group, meetups, and real project walkthroughs, they gained more than just information \u2014 they gained confidence.\n\nFrom seeing a property under construction to watching it become a finished project, they saw the process in action and realized:\n\nIt is attainable.\n\nIt is possible.\n\nAnd they are not alone.\n\nReal estate investing can feel overwhelming when you are trying to figure it out by yourself. But with the right guidance, the right support, and a community around you, the path becomes much clearer.\n\nIf you have been wanting to start your real estate journey but do not know where to begin, let\u2019s talk.\n\nBook a call with me here:\n\nhttps://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1?back=1&month=2026-06"
+        ]
+      ],
+      "cta": {
+        "type": "link"
+      }
+    },
+    {
+      "iso_date": "2026-06-29",
       "time": "3:00 PM CT",
       "title": "CEO vs. Employee at 11AM, 3PM,\u2026",
       "chips": [
@@ -3514,19 +3536,19 @@
     }
   ],
   "kpis": {
-    "posts": 304,
-    "reach": 237384,
+    "posts": 302,
+    "reach": 236913,
     "impressions": 4428,
-    "views": 267736,
-    "engagement": 8779,
+    "views": 267109,
+    "engagement": 8761,
     "engagement_rate": 4.24,
     "engagement_rate_total": 3.3,
     "by_platform": {
       "instagram": {
-        "reach": 36969,
-        "engagement": 2606,
-        "posts": 106,
-        "views": 58783
+        "reach": 36650,
+        "engagement": 2594,
+        "posts": 105,
+        "views": 58351
       },
       "linkedin": {
         "reach": 1227,
@@ -3541,10 +3563,10 @@
         "views": 184783
       },
       "tiktok": {
-        "reach": 14405,
-        "engagement": 428,
-        "posts": 46,
-        "views": 16357
+        "reach": 14253,
+        "engagement": 422,
+        "posts": 45,
+        "views": 16162
       },
       "youtube": {
         "reach": 0,
@@ -4328,10 +4350,10 @@
     "followers_as_of": "2026-06-29",
     "by_platform_detail": {
       "instagram": {
-        "reach": 36969,
-        "engagement": 2606,
-        "posts": 106,
-        "views": 58783
+        "reach": 36650,
+        "engagement": 2594,
+        "posts": 105,
+        "views": 58351
       },
       "linkedin": {
         "reach": 1227,
@@ -4340,10 +4362,10 @@
         "views": 305
       },
       "tiktok": {
-        "reach": 14405,
-        "engagement": 428,
-        "posts": 46,
-        "views": 16357
+        "reach": 14253,
+        "engagement": 422,
+        "posts": 45,
+        "views": 16162
       },
       "youtube": {
         "reach": 0,
@@ -4367,6 +4389,6 @@
     },
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 2:22 PM CT"
+    "updated": "Jun 29, 2:28 PM CT"
   }
 }
