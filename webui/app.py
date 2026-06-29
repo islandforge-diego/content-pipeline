@@ -400,8 +400,8 @@ def api_preview_sync():
     if not token:
         return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
     try:
-        count = preview_sync.sync_preview(cfg, token)
-        return jsonify({"count": count, "url": f"/preview/clients/{slug}/"})
+        feed_n, story_n = preview_sync.sync_preview(cfg, token)
+        return jsonify({"feed": feed_n, "stories": story_n, "url": f"/preview/clients/{slug}/"})
     except Exception as e:
         return jsonify({"error": str(e)}), 502
 

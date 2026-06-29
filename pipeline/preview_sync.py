@@ -91,16 +91,42 @@ def posts_to_feed(posts, tz_name="America/Chicago"):
     return feed
 
 
-def sync_preview(client, token):
-    """Pull the client's scheduled posts from Buffer and rebuild the preview.
+def stories_to_feed(posts, tz_name="America/Chicago"):
+    """Turn Buffer story posts into preview story items (one per post)."""
+    items = []
+    for p in posts:
+        date, time = _local(p.get("dueAt") or "", tz_name)
+        assets = p.get("assets") or []
+        src = assets[0].get("source", "") if assets else ""
+        atype = assets[0].get("type", "image") if assets else "image"
+        media = ({"type": "video", "src": src, "poster": (assets[0].get("thumbnail") if assets else "")}
+                 if atype == "video" else {"type": "gallery", "images": [src] if src else []})
+        items.append({"iso_date": date, "time": time, "media": media,
+                      "sticker": p.get("text") or "", "title": ""})
+    items.sort(key=lambda s: (s["iso_date"], s.get("time", "")))
+    return items
 
-    Returns the number of feed items. Preserves existing stories/theme/meta.
+
+def _is_story(p):
+    md = p.get("metadata") or {}
+    return (md.get("type") == "story") or (p.get("schedulingType") == "notification")
+
+
+def sync_preview(client, token):
+    """Pull the client's posts from Buffer (history + upcoming) and rebuild the preview.
+
+    Splits feed posts from IG stories; returns (feed_count, story_count).
     """
     org_id = client["buffer"]["org_id"]
     tz_name = client["buffer"].get("timezone", "America/Chicago")
+    since = client.get("preview", {}).get("history_since", "2026-06-01") + "T00:00:00-05:00"
     channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
-    posts = buffer_api.list_scheduled_posts(token, org_id, channel_ids)
-    feed = posts_to_feed(posts, tz_name)
+    posts = buffer_api.list_scheduled_posts(token, org_id, channel_ids, since=since)
+
+    stories_posts = [p for p in posts if _is_story(p)]
+    feed_posts = [p for p in posts if not _is_story(p)]
+    feed = posts_to_feed(feed_posts, tz_name)
+    stories = stories_to_feed(stories_posts, tz_name)
 
     slug = client["slug"]
     data_path = PREVIEW_DIR / "clients" / slug / "config.json"
@@ -109,9 +135,10 @@ def sync_preview(client, token):
     data.setdefault("slug", slug)
     data.setdefault("title", f"{client.get('display_name', slug)} — Content Preview")
     data.setdefault("theme", client.get("preview", {}).get("theme", {}))
-    data["feed"] = feed  # replace with Buffer truth (no append/dupes)
+    data["feed"] = feed
+    data["stories"] = stories
     data_path.write_text(json.dumps(data, indent=2))
 
     subprocess.run([sys.executable, "generate.py"], cwd=str(PREVIEW_DIR),
                    capture_output=True, text=True)
-    return len(feed)
+    return len(feed), len(stories)

@@ -155,33 +155,52 @@ query Posts($input: PostsInput!) {
 
 
 _SCHEDULED_QUERY = """
-query Posts($input: PostsInput!) {
-  posts(input: $input, first: 100) {
+query Posts($input: PostsInput!, $after: String) {
+  posts(input: $input, first: 100, after: $after) {
     edges { node {
-      id channelId channelService status dueAt text
+      id channelId channelService status dueAt text schedulingType
       assets { type source thumbnail }
+      metadata {
+        __typename
+        ... on InstagramPostMetadata { type }
+        ... on FacebookPostMetadata { type }
+        ... on YoutubePostMetadata { type }
+        ... on TiktokPostMetadata { type }
+        ... on LinkedInPostMetadata { type }
+      }
     } }
+    pageInfo { hasNextPage endCursor }
   }
 }
 """
 
 
 def list_scheduled_posts(token, org_id, channel_ids=None,
-                         statuses=("scheduled", "draft", "needs_approval")):
-    """Return upcoming posts (scheduled/draft) for the org's channels, sorted by time.
+                         statuses=("scheduled", "draft", "needs_approval", "sent", "sending"),
+                         since=None):
+    """Return posts for the org's channels, sorted by time, paginating fully.
 
-    Each node: {id, channelId, channelService, status, dueAt, text, assets:[{type,source,thumbnail}]}.
+    `since` (ISO datetime) limits to posts dueAt >= since. `statuses` includes sent
+    so history shows. Each node also carries schedulingType + metadata.type so the
+    caller can tell stories (type 'story') from feed posts.
     """
     flt = {"status": list(statuses)}
     if channel_ids:
         flt["channelIds"] = channel_ids
-    variables = {"input": {
-        "organizationId": org_id,
-        "filter": flt,
-        "sort": [{"field": "dueAt", "direction": "asc"}],
-    }}
-    data = _graphql(_SCHEDULED_QUERY, variables, token)
-    return [e["node"] for e in (data.get("posts", {}).get("edges", []) or [])]
+    if since:
+        flt["dueAt"] = {"start": since}
+    base = {"organizationId": org_id, "filter": flt,
+            "sort": [{"field": "dueAt", "direction": "asc"}]}
+    nodes, after = [], None
+    for _ in range(20):  # safety cap: up to 2000 posts
+        data = _graphql(_SCHEDULED_QUERY, {"input": base, "after": after}, token)
+        conn = data.get("posts", {})
+        nodes += [e["node"] for e in (conn.get("edges") or [])]
+        pi = conn.get("pageInfo", {}) or {}
+        if not pi.get("hasNextPage"):
+            break
+        after = pi.get("endCursor")
+    return nodes
 
 
 def posts_at(token, org_id, channel_ids, due_at):
