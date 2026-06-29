@@ -8,7 +8,10 @@ writes content-preview/clients/<slug>/config.json, and rebuilds the HTML.
 import json
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
+
+import pytz
 
 import buffer_api
 
@@ -16,16 +19,28 @@ ROOT = Path(__file__).resolve().parent.parent
 PREVIEW_DIR = ROOT / "content-preview"
 
 
-def posts_to_feed(posts):
+def _local(due, tz_name):
+    """Convert a Buffer dueAt (UTC ISO) to (local_date, 'h:MM AM/PM TZ') in tz_name."""
+    try:
+        dt = datetime.fromisoformat(due.replace("Z", "+00:00")).astimezone(pytz.timezone(tz_name))
+        z = dt.strftime("%Z")
+        # CDT/CST -> CT, EST/EDT -> ET, etc.; keep full label otherwise
+        label = (z[0] + "T") if len(z) == 3 and z[1] in ("D", "S") else z
+        return dt.strftime("%Y-%m-%d"), dt.strftime("%-I:%M %p") + (" " + label if label else "")
+    except Exception:
+        return (due[:10], due[11:16])
+
+
+def posts_to_feed(posts, tz_name="America/Chicago"):
     """Group Buffer post nodes into preview feed items (pure; unit-tested).
 
     Posts to the same media on the same day become ONE item with each platform's
-    caption under it.
+    caption under it. Times are shown in the client's timezone.
     """
     groups, order = {}, []
     for p in posts:
         due = p.get("dueAt") or ""
-        date, time = due[:10], due[11:16]
+        date, time = _local(due, tz_name)
         assets = p.get("assets") or []
         src = assets[0].get("source", "") if assets else ""
         atype = assets[0].get("type", "video") if assets else "video"
@@ -59,9 +74,10 @@ def sync_preview(client, token):
     Returns the number of feed items. Preserves existing stories/theme/meta.
     """
     org_id = client["buffer"]["org_id"]
+    tz_name = client["buffer"].get("timezone", "America/Chicago")
     channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
     posts = buffer_api.list_scheduled_posts(token, org_id, channel_ids)
-    feed = posts_to_feed(posts)
+    feed = posts_to_feed(posts, tz_name)
 
     slug = client["slug"]
     data_path = PREVIEW_DIR / "clients" / slug / "config.json"
