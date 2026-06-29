@@ -154,6 +154,36 @@ query Posts($input: PostsInput!) {
 """
 
 
+_SCHEDULED_QUERY = """
+query Posts($input: PostsInput!) {
+  posts(input: $input, first: 100) {
+    edges { node {
+      id channelId channelService status dueAt text
+      assets { type source thumbnail }
+    } }
+  }
+}
+"""
+
+
+def list_scheduled_posts(token, org_id, channel_ids=None,
+                         statuses=("scheduled", "draft", "needs_approval")):
+    """Return upcoming posts (scheduled/draft) for the org's channels, sorted by time.
+
+    Each node: {id, channelId, channelService, status, dueAt, text, assets:[{type,source,thumbnail}]}.
+    """
+    flt = {"status": list(statuses)}
+    if channel_ids:
+        flt["channelIds"] = channel_ids
+    variables = {"input": {
+        "organizationId": org_id,
+        "filter": flt,
+        "sort": [{"field": "dueAt", "direction": "asc"}],
+    }}
+    data = _graphql(_SCHEDULED_QUERY, variables, token)
+    return [e["node"] for e in (data.get("posts", {}).get("edges", []) or [])]
+
+
 def posts_at(token, org_id, channel_ids, due_at):
     """Return existing posts on the given channels scheduled within the same minute
     as due_at (used to warn about double-booking a time slot).

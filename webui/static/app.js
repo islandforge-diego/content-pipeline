@@ -467,6 +467,21 @@ function toISO(localValue) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00${sign}${oh}:${om}`;
 }
 
+// ---- preview ----
+$("previewBtn").onclick = async () => {
+  if (!state.client) { alert("Select a client first."); return; }
+  const btn = $("previewBtn");
+  btn.disabled = true; btn.textContent = "Refreshing…";
+  try {
+    const r = await api.post("/api/preview/sync", { client: state.client });
+    if (r.error) throw new Error(r.error);
+    window.open(`/preview/clients/${state.client}/`, "_blank");
+  } catch (e) {
+    alert("Preview refresh failed: " + e.message);
+  }
+  btn.disabled = false; btn.textContent = "Preview ↗";
+};
+
 // ---- init ----
 $("clientSelect").onchange = (e) => selectClient(e.target.value);
 loadClients();

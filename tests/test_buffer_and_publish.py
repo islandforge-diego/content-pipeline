@@ -1,6 +1,36 @@
 """Unit tests for buffer_api payload building and publish channel routing."""
 import buffer_api
 import publish
+import preview_sync
+
+
+# ---- preview_sync.posts_to_feed (group Buffer posts into feed cards) ----
+
+def _post(platform, date, text, src="https://x/v.mp4"):
+    return {"channelService": platform, "dueAt": f"{date}T15:00:00-05:00",
+            "text": text, "assets": [{"type": "video", "source": src, "thumbnail": ""}]}
+
+
+def test_posts_to_feed_groups_same_video_day():
+    posts = [_post("instagram", "2026-07-01", "IG cap"),
+             _post("facebook", "2026-07-01", "FB cap"),
+             _post("linkedin", "2026-07-01", "LI cap")]
+    feed = preview_sync.posts_to_feed(posts)
+    assert len(feed) == 1
+    item = feed[0]
+    assert set(item["chips"]) == {"instagram", "facebook", "linkedin"}
+    assert len(item["caps"]) == 3
+    assert item["title"] == "IG cap"          # title prefers the instagram caption
+    assert item["media"]["type"] == "video"
+
+
+def test_posts_to_feed_separate_items_by_day_and_media():
+    posts = [_post("instagram", "2026-07-01", "a", "u1"),
+             _post("instagram", "2026-07-02", "b", "u1"),
+             _post("instagram", "2026-07-02", "c", "u2")]
+    feed = preview_sync.posts_to_feed(posts)
+    assert len(feed) == 3
+    assert [f["iso_date"] for f in feed] == ["2026-07-01", "2026-07-02", "2026-07-02"]
 
 
 # ---- buffer_api.build_create_post_input (pure) ----

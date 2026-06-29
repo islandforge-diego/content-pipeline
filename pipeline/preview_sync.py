@@ -1,0 +1,78 @@
+"""preview_sync.py — build the client preview page from Buffer's real scheduled posts.
+
+Buffer is the single source of truth: this pulls the org's upcoming posts, groups
+the per-channel posts of the same video/day into one feed item (so the calendar
+shows one card with per-platform captions), preserves the curated stories/theme,
+writes content-preview/clients/<slug>/config.json, and rebuilds the HTML.
+"""
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+import buffer_api
+
+ROOT = Path(__file__).resolve().parent.parent
+PREVIEW_DIR = ROOT / "content-preview"
+
+
+def posts_to_feed(posts):
+    """Group Buffer post nodes into preview feed items (pure; unit-tested).
+
+    Posts to the same media on the same day become ONE item with each platform's
+    caption under it.
+    """
+    groups, order = {}, []
+    for p in posts:
+        due = p.get("dueAt") or ""
+        date, time = due[:10], due[11:16]
+        assets = p.get("assets") or []
+        src = assets[0].get("source", "") if assets else ""
+        atype = assets[0].get("type", "video") if assets else "video"
+        platform = (p.get("channelService") or "").lower()
+        key = (date, src)
+        if key not in groups:
+            media = ({"type": "video", "src": src, "poster": (assets[0].get("thumbnail") if assets else "")}
+                     if atype == "video" else {"type": "gallery", "images": [src] if src else []})
+            groups[key] = {"iso_date": date, "time": time, "title": "",
+                           "chips": [], "media": media, "caps": []}
+            order.append(key)
+        g = groups[key]
+        if platform and platform not in g["chips"]:
+            g["chips"].append(platform)
+        g["caps"].append([platform, p.get("text") or ""])
+
+    feed = []
+    for key in order:
+        g = groups[key]
+        # title from the instagram caption if present, else the first one
+        cap = dict(g["caps"]).get("instagram") or (g["caps"][0][1] if g["caps"] else "")
+        g["title"] = " ".join(cap.split())[:70]
+        feed.append(g)
+    feed.sort(key=lambda f: (f["iso_date"], f.get("time", "")))
+    return feed
+
+
+def sync_preview(client, token):
+    """Pull the client's scheduled posts from Buffer and rebuild the preview.
+
+    Returns the number of feed items. Preserves existing stories/theme/meta.
+    """
+    org_id = client["buffer"]["org_id"]
+    channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
+    posts = buffer_api.list_scheduled_posts(token, org_id, channel_ids)
+    feed = posts_to_feed(posts)
+
+    slug = client["slug"]
+    data_path = PREVIEW_DIR / "clients" / slug / "config.json"
+    data_path.parent.mkdir(parents=True, exist_ok=True)
+    data = json.loads(data_path.read_text()) if data_path.exists() else {}
+    data.setdefault("slug", slug)
+    data.setdefault("title", f"{client.get('display_name', slug)} — Content Preview")
+    data.setdefault("theme", client.get("preview", {}).get("theme", {}))
+    data["feed"] = feed  # replace with Buffer truth (no append/dupes)
+    data_path.write_text(json.dumps(data, indent=2))
+
+    subprocess.run([sys.executable, "generate.py"], cwd=str(PREVIEW_DIR),
+                   capture_output=True, text=True)
+    return len(feed)

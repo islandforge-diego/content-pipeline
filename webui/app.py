@@ -32,6 +32,7 @@ from caption_gen import generate_captions, revise_caption, revise_all  # noqa: E
 from publish import publish, target_channels            # noqa: E402
 from frames import extract_frames, probe_video           # noqa: E402
 import buffer_api                                        # noqa: E402
+import preview_sync                                      # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import jobs              # noqa: E402
@@ -299,10 +300,12 @@ def api_publish():
             path, cfg, captions, when, kind, token, dry_run=dry_run,
             on_event=on_event,
         )
-        if not dry_run:
-            progress("Updating preview…")
-            _append_to_preview(slug, cfg, when, kind, captions, result["media_url"])
-            _rebuild_preview()
+        if not dry_run and token:
+            progress("Refreshing preview from Buffer…")
+            try:
+                preview_sync.sync_preview(cfg, token)
+            except Exception as e:
+                progress(f"(preview refresh skipped: {e})")
         return result
 
     return jsonify({"job_id": jobs.start(work)})
@@ -315,35 +318,28 @@ def api_job(job_id):
 
 # ---------------------------------------------------------------- preview
 
-def _append_to_preview(slug, cfg, when, kind, captions, media_url):
-    """Append a scheduled feed item (with ISO date) to the client's preview data."""
-    data_path = PREVIEW_DIR / "clients" / slug / "config.json"
-    data_path.parent.mkdir(parents=True, exist_ok=True)
-    if data_path.exists():
-        data = json.loads(data_path.read_text())
-    else:
-        th = cfg.get("preview", {}).get("theme", {})
-        data = {
-            "slug": slug, "title": f"{cfg['display_name']} — Content Preview",
-            "theme": th, "feed": [], "banner": "", "footer": "",
-        }
-    iso_date = when[:10]  # YYYY-MM-DD from the ISO datetime
-    media = {"type": "video", "src": media_url, "poster": ""} if kind == "reel" \
-        else {"type": "gallery", "images": [media_url]}
-    data.setdefault("feed", []).append({
-        "iso_date": iso_date,
-        "time": when[11:16],
-        "title": (captions.get("instagram") or next(iter(captions.values()), ""))[:60],
-        "chips": list(captions.keys()),
-        "media": media,
-        "caps": [[p, t] for p, t in captions.items()],
-    })
-    data_path.write_text(json.dumps(data, indent=2))
+@app.post("/api/preview/sync")
+def api_preview_sync():
+    """Rebuild a client's preview page from Buffer's actual scheduled posts."""
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    token = os.environ.get("BUFFER_TOKEN", "")
+    if not token:
+        return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
+    try:
+        count = preview_sync.sync_preview(cfg, token)
+        return jsonify({"count": count, "url": f"/preview/clients/{slug}/"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
 
 
-def _rebuild_preview():
-    subprocess.run([sys.executable, "generate.py"], cwd=str(PREVIEW_DIR),
-                   capture_output=True, text=True)
+@app.get("/preview/<path:subpath>")
+def serve_preview(subpath):
+    """Serve the generated preview pages so you can view them from this app."""
+    if (PREVIEW_DIR / subpath).is_dir():
+        subpath = subpath.rstrip("/") + "/index.html"
+    return send_from_directory(str(PREVIEW_DIR), subpath)
 
 
 # ---------------------------------------------------------------- launch
