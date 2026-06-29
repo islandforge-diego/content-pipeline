@@ -93,22 +93,25 @@ def render_performance(cfg):
         f'<div class="kpi"><div class="kval">{esc(v)}</div><div class="klabel">{esc(lbl)}</div>'
         f'{(chr(60)+"div class=ksub"+chr(62)+esc(sub)+chr(60)+"/div"+chr(62)) if sub else ""}</div>'
         for lbl, v, sub in cards)
-    tops = "".join(
-        f'<div class="post">{render_media(c.get("media"))}'
+    top = k.get("top_posts", [])
+    slides = "".join(
+        f'<div class="tslide">{render_media(c.get("media"))}'
         f'<div class="pmeta"><span class="ptime">{esc(c.get("platform",""))}</span>'
         f'<span class="cta">{c.get("reach",0):,} reach</span>'
         f'<span class="cta">{c.get("engagement",0):,} eng</span></div>'
         f'<div class="ptitle">{esc(c.get("title",""))}</div></div>'
-        for c in k.get("top_posts", []))
+        for c in top)
+    carousel = (
+        f'<div class="calhead" style="margin-top:16px">Top posts</div>'
+        f'<div class="topcar">{slides}</div>'
+        f'<p class="snote">swipe to see the top {len(top)} →</p>'
+    ) if top else '<p class="snote">No posts with metrics yet.</p>'
     plat = "".join(
         f'<tr><td>{esc(p)}</td><td>{v.get("reach",0):,}</td><td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
         for p, v in k.get("by_platform", {}).items())
-    insights = f'<div class="insight">{esc(k["insights"])}</div>' if k.get("insights") else ""
     return f"""<section class="card" id="perf" hidden>
       <div class="kpis">{kpi_cards}</div>
-      {insights}
-      <div class="calhead" style="margin-top:14px">Top posts</div>
-      {tops or '<p class="snote">No posts with metrics yet.</p>'}
+      {carousel}
       <details><summary>By platform</summary>
         <table class="ptable"><tr><th>Platform</th><th>Reach</th><th>Eng</th><th>Posts</th></tr>{plat}</table>
       </details>
@@ -172,7 +175,8 @@ def page(cfg):
  .kval{{font-size:24px;font-weight:700;color:{atext}}}
  .klabel{{font-size:13px;color:var(--muted);margin-top:2px}}
  .ksub{{font-size:11.5px;color:var(--muted);margin-top:2px}}
- .insight{{background:var(--soft);border:1px solid {sborder};color:{atext};border-radius:12px;padding:11px 13px;font-size:13.5px;margin:4px 0 6px}}
+ .topcar{{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:6px}}
+ .tslide{{flex:0 0 100%;scroll-snap-align:center}}
  .ptable{{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}}
  .ptable th,.ptable td{{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}}
  .ptable td:not(:first-child),.ptable th:not(:first-child){{text-align:right}}
@@ -202,7 +206,6 @@ def page(cfg):
  footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:22px}}
 </style></head><body><div class="wrap">
  <div class="top"><h1>{esc(cfg.get('title','Content Preview'))}</h1><div class="meta">updated {updated}</div></div>
- <div class="banner">{cfg.get('banner','Tap a highlighted day to see what is scheduled.')}</div>
  <div class="tabs">
    <button class="tab on" data-tab="posts">Posts</button>
    <button class="tab" data-tab="stories">Stories</button>

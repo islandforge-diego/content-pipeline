@@ -13,11 +13,8 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import anthropic
-
 import buffer_api
 import calendly_api
-from caption_gen import _system_blocks, _model
 
 ROOT = Path(__file__).resolve().parent.parent
 PREVIEW_DIR = ROOT / "content-preview"
@@ -68,29 +65,6 @@ def summarize_posts(posts):
     }
 
 
-def _insights(client, summary, bookings):
-    """A short AI 'what's working' line in the brand voice (seeds the feedback loop)."""
-    try:
-        plat = ", ".join(f"{k}: {v['reach']} reach / {v['engagement']} eng"
-                         for k, v in summary["by_platform"].items())
-        tops = "; ".join(f"{c['platform']} \"{c['title']}\" ({c['reach']} reach)"
-                         for c in summary["top_posts"][:3])
-        prompt = (
-            "From these social numbers, write 1-2 short sentences for the creator on what is "
-            "working and what to do more of. Be specific and encouraging, no fluff, no emojis.\n\n"
-            f"Bookings: {bookings if bookings is not None else 'n/a'}\n"
-            f"Totals: reach {summary['reach']}, impressions {summary['impressions']}, "
-            f"engagement {summary['engagement']}, posts {summary['posts']}\n"
-            f"By platform: {plat}\nTop posts: {tops}")
-        api = anthropic.Anthropic()
-        msg = api.messages.create(model=_model(client, "revise"), max_tokens=220,
-                                  system=_system_blocks(client),
-                                  messages=[{"role": "user", "content": prompt}])
-        return msg.content[0].text.strip()
-    except Exception:
-        return ""
-
-
 def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
     org_id = client["buffer"]["org_id"]
     channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
@@ -113,7 +87,6 @@ def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
     summary["bookings"] = bookings
     summary["window_days"] = window_days
     summary["updated"] = end.astimezone(timezone(timedelta(hours=-5))).strftime("%b %-d, %-I:%M %p CT")
-    summary["insights"] = _insights(client, summary, bookings) if posts else ""
     return summary
 
 
