@@ -48,8 +48,10 @@ def summarize_posts(posts):
         if md.get("engagementRate"):
             rates.append(md["engagementRate"])
         plat = p.get("channelService", "") or ""
-        pp = per_platform.setdefault(plat, {"reach": 0, "engagement": 0, "posts": 0, "views": 0})
+        pp = per_platform.setdefault(plat, {"reach": 0, "engagement": 0, "posts": 0,
+                                            "views": 0, "saves": 0, "follows": 0})
         pp["reach"] += r; pp["engagement"] += eng; pp["posts"] += 1; pp["views"] += v
+        pp["saves"] += md.get("saves", 0); pp["follows"] += md.get("follows", 0)
         assets = p.get("assets") or []
         asset_type = assets[0].get("type", "image").capitalize() if assets else "Image"
         cards.append({
@@ -167,6 +169,65 @@ def merge_manual(summary, client):
     return summary
 
 
+def compute_follower_growth(summary, client, posts, today, cutoff30):
+    """Per-platform follower totals + 'gained' growth.
+
+    Growth source, in priority order:
+      1. Snapshot diff — if a follower-count snapshot from >=30 days ago exists, the
+         true 30-day gain is (today's total - that snapshot's total). Accurate, and
+         works for every platform. Builds up as snapshots accrue on each sync.
+      2. Partial signals (until history matures): Buffer's per-post `follows` over the
+         trailing 30 days (Instagram, in practice) and Facebook's manual `net_follows`.
+
+    Returns the updated snapshot history so the caller can persist it. Sets on summary:
+    follower_growth {platform: {total, gained, window}}, followers_gained_total,
+    followers_gained_is_true_30d, followers_gained_since.
+    """
+    manual = client.get("manual_metrics", {}) or {}
+    cur = summary.get("followers_by_platform", {}) or {}
+
+    # Buffer per-post follows in the trailing 30 days (not gated by the baseline date).
+    buf30 = {}
+    for p in posts:
+        f = int(_md(p).get("follows", 0) or 0)
+        if f and (p.get("dueAt") or "")[:10] >= cutoff30:
+            plat = p.get("channelService", "") or ""
+            buf30[plat] = buf30.get(plat, 0) + f
+
+    # Append today's snapshot to the history (replace any same-date entry).
+    history = [h for h in (manual.get("followers_history") or []) if h.get("date") != today]
+    history.append({"date": today, "by_platform": dict(cur), "total": summary.get("followers", 0)})
+    history.sort(key=lambda h: h.get("date", ""))
+
+    # Accurate 30-day gain if we have a snapshot at least 30 days old.
+    snap_gained = None
+    prior = [h for h in history if h.get("date", "") <= cutoff30]
+    if prior:
+        base = prior[-1]
+        bp = base.get("by_platform", {}) or {}
+        snap_gained = {plat: cur.get(plat, 0) - bp.get(plat, 0) for plat in cur}
+        summary["followers_gained_since"] = base.get("date")
+
+    fbp = manual.get("facebook_personal") or {}
+    growth, total_gained = {}, 0
+    for plat, tot in cur.items():
+        gained, window = None, None
+        if snap_gained is not None:
+            gained, window = snap_gained.get(plat, 0), "30d"
+        elif plat == "facebook" and fbp.get("net_follows"):
+            gained, window = int(fbp["net_follows"]), fbp.get("window", "")
+        elif plat in buf30:
+            gained, window = buf30[plat], "30d"
+        growth[plat] = {"total": tot, "gained": gained, "window": window}
+        if gained:
+            total_gained += gained
+
+    summary["follower_growth"] = growth
+    summary["followers_gained_is_true_30d"] = snap_gained is not None
+    summary["followers_gained_total"] = total_gained if (snap_gained is not None or total_gained) else None
+    return history
+
+
 def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
     org_id = client["buffer"]["org_id"]
     channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
@@ -193,6 +254,10 @@ def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
 
     summary = merge_manual(summary, client)
 
+    today = end.strftime("%Y-%m-%d")
+    cutoff30 = (end - timedelta(days=30)).strftime("%Y-%m-%d")
+    summary["_followers_history"] = compute_follower_growth(summary, client, posts, today, cutoff30)
+
     bookings = None
     cal = client.get("calendly", {})
     if calendly_token:
@@ -216,6 +281,17 @@ def sync_kpis(client, buffer_token, calendly_token=None, window_days=None):
     window = window_days or client.get("preview", {}).get("kpi_window_days", 30)
     kpis = build_kpis(client, buffer_token, calendly_token, window)
     slug = client["slug"]
+
+    # Persist the follower-count snapshot history back to the source client config so
+    # 30-day growth becomes computable over time (the preview data is a derived artifact).
+    history = kpis.pop("_followers_history", None)
+    if history is not None:
+        src = ROOT / "config" / "clients" / f"{slug}.json"
+        if src.exists():
+            src_cfg = json.loads(src.read_text())
+            src_cfg.setdefault("manual_metrics", {})["followers_history"] = history
+            src.write_text(json.dumps(src_cfg, indent=2))
+
     data_path = PREVIEW_DIR / "clients" / slug / "config.json"
     data_path.parent.mkdir(parents=True, exist_ok=True)
     data = json.loads(data_path.read_text()) if data_path.exists() else {"slug": slug}

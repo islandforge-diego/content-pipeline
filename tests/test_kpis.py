@@ -130,6 +130,47 @@ def test_build_kpis_gates_new_follows_by_as_of(monkeypatch):
     assert out["followers_by_platform"]["instagram"] == 1009
 
 
+def _follows_post(plat, n, due):
+    return {"channelService": plat, "dueAt": due,
+            "metrics": [{"type": "follows", "value": n}]}
+
+
+def test_follower_growth_partial_signals_no_history():
+    # No snapshot history yet → fall back to Buffer follows (IG) + FB net_follows.
+    summary = {"followers": 13000,
+               "followers_by_platform": {"facebook": 7000, "instagram": 5000, "tiktok": 1000}}
+    client = {"manual_metrics": {
+        "facebook_personal": {"net_follows": 156, "window": "Apr 30 – Jun 29"},
+    }}
+    posts = [_follows_post("instagram", 9, "2026-06-20T00:00:00Z"),    # within 30d
+             _follows_post("instagram", 4, "2026-05-01T00:00:00Z")]    # older → excluded
+    hist = kpi_sync.compute_follower_growth(summary, client, posts, "2026-06-29", "2026-05-30")
+    g = summary["follower_growth"]
+    assert g["instagram"]["gained"] == 9 and g["instagram"]["window"] == "30d"
+    assert g["facebook"]["gained"] == 156
+    assert g["tiktok"]["gained"] is None                  # no signal for TikTok
+    assert summary["followers_gained_is_true_30d"] is False
+    assert summary["followers_gained_total"] == 9 + 156
+    # today's snapshot was appended for next time
+    assert hist[-1]["date"] == "2026-06-29" and hist[-1]["total"] == 13000
+
+
+def test_follower_growth_true_30d_from_snapshot():
+    summary = {"followers": 13000,
+               "followers_by_platform": {"facebook": 7000, "instagram": 5000, "tiktok": 1000}}
+    client = {"manual_metrics": {"followers_history": [
+        {"date": "2026-05-20", "by_platform": {"facebook": 6900, "instagram": 4800, "tiktok": 950},
+         "total": 12650},
+    ]}}
+    kpi_sync.compute_follower_growth(summary, client, [], "2026-06-29", "2026-05-30")
+    g = summary["follower_growth"]
+    assert summary["followers_gained_is_true_30d"] is True
+    assert g["instagram"]["gained"] == 200 and g["facebook"]["gained"] == 100
+    assert g["tiktok"]["gained"] == 50
+    assert summary["followers_gained_total"] == 350
+    assert summary["followers_gained_since"] == "2026-05-20"
+
+
 def test_merge_manual_noop_without_block():
     summary = {"reach": 10, "engagement": 1,
                "by_platform": {"instagram": {"reach": 10, "engagement": 1, "posts": 1}}}

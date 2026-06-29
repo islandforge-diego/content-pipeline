@@ -3548,31 +3548,41 @@
         "reach": 36650,
         "engagement": 2594,
         "posts": 105,
-        "views": 58351
+        "views": 58351,
+        "saves": 64,
+        "follows": 8
       },
       "linkedin": {
         "reach": 1227,
         "engagement": 74,
         "posts": 121,
-        "views": 1995
+        "views": 1995,
+        "saves": 0,
+        "follows": 0
       },
       "facebook": {
         "reach": 184783,
         "engagement": 5607,
         "posts": 14,
-        "views": 187216
+        "views": 187216,
+        "saves": 0,
+        "follows": 0
       },
       "tiktok": {
         "reach": 14253,
         "engagement": 422,
         "posts": 45,
-        "views": 16162
+        "views": 16162,
+        "saves": 0,
+        "follows": 0
       },
       "youtube": {
         "reach": 0,
         "engagement": 64,
         "posts": 17,
-        "views": 7508
+        "views": 7508,
+        "saves": 0,
+        "follows": 0
       }
     },
     "top_posts": [
@@ -4351,31 +4361,41 @@
         "reach": 36650,
         "engagement": 2594,
         "posts": 105,
-        "views": 58351
+        "views": 58351,
+        "saves": 64,
+        "follows": 8
       },
       "linkedin": {
         "reach": 1227,
         "engagement": 74,
         "posts": 121,
-        "views": 1995
+        "views": 1995,
+        "saves": 0,
+        "follows": 0
       },
       "tiktok": {
         "reach": 14253,
         "engagement": 422,
         "posts": 45,
-        "views": 16162
+        "views": 16162,
+        "saves": 0,
+        "follows": 0
       },
       "youtube": {
         "reach": 0,
         "engagement": 64,
         "posts": 17,
-        "views": 7508
+        "views": 7508,
+        "saves": 0,
+        "follows": 0
       },
       "facebook_page": {
         "reach": 0,
         "engagement": 17,
         "posts": 14,
-        "views": 2433
+        "views": 2433,
+        "saves": 0,
+        "follows": 0
       },
       "facebook_personal": {
         "reach": 184783,
@@ -4385,8 +4405,37 @@
         "followers": 7112
       }
     },
+    "follower_growth": {
+      "facebook": {
+        "total": 7112,
+        "gained": 156,
+        "window": "Apr 30, 2026 \u2013 Jun 29, 2026"
+      },
+      "instagram": {
+        "total": 5464,
+        "gained": 7,
+        "window": "30d"
+      },
+      "tiktok": {
+        "total": 736,
+        "gained": null,
+        "window": null
+      },
+      "linkedin": {
+        "total": 1116,
+        "gained": null,
+        "window": null
+      },
+      "youtube": {
+        "total": 279,
+        "gained": null,
+        "window": null
+      }
+    },
+    "followers_gained_is_true_30d": false,
+    "followers_gained_total": 163,
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 2:35 PM CT"
+    "updated": "Jun 29, 2:50 PM CT"
   }
 }

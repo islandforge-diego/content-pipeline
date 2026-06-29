@@ -121,13 +121,19 @@ def render_performance(cfg):
          (f"{rate}% of views" if rate else "")),
     ]
     if k.get("followers"):
-        sub = "all platforms"
-        as_of = k.get("followers_as_of")
-        if as_of:
-            try:
-                sub += " · as of " + datetime.datetime.strptime(as_of, "%Y-%m-%d").strftime("%b %-d")
-            except (ValueError, TypeError):
-                pass
+        gained = k.get("followers_gained_total")
+        if gained:
+            sign = "+" if gained >= 0 else ""
+            sub = (f"{sign}{gained:,} in 30 days" if k.get("followers_gained_is_true_30d")
+                   else f"{sign}{gained:,} recently")
+        else:
+            sub = "all platforms"
+            as_of = k.get("followers_as_of")
+            if as_of:
+                try:
+                    sub += " · as of " + datetime.datetime.strptime(as_of, "%Y-%m-%d").strftime("%b %-d")
+                except (ValueError, TypeError):
+                    pass
         cards.append(("Followers", fmt(k.get("followers", 0)), sub))
     else:
         cards.append(("Impressions", fmt(k.get("impressions", 0)), ""))
@@ -149,18 +155,23 @@ def render_performance(cfg):
         f'<tr><td>{esc(p)}</td><td>{v.get("views",0):,}</td>'
         f'<td>{v.get("engagement",0):,}</td><td>{_rate(v.get("engagement",0), v.get("views",0))}</td></tr>'
         for p, v in rows)
+    followers_breakdown = render_followers_breakdown(k)
     fb_drill = render_fb_drilldown(k)
+    ig_drill = render_ig_breakdown(k)
     top_by_platform = k.get("top_by_platform", {})
+    # Instagram gets its own featured breakdown below, so skip it in the generic loop.
     buffer_drills = "".join(
         render_buffer_platform_drilldown(p, top_by_platform[p], k.get("by_platform", {}).get(p, {}))
-        for p, _ in rows if p in top_by_platform)
+        for p, _ in rows if p in top_by_platform and p != "instagram")
     return f"""<section class="card" id="perf" hidden>
       <div class="kpis">{kpi_cards}</div>
+      {followers_breakdown}
       {carousel}
       <details><summary>By platform</summary>
         <table class="ptable"><tr><th>Platform</th><th>Views</th><th>Eng</th><th>Rate</th></tr>{plat}</table>
       </details>
       {buffer_drills}
+      {ig_drill}
       {fb_drill}
       <p class="snote">Updated {esc(k.get('updated',''))}</p>
     </section>"""
@@ -259,6 +270,89 @@ def render_fb_drilldown(k):
       <div class="subhead">Views by content type</div>{bars}
       {f'<div class="subhead">Audience</div><p class="snote" style="text-align:left;margin:2px 0">{split}</p>' if split else ''}
       <div class="subhead">Top Facebook posts (by views)</div>
+      {tops}
+    </details>"""
+
+
+def render_followers_breakdown(k):
+    """Per-platform follower totals + 'gained' growth (the cross-platform total card
+    only shows the sum; this breaks it out and shows each platform's recent growth)."""
+    growth = k.get("follower_growth")
+    if not growth:
+        return ""
+    rows = sorted(growth.items(), key=lambda kv: kv[1].get("total", 0), reverse=True)
+    body = ""
+    for plat, g in rows:
+        name = _PLAT_NAMES.get(plat, plat.title())
+        gained = g.get("gained")
+        if gained is None:
+            gcell = "—"
+        else:
+            sign = "+" if gained >= 0 else ""
+            win = g.get("window") or ""
+            chip = f' <span class="cta">{esc(win)}</span>' if win else ""
+            gcell = f'{sign}{gained:,}{chip}'
+        body += f'<tr><td>{esc(name)}</td><td>{g.get("total",0):,}</td><td>{gcell}</td></tr>'
+    note = ""
+    if not k.get("followers_gained_is_true_30d"):
+        note = ('<p class="snote" style="text-align:left;margin:6px 0 0">Growth uses Buffer '
+                'new-follows (Instagram) and the Facebook dashboard figure for now; an exact '
+                '30-day number for every platform builds once a month of weekly snapshots accrues.</p>')
+    return (f'<div class="calhead" style="margin-top:16px">Followers by platform</div>'
+            f'<table class="ptable"><tr><th>Platform</th><th>Followers</th><th>Gained</th></tr>'
+            f'{body}</table>{note}')
+
+
+def render_ig_breakdown(k):
+    """Featured Instagram breakdown built from Buffer data — mirrors the Facebook section
+    (summary line, content-type split, top posts), surfacing IG-specific reach/saves/follows."""
+    ig = (k.get("by_platform") or {}).get("instagram") or {}
+    posts = (k.get("top_by_platform") or {}).get("instagram") or []
+    if not posts:
+        return ""
+    views, reach = ig.get("views", 0), ig.get("reach", 0)
+    eng, saves, follows = ig.get("engagement", 0), ig.get("saves", 0), ig.get("follows", 0)
+    summary = " · ".join(filter(None, [
+        f"{views:,} views",
+        f"{reach:,} reach" if reach else "",
+        f"{eng:,} engagement",
+        f"{saves:,} saves" if saves else "",
+        f"+{follows:,} new follows" if follows else "",
+    ]))
+    by_type = {}
+    for c in posts:
+        t = c.get("asset_type", "Image")
+        by_type[t] = by_type.get(t, 0) + c["m"].get("views", 0)
+    total = sum(by_type.values()) or 1
+    bars = "".join(
+        f'<div class="bar"><span class="blabel">{esc(t)}</span>'
+        f'<span class="btrack"><span class="bfill" style="width:{round(v*100/total)}%"></span></span>'
+        f'<span class="bpct">{round(v*100/total)}%</span></div>'
+        for t, v in sorted(by_type.items(), key=lambda x: x[1], reverse=True))
+    type_section = f'<div class="subhead">Views by content type</div>{bars}' if len(by_type) > 1 else ""
+
+    def tp(c):
+        m = c.get("m", {})
+        parts = []
+        if m.get("likes"): parts.append(f'{m["likes"]:,} likes')
+        if m.get("comments"): parts.append(f'{m["comments"]:,} comments')
+        if m.get("saves"): parts.append(f'{m["saves"]:,} saves')
+        if m.get("shares"): parts.append(f'{m["shares"]:,} shares')
+        stats = " · ".join(parts)
+        date_chip = f'<span class="cta">{esc(c.get("date",""))}</span>' if c.get("date") else ""
+        link = (f'<a class="tp-link" href="{esc(c["externalLink"])}" target="_blank" rel="noopener">View post →</a>'
+                if c.get("externalLink") else "")
+        return (f'<div class="toppost"><div class="pmeta">'
+                f'<span class="ptime">{m.get("views",0):,} views</span>'
+                f'<span class="cta">{esc(c.get("asset_type",""))}</span>{date_chip}</div>'
+                f'<div class="ptitle">{esc(c.get("title",""))}</div>'
+                f'<div class="tp-stats">{esc(stats)}</div>{link}</div>')
+    tops = "".join(tp(c) for c in posts)
+    return f"""<details>
+      <summary>Instagram breakdown</summary>
+      <p class="snote" style="text-align:left;margin:6px 0 2px">{summary}</p>
+      {type_section}
+      <div class="subhead">Top Instagram posts (by views)</div>
       {tops}
     </details>"""
 
