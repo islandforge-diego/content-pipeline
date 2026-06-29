@@ -442,6 +442,33 @@ def api_fb_import():
         return jsonify({"error": str(e)}), 502
 
 
+@app.post("/api/calendly/import")
+def api_calendly_import():
+    """Ingest a Calendly event-data CSV export as the manual bookings source."""
+    from datetime import date
+    from calendly_api import count_events_csv
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cf = CLIENTS_DIR / f"{slug}.json"
+    if not cf.exists():
+        return jsonify({"error": "client not found"}), 404
+    csv_path = body.get("csv_path", "")
+    if not Path(csv_path).is_file():
+        return jsonify({"error": "csv not found"}), 400
+    try:
+        counts = count_events_csv(csv_path)
+        cfg = json.loads(cf.read_text())
+        cfg.setdefault("manual_metrics", {})["calendly"] = {
+            "bookings": counts["booked"], "total": counts["total"],
+            "canceled": counts["canceled"], "window": body.get("window", ""),
+            "updated": date.today().isoformat(),
+        }
+        cf.write_text(json.dumps(cfg, indent=2, ensure_ascii=False))
+        return jsonify({"ok": True, "calendly": cfg["manual_metrics"]["calendly"]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
 @app.post("/api/preview/sync")
 def api_preview_sync():
     """Rebuild a client's preview page from Buffer's actual scheduled posts."""

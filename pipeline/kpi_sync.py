@@ -120,6 +120,10 @@ def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
                 calendly_token, since, end.isoformat(), cal.get("user_uri"))["count"]
         except Exception:
             bookings = None
+    if bookings is None:  # manual fallback (from a Calendly CSV export) until the API token
+        man = (client.get("manual_metrics", {}) or {}).get("calendly") or {}
+        if man.get("bookings") is not None:
+            bookings = man["bookings"]
 
     summary["bookings"] = bookings
     summary["window_days"] = window_days

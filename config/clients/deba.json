@@ -229,6 +229,13 @@
         }
       ],
       "updated": "2026-06-29"
+    },
+    "calendly": {
+      "bookings": 35,
+      "total": 38,
+      "canceled": 3,
+      "window": "Apr 30 – Jun 28, 2026",
+      "updated": "2026-06-29"
     }
   },
   "partners": [

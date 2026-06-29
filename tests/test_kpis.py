@@ -62,6 +62,13 @@ def test_merge_manual_noop_without_block():
     assert "facebook_personal" not in out["by_platform_detail"]
 
 
+def test_calendly_count_events_csv(tmp_path):
+    p = tmp_path / "events.csv"
+    p.write_text("Invitee Name,Canceled\nA,false\nB,true\nC,false\nD,FALSE\n", encoding="utf-8")
+    c = calendly_api.count_events_csv(str(p))
+    assert c["total"] == 4 and c["canceled"] == 1 and c["booked"] == 3
+
+
 def test_calendly_counts_across_pages(monkeypatch):
     pages = [
         {"collection": [{}, {}], "pagination": {"next_page": "https://api.calendly.com/p2"}},

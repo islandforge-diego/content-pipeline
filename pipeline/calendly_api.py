@@ -4,9 +4,22 @@ Calendly API v2. Auth: a Personal Access Token (CALENDLY_TOKEN) as a Bearer
 header. We discover the user URI from /users/me (or use a configured one), then
 count scheduled events in a time window.
 """
+import csv
+
 import requests
 
 BASE = "https://api.calendly.com"
+
+
+def count_events_csv(path):
+    """Count booked vs canceled events from a Calendly event-data CSV export.
+
+    Used as the manual bookings source until the API token is connected.
+    Returns {'total', 'booked', 'canceled'}.
+    """
+    rows = list(csv.DictReader(open(path, encoding="utf-8-sig", newline="")))
+    canceled = sum(1 for r in rows if (r.get("Canceled", "") or "").strip().lower() == "true")
+    return {"total": len(rows), "booked": len(rows) - canceled, "canceled": canceled}
 
 
 def _get(url, token, params=None):

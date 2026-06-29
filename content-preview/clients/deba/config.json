@@ -3515,11 +3515,11 @@
   ],
   "kpis": {
     "posts": 304,
-    "reach": 237337,
-    "impressions": 4362,
-    "views": 82945,
-    "engagement": 8786,
-    "engagement_rate": 4.42,
+    "reach": 237384,
+    "impressions": 4428,
+    "views": 82953,
+    "engagement": 8779,
+    "engagement_rate": 4.24,
     "by_platform": {
       "instagram": {
         "reach": 36969,
@@ -3527,8 +3527,8 @@
         "posts": 106
       },
       "linkedin": {
-        "reach": 1180,
-        "engagement": 81,
+        "reach": 1227,
+        "engagement": 74,
         "posts": 121
       },
       "facebook": {
@@ -3698,8 +3698,8 @@
         "posts": 106
       },
       "linkedin": {
-        "reach": 1180,
-        "engagement": 81,
+        "reach": 1227,
+        "engagement": 74,
         "posts": 121
       },
       "tiktok": {
@@ -3724,8 +3724,8 @@
         "followers": 7112
       }
     },
-    "bookings": null,
+    "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 1:05 PM CT"
+    "updated": "Jun 29, 1:09 PM CT"
   }
 }
