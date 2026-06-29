@@ -18,7 +18,7 @@ def _macos(kind: str) -> str:
         script = 'POSIX path of (choose folder with prompt "Select a folder")'
     else:
         script = 'POSIX path of (choose file with prompt "Select a photo or video")'
-    out = subprocess.run(["osascript", "-e", script], capture_output=True, text=True)
+    out = subprocess.run(["osascript", "-e", script], capture_output=True, text=True, encoding="utf-8", errors="replace")
     # Cancel → non-zero exit ("User canceled"); success → POSIX path on stdout
     return out.stdout.strip() if out.returncode == 0 else ""
 
@@ -44,7 +44,7 @@ def _windows(kind: str) -> str:
     script = _WIN_FOLDER if kind == "folder" else _WIN_FILE
     out = subprocess.run(
         ["powershell", "-NoProfile", "-STA", "-Command", script],
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
     )
     return out.stdout.strip()
 
@@ -69,7 +69,7 @@ print(filedialog.askdirectory(title='Select a folder') or '', end='')
 def _tk(kind: str) -> str:
     snippet = _TK_FOLDER if kind == "folder" else _TK_FILE
     try:
-        out = subprocess.run([sys.executable, "-c", snippet], capture_output=True, text=True, timeout=300)
+        out = subprocess.run([sys.executable, "-c", snippet], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=300)
         return out.stdout.strip()
     except Exception:
         return ""

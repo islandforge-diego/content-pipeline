@@ -26,7 +26,7 @@ def _duration(video_path: str) -> float:
         out = subprocess.run(
             ["ffprobe", "-v", "quiet", "-print_format", "json",
              "-show_format", str(video_path)],
-            capture_output=True, text=True,
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
         )
         return float(json.loads(out.stdout)["format"]["duration"])
     except Exception:
@@ -53,7 +53,7 @@ def extract_frames(video_path: str, count: int = 3, width: int = 512) -> list:
             r = subprocess.run(
                 ["ffmpeg", "-y", "-ss", f"{t:.2f}", "-i", str(video_path),
                  "-frames:v", "1", "-vf", f"scale={width}:-1", "-q:v", "5", str(out)],
-                capture_output=True, text=True,
+                capture_output=True, text=True, encoding="utf-8", errors="replace",
             )
             if r.returncode == 0 and out.exists():
                 frames.append({

@@ -426,7 +426,7 @@ def api_preview_publish():
         progress("Publishing to the web…")
         env = dict(os.environ, PREVIEW_REPO=repo)
         r = subprocess.run(["bash", "deploy.sh"], cwd=str(PREVIEW_DIR),
-                           capture_output=True, text=True, env=env)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace", env=env)
         if r.returncode != 0:
             raise RuntimeError((r.stderr or r.stdout)[-300:] or "deploy failed")
         return {"url": url}

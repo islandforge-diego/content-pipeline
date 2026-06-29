@@ -140,5 +140,5 @@ def sync_preview(client, token):
     data_path.write_text(json.dumps(data, indent=2))
 
     subprocess.run([sys.executable, "generate.py"], cwd=str(PREVIEW_DIR),
-                   capture_output=True, text=True)
+                   capture_output=True, text=True, encoding="utf-8", errors="replace")
     return len(feed), len(stories)

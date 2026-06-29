@@ -117,7 +117,7 @@ def render_video_story(video_path, overlay, out_path, font_name=None):
             ["ffmpeg", "-y", "-i", str(video_path), "-i", png,
              "-filter_complex", filt, "-c:a", "copy", "-c:v", "libx264",
              "-pix_fmt", "yuv420p", str(out_path)],
-            capture_output=True, text=True,
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
         )
         if r.returncode != 0:
             raise RuntimeError(f"ffmpeg story render failed:\n{r.stderr[-400:]}")

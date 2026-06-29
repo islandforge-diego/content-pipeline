@@ -13,12 +13,12 @@ REPO="${PREVIEW_REPO:-https://github.com/islandforge-diego/deba-content-preview.
 HERE="$(cd "$(dirname "$0")" && pwd)"
 cd "$HERE"
 
-echo "Building preview pages…"
+echo "Building preview pages..."
 python3 generate.py
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-echo "Cloning $REPO…"
+echo "Cloning $REPO..."
 git clone --depth 1 "$REPO" "$TMP" >/dev/null 2>&1
 
 cp -R clients "$TMP"/
