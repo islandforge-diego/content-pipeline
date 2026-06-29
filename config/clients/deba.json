@@ -11,7 +11,11 @@
       "cream": "#FBF5EE"
     },
     "color_ratio": "60% teal / 25% gold / 10% salmon / 5% cream (one dominates per piece)",
-    "fonts": { "display": "Georgia Bold", "body": "Lato", "display_substitute_pil": "LiberationSerif-Bold" },
+    "fonts": {
+      "display": "Georgia Bold",
+      "body": "Lato",
+      "display_substitute_pil": "LiberationSerif-Bold"
+    },
     "voice": "empowering, educational, authentic (bus-driver origin), energetic, mission-driven, inclusive",
     "hard_rules": [
       "never use demographic-specific stats",
@@ -31,8 +35,15 @@
     "revise": "claude-haiku-4-5-20251001"
   },
   "cta": {
-    "manychat_platforms": ["instagram", "facebook", "tiktok"],
-    "link_platforms": ["linkedin", "youtube"],
+    "manychat_platforms": [
+      "instagram",
+      "facebook",
+      "tiktok"
+    ],
+    "link_platforms": [
+      "linkedin",
+      "youtube"
+    ],
     "default_keyword": "INVESTOR",
     "book_link": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1"
   },
@@ -46,19 +57,49 @@
     "youtube_privacy": "public",
     "youtube_made_for_kids": false,
     "channels": {
-      "facebook":  { "id": "6a1cb55dc687a22dd4484430", "name": "Douglas Dwellings - Principles of Real Estate", "type": "page" },
-      "instagram": { "id": "6a1cb662c687a22dd4484705", "handle": "debaflipstexas", "type": "business" },
-      "tiktok":    { "id": "6a1cb855c687a22dd4484c34", "handle": "debaflipstexas", "type": "account" },
-      "linkedin":  { "id": "6a1cb7a4c687a22dd4484a78", "name": "Deba Douglas", "type": "profile" },
-      "youtube":   { "id": "6a1cbd9ac687a22dd44859a6", "name": "Principles of Real Estate", "type": "channel" }
+      "facebook": {
+        "id": "6a1cb55dc687a22dd4484430",
+        "name": "Douglas Dwellings - Principles of Real Estate",
+        "type": "page"
+      },
+      "instagram": {
+        "id": "6a1cb662c687a22dd4484705",
+        "handle": "debaflipstexas",
+        "type": "business"
+      },
+      "tiktok": {
+        "id": "6a1cb855c687a22dd4484c34",
+        "handle": "debaflipstexas",
+        "type": "account"
+      },
+      "linkedin": {
+        "id": "6a1cb7a4c687a22dd4484a78",
+        "name": "Deba Douglas",
+        "type": "profile"
+      },
+      "youtube": {
+        "id": "6a1cbd9ac687a22dd44859a6",
+        "name": "Principles of Real Estate",
+        "type": "channel"
+      }
     }
   },
   "schedule": {
     "feed": {
       "per_day": 1,
       "default_time": "15:00",
-      "reels_channels": ["facebook", "instagram", "tiktok", "linkedin", "youtube"],
-      "image_channels": ["facebook", "instagram", "linkedin"]
+      "reels_channels": [
+        "facebook",
+        "instagram",
+        "tiktok",
+        "linkedin",
+        "youtube"
+      ],
+      "image_channels": [
+        "facebook",
+        "instagram",
+        "linkedin"
+      ]
     },
     "stories": {
       "per_day": 1,
@@ -66,34 +107,101 @@
       "channel": "instagram",
       "scheduling_type": "notification",
       "theme_rotation": {
-        "Mon": "Testimonial", "Tue": "Mentee", "Wed": "Wealth-Building",
-        "Thu": "Transformation", "Fri": "Teaching", "Sat": "Community", "Sun": "Faith & Freedom"
+        "Mon": "Testimonial",
+        "Tue": "Mentee",
+        "Wed": "Wealth-Building",
+        "Thu": "Transformation",
+        "Fri": "Teaching",
+        "Sat": "Community",
+        "Sun": "Faith & Freedom"
       }
     }
   },
-  "s3": { "bucket": "debadouglas", "region": "us-east-2", "block_public_access": false, "delivery": "public" },
+  "s3": {
+    "bucket": "debadouglas",
+    "region": "us-east-2",
+    "block_public_access": false,
+    "delivery": "public"
+  },
   "preview": {
-    "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
+    "theme": {
+      "accent": "#1f6f54",
+      "soft": "#e8f1ec",
+      "soft_border": "#cfe2d8",
+      "accent_text": "#16503c",
+      "story_bg": "#0d5f6e"
+    },
     "data_file": "content-preview/clients/deba/config.json",
     "history_since": "2026-06-01",
     "kpi_window_days": 60,
     "pages_repo": "https://github.com/islandforge-diego/deba-content-preview.git",
     "pages_url": "https://islandforge-diego.github.io/deba-content-preview/clients/deba/"
   },
-  "calendly": { "user_uri": "", "booking_slug": "bookdeba" },
+  "calendly": {
+    "user_uri": "",
+    "booking_slug": "bookdeba"
+  },
   "manual_metrics": {
     "facebook_personal": {
       "followers": 7112,
-      "reach": 183807,
-      "engagement": 5569,
-      "window": "Last 60 days",
-      "updated": "2026-06-29",
-      "views_by_type": [["Photo", 29.6], ["Reel", 28.5], ["Text", 20.2], ["Multi photo", 17.5], ["Link", 2.2], ["Multi media", 2.0]],
-      "followers_split": [["Followers", 72.5], ["Non-followers", 27.5]],
-      "top_posts": [["May 11", 7396], ["May 14", 3592], ["May 20", 3437], ["May 20", 3410], ["Jun 20", 2925]]
+      "reach": 184783,
+      "impressions": 118796,
+      "engagement": 5590,
+      "net_follows": 156,
+      "window": "Apr 30, 2026 – Jun 29, 2026",
+      "views_by_type": [
+        [
+          "Photo",
+          53.6
+        ],
+        [
+          "Reel",
+          30.9
+        ],
+        [
+          "Text",
+          10.0
+        ],
+        [
+          "Other",
+          5.3
+        ],
+        [
+          "Link",
+          0.3
+        ]
+      ],
+      "top_posts": [
+        [
+          "Your gifts will make room for you. ❤️ Today,…",
+          7396
+        ],
+        [
+          "Tune in to Good Morning Texas today at 9am f…",
+          3592
+        ],
+        [
+          "Trying to figure out what closing gift to ge…",
+          3437
+        ],
+        [
+          "Today was one of those full circle moments… …",
+          3410
+        ],
+        [
+          "Why didn’t y’all tell me I hold the mic like…",
+          2925
+        ]
+      ],
+      "updated": "2026-06-29"
     }
   },
   "partners": [
-    { "name": "Longhorn Investments", "ig": "@longhorn_investments", "fb": "facebook.com/longhorninvestments", "relationship": "sponsor" }
+    {
+      "name": "Longhorn Investments",
+      "ig": "@longhorn_investments",
+      "fb": "facebook.com/longhorninvestments",
+      "relationship": "sponsor"
+    }
   ]
 }

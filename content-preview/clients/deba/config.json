@@ -3514,17 +3514,17 @@
     }
   ],
   "kpis": {
-    "posts": 303,
-    "reach": 236361,
+    "posts": 304,
+    "reach": 237337,
     "impressions": 4362,
     "views": 82945,
-    "engagement": 8763,
+    "engagement": 8786,
     "engagement_rate": 4.42,
     "by_platform": {
       "instagram": {
         "reach": 36969,
-        "engagement": 2604,
-        "posts": 105
+        "engagement": 2606,
+        "posts": 106
       },
       "linkedin": {
         "reach": 1180,
@@ -3532,8 +3532,8 @@
         "posts": 121
       },
       "facebook": {
-        "reach": 183807,
-        "engagement": 5586,
+        "reach": 184783,
+        "engagement": 5607,
         "posts": 14
       },
       "tiktok": {
@@ -3606,74 +3606,61 @@
     ],
     "followers": 7112,
     "facebook_personal_detail": {
-      "window": "Last 60 days",
-      "reach": 183807,
-      "engagement": 5569,
+      "window": "Apr 30, 2026 \u2013 Jun 29, 2026",
+      "reach": 184783,
+      "engagement": 5590,
       "followers": 7112,
       "views_by_type": [
         [
           "Photo",
-          29.6
+          53.6
         ],
         [
           "Reel",
-          28.5
+          30.9
         ],
         [
           "Text",
-          20.2
+          10.0
         ],
         [
-          "Multi photo",
-          17.5
+          "Other",
+          5.3
         ],
         [
           "Link",
-          2.2
-        ],
-        [
-          "Multi media",
-          2.0
+          0.3
         ]
       ],
       "top_posts": [
         [
-          "May 11",
+          "Your gifts will make room for you. \u2764\ufe0f Today,\u2026",
           7396
         ],
         [
-          "May 14",
+          "Tune in to Good Morning Texas today at 9am f\u2026",
           3592
         ],
         [
-          "May 20",
+          "Trying to figure out what closing gift to ge\u2026",
           3437
         ],
         [
-          "May 20",
+          "Today was one of those full circle moments\u2026 \u2026",
           3410
         ],
         [
-          "Jun 20",
+          "Why didn\u2019t y\u2019all tell me I hold the mic like\u2026",
           2925
         ]
       ],
-      "followers_split": [
-        [
-          "Followers",
-          72.5
-        ],
-        [
-          "Non-followers",
-          27.5
-        ]
-      ]
+      "followers_split": []
     },
     "by_platform_detail": {
       "instagram": {
         "reach": 36969,
-        "engagement": 2604,
-        "posts": 105
+        "engagement": 2606,
+        "posts": 106
       },
       "linkedin": {
         "reach": 1180,
@@ -3696,14 +3683,14 @@
         "posts": 14
       },
       "facebook_personal": {
-        "reach": 183807,
-        "engagement": 5569,
+        "reach": 184783,
+        "engagement": 5590,
         "posts": 0,
         "followers": 7112
       }
     },
     "bookings": null,
     "window_days": 60,
-    "updated": "Jun 29, 12:42 PM CT"
+    "updated": "Jun 29, 12:50 PM CT"
   }
 }

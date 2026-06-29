@@ -415,6 +415,33 @@ def api_manual_metrics():
     return jsonify({"ok": True, "facebook_personal": cur})
 
 
+@app.post("/api/fb/import")
+def api_fb_import():
+    """Ingest Facebook profile CSV exports from a folder into facebook_personal."""
+    from datetime import date
+    from fb_export import build_facebook_personal
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cf = CLIENTS_DIR / f"{slug}.json"
+    if not cf.exists():
+        return jsonify({"error": "client not found"}), 404
+    cfg = json.loads(cf.read_text())
+    folder = body.get("folder", "")
+    if not folder or not Path(folder).is_dir():
+        return jsonify({"error": "folder not found"}), 400
+    existing = (cfg.get("manual_metrics", {}) or {}).get("facebook_personal", {})
+    page_name = body.get("page_name") or cfg.get("display_name")
+    followers = body.get("followers") or existing.get("followers")
+    try:
+        fbp = build_facebook_personal(folder, page_name=page_name, followers=followers)
+        fbp["updated"] = date.today().isoformat()
+        cfg.setdefault("manual_metrics", {})["facebook_personal"] = fbp
+        cf.write_text(json.dumps(cfg, indent=2, ensure_ascii=False))
+        return jsonify({"ok": True, "facebook_personal": fbp})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 502
+
+
 @app.post("/api/preview/sync")
 def api_preview_sync():
     """Rebuild a client's preview page from Buffer's actual scheduled posts."""
