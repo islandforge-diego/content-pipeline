@@ -17,10 +17,14 @@ def test_story_parse_overlay_and_sticker():
     assert out["sticker"].startswith("Poll:")
 
 
-def test_story_font_available():
-    # at least the fallback path resolves to None without raising
-    fp = story_render._font_path()
+def test_story_font_resolves():
+    # brand display font resolves to a real file (or None) without raising
+    fp = story_render.resolve_font("Georgia Bold")
     assert fp is None or Path(fp).exists()
+
+
+def test_story_overlay_strips_emoji():
+    assert story_render._strip_emoji("first deal 🏡✨ done") == "first deal done"
 
 
 def test_overlay_layer_is_story_sized():
