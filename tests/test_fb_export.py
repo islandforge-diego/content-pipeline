@@ -29,6 +29,8 @@ def test_build_facebook_personal(tmp_path):
     # views-by-type + top posts come from the content export (page-name filtered)
     d = dict(out["views_by_type"])
     assert d["Reel"] == 70.0 and d["Photo"] == 30.0
-    assert out["top_posts"][0][1] == 700   # the reel is top by views
+    top = out["top_posts"][0]              # the reel is top by views
+    assert top["views"] == 700
+    assert top["reactions"] == 0 and "permalink" in top and "type" in top
     assert "Other Person" not in str(out)  # other pages excluded
     assert out["window"].startswith("Apr 30")

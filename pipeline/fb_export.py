@@ -75,8 +75,15 @@ def parse_content(path, page_name):
         posts.append({
             "title": (r.get("Title", "") or "").strip(),
             "type": (r.get("Post type", "") or "").strip(),
+            "date": (r.get("Publish time", "") or "").strip().split(" ")[0],
+            "permalink": (r.get("Permalink", "") or "").strip(),
             "views": int(_num(r.get("Views"))),
+            "impressions": int(_num(r.get("Impressions"))),
             "interactions": int(_num(r.get("Interactions"))),
+            "reactions": int(_num(r.get("Reactions"))),
+            "comments": int(_num(r.get("Comments"))),
+            "shares": int(_num(r.get("Shares"))),
+            "saves": int(_num(r.get("Saves"))),
         })
     return posts
 
@@ -98,7 +105,12 @@ def build_facebook_personal(folder, page_name="Deba Douglas", followers=None):
         ([_TYPE_LABEL.get(t, t), round(v * 100 / total, 1)] for t, v in by_type.items()),
         key=lambda x: x[1], reverse=True)
     top = sorted(posts, key=lambda p: p["views"], reverse=True)[:5]
-    top_posts = [[_short(p["title"]) or p["type"], p["views"]] for p in top]
+    top_posts = [{
+        "title": _short(p["title"]) or p["type"],
+        "type": p["type"], "date": p["date"], "permalink": p["permalink"],
+        "views": p["views"], "reactions": p["reactions"],
+        "comments": p["comments"], "shares": p["shares"], "saves": p["saves"],
+    } for p in top]
 
     return {
         "followers": followers,

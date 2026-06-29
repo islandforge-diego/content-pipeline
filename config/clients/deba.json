@@ -172,26 +172,61 @@
         ]
       ],
       "top_posts": [
-        [
-          "Your gifts will make room for you. ❤️ Today,…",
-          7396
-        ],
-        [
-          "Tune in to Good Morning Texas today at 9am f…",
-          3592
-        ],
-        [
-          "Trying to figure out what closing gift to ge…",
-          3437
-        ],
-        [
-          "Today was one of those full circle moments… …",
-          3410
-        ],
-        [
-          "Why didn’t y’all tell me I hold the mic like…",
-          2925
-        ]
+        {
+          "title": "Your gifts will make room for you. ❤️ Today,…",
+          "type": "Photo",
+          "date": "05/11/2026",
+          "permalink": "https://www.facebook.com/deba.douglas/posts/pfbid02rm88DfidRmZYrUfoqWj3qiLH9YyWERi6w4UMGr3XxF1WB73Sm5KjXiK5RBKwzFXel",
+          "views": 7396,
+          "reactions": 392,
+          "comments": 120,
+          "shares": 4,
+          "saves": 2
+        },
+        {
+          "title": "Tune in to Good Morning Texas today at 9am f…",
+          "type": "Photo",
+          "date": "05/14/2026",
+          "permalink": "https://www.facebook.com/deba.douglas/posts/pfbid0aUTURpAGTqp5cVpn8rS9FvpTWWziLQv2JFcEYDE4fjKEuC9KYxtQZdzQCZ8jC2sSl",
+          "views": 3592,
+          "reactions": 205,
+          "comments": 40,
+          "shares": 2,
+          "saves": 0
+        },
+        {
+          "title": "Trying to figure out what closing gift to ge…",
+          "type": "Text",
+          "date": "05/20/2026",
+          "permalink": "https://www.facebook.com/deba.douglas/posts/pfbid02FW48PGurwZ53wtLBhhn7D5JASFPgDwxzZyiBQHRJs5zFk9SxuGvVgLcqCi7axQcil",
+          "views": 3437,
+          "reactions": 26,
+          "comments": 23,
+          "shares": 0,
+          "saves": 0
+        },
+        {
+          "title": "Today was one of those full circle moments… …",
+          "type": "Content",
+          "date": "05/20/2026",
+          "permalink": "https://www.facebook.com/deba.douglas/posts/pfbid0LxSMGrvDhWJE4bXtVFZhCMw3v3qpGEWqxt5pH1yxYYs7TYDg1uweabwZGvfntfnol",
+          "views": 3410,
+          "reactions": 160,
+          "comments": 40,
+          "shares": 0,
+          "saves": 1
+        },
+        {
+          "title": "Why didn’t y’all tell me I hold the mic like…",
+          "type": "Photo",
+          "date": "06/20/2026",
+          "permalink": "https://www.facebook.com/deba.douglas/posts/pfbid0oHXH2mNq6HgkbnV4ozxjKPkERb63kgtVZ7UVUsfXhMsPW61gTSz2GSszmSi29zKal",
+          "views": 2925,
+          "reactions": 89,
+          "comments": 19,
+          "shares": 0,
+          "saves": 0
+        }
       ],
       "updated": "2026-06-29"
     }

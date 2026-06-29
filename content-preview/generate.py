@@ -139,14 +139,29 @@ def render_fb_drilldown(k):
         f'<span class="btrack"><span class="bfill" style="width:{pct}%"></span></span>'
         f'<span class="bpct">{pct}%</span></div>'
         for t, pct in fb.get("views_by_type", []))
-    tops = "".join(f'<tr><td>{esc(d)}</td><td>{v:,}</td></tr>' for d, v in fb.get("top_posts", []))
+    def tp(p):
+        if not isinstance(p, dict):   # backward-compat with the old [title, views] shape
+            return f'<div class="toppost"><div class="tp-stats">{esc(str(p))}</div></div>'
+        stats = " · ".join(filter(None, [
+            f'{p.get("reactions",0):,} reactions', f'{p.get("comments",0):,} comments',
+            f'{p.get("shares",0):,} shares', (f'{p["saves"]:,} saves' if p.get("saves") else ""),
+        ]))
+        date_chip = f'<span class="cta">{esc(p.get("date",""))}</span>' if p.get("date") else ""
+        link = (f'<a class="tp-link" href="{esc(p["permalink"])}" target="_blank" rel="noopener">View post →</a>'
+                if p.get("permalink") else "")
+        return ('<div class="toppost"><div class="pmeta">'
+                f'<span class="ptime">{p.get("views",0):,} views</span>'
+                f'<span class="cta">{esc(p.get("type",""))}</span>{date_chip}</div>'
+                f'<div class="ptitle">{esc(p.get("title",""))}</div>'
+                f'<div class="tp-stats">{esc(stats)}</div>{link}</div>')
+    tops = "".join(tp(p) for p in fb.get("top_posts", []))
     split = " · ".join(f"{esc(s)} {p}%" for s, p in fb.get("followers_split", []))
     return f"""<details>
       <summary>Facebook reach breakdown ({esc(fb.get('window',''))})</summary>
       <div class="subhead">Views by content type</div>{bars}
       {f'<div class="subhead">Audience</div><p class="snote" style="text-align:left;margin:2px 0">{split}</p>' if split else ''}
       <div class="subhead">Top Facebook posts (by views)</div>
-      <table class="ptable"><tr><th>Post</th><th>Views</th></tr>{tops}</table>
+      {tops}
     </details>"""
 
 
@@ -217,6 +232,9 @@ def page(cfg):
  .btrack{{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden}}
  .bfill{{display:block;height:100%;background:var(--accent)}}
  .bpct{{width:44px;text-align:right;color:var(--muted)}}
+ .toppost{{border-top:1px solid var(--line);padding:10px 0}}
+ .tp-stats{{font-size:12.5px;color:var(--muted);margin:2px 0 4px}}
+ .tp-link{{font-size:13px;font-weight:600;color:var(--accent);text-decoration:none}}
  video,.gallery img{{width:100%;max-width:320px;display:block;margin:0 auto 10px;border-radius:14px;background:#000;aspect-ratio:9/16;object-fit:cover}}
  .gallery{{display:flex;gap:8px;overflow-x:auto}} .gallery img{{height:300px;width:auto}}
  .count{{font-size:12.5px;color:var(--muted);margin-bottom:6px}}
