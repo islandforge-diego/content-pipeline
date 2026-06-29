@@ -109,9 +109,16 @@ def render_performance(cfg):
         f'<div class="topcar">{slides}</div>'
         f'<p class="snote">swipe to see the top {len(top)} →</p>'
     ) if top else '<p class="snote">No posts with metrics yet.</p>'
+    # Break the breakdown down by the detailed sources (page vs personal kept split),
+    # sorted by reach so the big drivers read first.
+    LABELS = {"facebook_page": "facebook (page)", "facebook_personal": "facebook (personal)"}
+    detail = k.get("by_platform_detail") or k.get("by_platform", {})
+    rows = sorted(detail.items(), key=lambda kv: kv[1].get("reach", 0), reverse=True)
     plat = "".join(
-        f'<tr><td>{esc(p)}</td><td>{v.get("reach",0):,}</td><td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
-        for p, v in k.get("by_platform", {}).items())
+        f'<tr><td>{esc(LABELS.get(p, p))}</td><td>{v.get("reach",0):,}</td>'
+        f'<td>{v.get("engagement",0):,}</td>'
+        f'<td>{"—" if p == "facebook_personal" else v.get("posts",0)}</td></tr>'
+        for p, v in rows)
     fb_note = ('<p class="snote">Facebook totals include her personal profile + page.</p>'
                if "facebook_personal" in (k.get("by_platform_detail") or {}) else "")
     return f"""<section class="card" id="perf" hidden>
