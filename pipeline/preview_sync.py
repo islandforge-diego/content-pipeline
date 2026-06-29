@@ -6,6 +6,7 @@ shows one card with per-platform captions), preserves the curated stories/theme,
 writes content-preview/clients/<slug>/config.json, and rebuilds the HTML.
 """
 import json
+import re
 import subprocess
 import sys
 from datetime import datetime
@@ -14,6 +15,27 @@ from pathlib import Path
 import pytz
 
 import buffer_api
+
+_KEYWORD_RE = re.compile(r'[Cc]omment\s+"?([A-Za-z][A-Za-z ]{0,18}?)"?\s*[\U0001F000-\U0001FAFF👇]', re.UNICODE)
+_KEYWORD_RE2 = re.compile(r'[Cc]omment\s+"([^"]{1,20})"')
+
+
+def _short_title(text, words=6):
+    parts = " ".join((text or "").split()).split(" ")
+    return " ".join(parts[:words]) + ("…" if len(parts) > words else "")
+
+
+def _cta_summary(caps):
+    """Derive a compact CTA label from the captions: a ManyChat keyword or a link."""
+    for _, t in caps:
+        m = _KEYWORD_RE2.search(t or "") or _KEYWORD_RE.search(t or "")
+        if m:
+            return {"type": "comment", "keyword": m.group(1).strip()}
+    for _, t in caps:
+        low = (t or "").lower()
+        if "http" in low or "link in bio" in low or "calendly" in low:
+            return {"type": "link"}
+    return {}
 
 ROOT = Path(__file__).resolve().parent.parent
 PREVIEW_DIR = ROOT / "content-preview"
@@ -60,9 +82,10 @@ def posts_to_feed(posts, tz_name="America/Chicago"):
     feed = []
     for key in order:
         g = groups[key]
-        # title from the instagram caption if present, else the first one
+        # brief title from the instagram caption if present, else the first one
         cap = dict(g["caps"]).get("instagram") or (g["caps"][0][1] if g["caps"] else "")
-        g["title"] = " ".join(cap.split())[:70]
+        g["title"] = _short_title(cap)
+        g["cta"] = _cta_summary(g["caps"])
         feed.append(g)
     feed.sort(key=lambda f: (f["iso_date"], f.get("time", "")))
     return feed

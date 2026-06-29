@@ -90,10 +90,23 @@ def render_post_block(p):
         f'<div class="cap"><h4>{esc(lbl)}</h4><p>{esc(t)}</p></div>'
         for lbl, t in p.get("caps", [])
     )
+    cta = p.get("cta") or {}
+    if cta.get("type") == "comment":
+        cta_html = f'<span class="cta">💬 Comment “{esc(cta.get("keyword",""))}”</span>'
+    elif cta.get("type") == "link":
+        cta_html = '<span class="cta">🔗 Link in bio</span>'
+    else:
+        cta_html = ""
+    meta = "".join(filter(None, [
+        f'<span class="ptime">{esc(p["time"])}</span>' if p.get("time") else "",
+        cta_html,
+    ]))
+    title = f'<div class="ptitle">{esc(p["title"])}</div>' if p.get("title") else ""
     return f"""
     <div class="post">
       {render_media(p.get("media"))}
-      <div class="ptitle">{esc(p.get("title",""))}{(' · '+esc(p["time"])) if p.get("time") else ''}</div>
+      <div class="pmeta">{meta}</div>
+      {title}
       <div class="chips">{chips}</div>
       <details><summary>Captions per platform</summary><div class="caps">{caps}</div></details>
     </div>"""
@@ -199,7 +212,10 @@ def page(cfg):
  .gallery img{{height:300px;border-radius:12px;scroll-snap-align:center;flex:0 0 auto;background:#eee}}
  .count{{font-size:12.5px;color:var(--muted);margin-bottom:6px}}
  .post{{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}} .post:first-child{{border-top:none;margin-top:0;padding-top:0}}
- .ptitle{{font-size:16px;font-weight:650;margin:0 0 8px;line-height:1.3}}
+ .pmeta{{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 6px}}
+ .ptime{{background:var(--accent);color:#fff;font-weight:600;font-size:12.5px;padding:3px 10px;border-radius:999px}}
+ .cta{{background:var(--soft);color:{atext};border:1px solid {sborder};font-weight:600;font-size:12.5px;padding:3px 10px;border-radius:999px}}
+ .ptitle{{font-size:15px;font-weight:600;margin:0 0 8px;line-height:1.3;color:var(--muted)}}
  .story{{margin-bottom:14px}}
  .simg{{width:100%;max-width:300px;display:block;margin:0 auto 8px;border-radius:14px;background:{sbg};aspect-ratio:9/16;object-fit:cover}}
  .stitle{{font-size:15px;font-weight:650;text-align:center}}
