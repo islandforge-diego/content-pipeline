@@ -47,7 +47,10 @@
   "s3": { "bucket": "CLIENT-bucket-name", "region": "us-east-2", "block_public_access": true, "delivery": "presigned" },
   "preview": {
     "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
-    "data_file": "content-preview/clients/CLIENT_SLUG/config.json"
+    "data_file": "content-preview/clients/CLIENT_SLUG/config.json",
+    "history_since": "2026-06-01",
+    "pages_repo": "",
+    "pages_url": ""
   },
   "partners": []
 }

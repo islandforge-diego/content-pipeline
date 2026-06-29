@@ -74,7 +74,10 @@
   "s3": { "bucket": "debadouglas", "region": "us-east-2", "block_public_access": false, "delivery": "public" },
   "preview": {
     "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
-    "data_file": "content-preview/clients/deba/config.json"
+    "data_file": "content-preview/clients/deba/config.json",
+    "history_since": "2026-06-01",
+    "pages_repo": "https://github.com/islandforge-diego/deba-content-preview.git",
+    "pages_url": "https://islandforge-diego.github.io/deba-content-preview/clients/deba/"
   },
   "partners": [
     { "name": "Longhorn Investments", "ig": "@longhorn_investments", "fb": "facebook.com/longhorninvestments", "relationship": "sponsor" }

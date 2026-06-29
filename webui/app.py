@@ -406,6 +406,34 @@ def api_preview_sync():
         return jsonify({"error": str(e)}), 502
 
 
+@app.post("/api/preview/publish")
+def api_preview_publish():
+    """Re-sync from Buffer and push the live (public) preview site for a client."""
+    body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    token = os.environ.get("BUFFER_TOKEN", "")
+    if not token:
+        return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
+    repo = cfg.get("preview", {}).get("pages_repo")
+    url = cfg.get("preview", {}).get("pages_url")
+    if not repo:
+        return jsonify({"error": "no preview.pages_repo configured for this client"}), 400
+
+    def work(progress):
+        progress("Syncing from Buffer…")
+        preview_sync.sync_preview(cfg, token)
+        progress("Publishing to the web…")
+        env = dict(os.environ, PREVIEW_REPO=repo)
+        r = subprocess.run(["bash", "deploy.sh"], cwd=str(PREVIEW_DIR),
+                           capture_output=True, text=True, env=env)
+        if r.returncode != 0:
+            raise RuntimeError((r.stderr or r.stdout)[-300:] or "deploy failed")
+        return {"url": url}
+
+    return jsonify({"job_id": jobs.start(work)})
+
+
 @app.get("/preview/<path:subpath>")
 def serve_preview(subpath):
     """Serve the generated preview pages so you can view them from this app."""

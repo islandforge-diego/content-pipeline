@@ -189,6 +189,30 @@
       },
       "sticker": "Faith & Freedom Sunday \u2014 add Question box: \"What would freedom let you do?\"",
       "title": ""
+    },
+    {
+      "iso_date": "2026-06-29",
+      "time": "7:00 AM CT",
+      "media": {
+        "type": "gallery",
+        "images": [
+          "https://debadouglas.s3.us-east-2.amazonaws.com/media/story_FX200806.jpg"
+        ]
+      },
+      "sticker": "Question: What's the ONE thing holding you back from your first deal?",
+      "title": ""
+    },
+    {
+      "iso_date": "2026-06-30",
+      "time": "7:00 AM CT",
+      "media": {
+        "type": "gallery",
+        "images": [
+          "https://debadouglas.s3.us-east-2.amazonaws.com/media/story_FX200886.jpg"
+        ]
+      },
+      "sticker": "Question: What's one thing you wish you'd known before your first deal?",
+      "title": ""
     }
   ],
   "feed": [

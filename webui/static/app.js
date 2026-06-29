@@ -607,6 +607,21 @@ function defaultStoryTime() {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+$("publishWebBtn").onclick = async () => {
+  if (!state.client) { alert("Select a client first."); return; }
+  const b = $("publishWebBtn");
+  b.disabled = true; b.textContent = "Publishing…";
+  try {
+    const res = await pollJob((await api.post("/api/preview/publish", { client: state.client })).job_id, () => {});
+    if (res.url) {
+      if (confirm("Live preview updated (Pages refreshes in ~1 min).\n\nOpen it now?")) window.open(res.url, "_blank");
+    }
+  } catch (e) {
+    alert("Publish to web failed: " + e.message);
+  }
+  b.disabled = false; b.textContent = "Publish to web ⤴";
+};
+
 // ---- init ----
 $("clientSelect").onchange = (e) => selectClient(e.target.value);
 loadClients();
