@@ -41,7 +41,20 @@ generates authentic IG stories → and publishes a client-facing preview site.
 - AWS is currently on **root keys** — pending follow-up to switch to the scoped
   `studio-uploader` IAM user, then delete the root key.
 
-## What's next (approved plan)
+## Performance / KPIs (built — pending Calendly token)
+A **Performance tab** on the preview shows business KPIs:
+- Reach / impressions / engagement (+ rate) summed from per-post Buffer metrics,
+  top posts, per-platform breakdown, and a short AI "what's working" insight.
+- **Bookings** show once `CALENDLY_TOKEN` is in `.env` (2FA-gated PAT from
+  Calendly → Integrations → API & webhooks). Until then bookings render as "—".
+- Code: `pipeline/calendly_api.py`, `pipeline/kpi_sync.py`, `buffer_api.posts_with_metrics`,
+  Performance tab in `content-preview/generate.py`. Refreshes via the Preview/Publish buttons.
+- Live data already rich (300+ historical sent posts with metrics).
+
+## Next ideas (not yet built)
+- ManyChat keyword-DM conversions; per-post booking attribution via UTM; trend charts.
+
+(Original plan, for reference)
 **Performance / KPIs tab** on the client preview — business-outcome focused:
 - Lead with **Calendly bookings** + Buffer **reach/impressions**; simple summary +
   top posts; short AI "what's working" insight (seeds the caption feedback loop).

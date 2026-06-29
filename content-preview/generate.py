@@ -71,6 +71,51 @@ def render_story_block(s):
     </div>"""
 
 
+def render_performance(cfg):
+    """Server-render the Performance panel from cfg['kpis'] (hidden until its tab)."""
+    k = cfg.get("kpis")
+    if not k:
+        return '<section class="card" id="perf" hidden><p class="snote">Performance data will appear once metrics sync.</p></section>'
+
+    def fmt(n):
+        return f"{n:,}" if isinstance(n, (int, float)) else "—"
+
+    bookings = k.get("bookings")
+    cards = [
+        ("Bookings", (str(bookings) if bookings is not None else "—"),
+         "Calendly" if bookings is not None else "connect Calendly"),
+        ("Reach", fmt(k.get("reach", 0)), f"last {k.get('window_days', 30)} days"),
+        ("Impressions", fmt(k.get("impressions", 0)), ""),
+        ("Engagement", fmt(k.get("engagement", 0)),
+         (f"{k['engagement_rate']}% rate" if k.get("engagement_rate") else "")),
+    ]
+    kpi_cards = "".join(
+        f'<div class="kpi"><div class="kval">{esc(v)}</div><div class="klabel">{esc(lbl)}</div>'
+        f'{(chr(60)+"div class=ksub"+chr(62)+esc(sub)+chr(60)+"/div"+chr(62)) if sub else ""}</div>'
+        for lbl, v, sub in cards)
+    tops = "".join(
+        f'<div class="post">{render_media(c.get("media"))}'
+        f'<div class="pmeta"><span class="ptime">{esc(c.get("platform",""))}</span>'
+        f'<span class="cta">{c.get("reach",0):,} reach</span>'
+        f'<span class="cta">{c.get("engagement",0):,} eng</span></div>'
+        f'<div class="ptitle">{esc(c.get("title",""))}</div></div>'
+        for c in k.get("top_posts", []))
+    plat = "".join(
+        f'<tr><td>{esc(p)}</td><td>{v.get("reach",0):,}</td><td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
+        for p, v in k.get("by_platform", {}).items())
+    insights = f'<div class="insight">{esc(k["insights"])}</div>' if k.get("insights") else ""
+    return f"""<section class="card" id="perf" hidden>
+      <div class="kpis">{kpi_cards}</div>
+      {insights}
+      <div class="calhead" style="margin-top:14px">Top posts</div>
+      {tops or '<p class="snote">No posts with metrics yet.</p>'}
+      <details><summary>By platform</summary>
+        <table class="ptable"><tr><th>Platform</th><th>Reach</th><th>Eng</th><th>Posts</th></tr>{plat}</table>
+      </details>
+      <p class="snote">Updated {esc(k.get('updated',''))}</p>
+    </section>"""
+
+
 def _by_date(items, render):
     out = {}
     for it in items:
@@ -89,6 +134,7 @@ def page(cfg):
 
     posts_by = _by_date(cfg.get("feed", []), render_post_block)
     stories_by = _by_date(cfg.get("stories", []), render_story_block)
+    perf_html = render_performance(cfg)
 
     updated = datetime.datetime.now(
         datetime.timezone(datetime.timedelta(hours=-5))
@@ -121,6 +167,15 @@ def page(cfg):
  .ccell.has{{background:var(--soft);color:var(--accent);font-weight:700;cursor:pointer;border:1px solid {sborder}}}
  .dot{{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:3px}}
  .snote{{font-size:12.5px;color:var(--muted);margin:10px 0 0;text-align:center}}
+ .kpis{{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}}
+ .kpi{{background:var(--soft);border:1px solid {sborder};border-radius:12px;padding:14px}}
+ .kval{{font-size:24px;font-weight:700;color:{atext}}}
+ .klabel{{font-size:13px;color:var(--muted);margin-top:2px}}
+ .ksub{{font-size:11.5px;color:var(--muted);margin-top:2px}}
+ .insight{{background:var(--soft);border:1px solid {sborder};color:{atext};border-radius:12px;padding:11px 13px;font-size:13.5px;margin:4px 0 6px}}
+ .ptable{{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}}
+ .ptable th,.ptable td{{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}}
+ .ptable td:not(:first-child),.ptable th:not(:first-child){{text-align:right}}
  video,.gallery img{{width:100%;max-width:320px;display:block;margin:0 auto 10px;border-radius:14px;background:#000;aspect-ratio:9/16;object-fit:cover}}
  .gallery{{display:flex;gap:8px;overflow-x:auto}} .gallery img{{height:300px;width:auto}}
  .count{{font-size:12.5px;color:var(--muted);margin-bottom:6px}}
@@ -151,14 +206,16 @@ def page(cfg):
  <div class="tabs">
    <button class="tab on" data-tab="posts">Posts</button>
    <button class="tab" data-tab="stories">Stories</button>
+   <button class="tab" data-tab="performance">Performance</button>
  </div>
- <section class="card">
+ <section class="card" id="calcard">
    <div class="calnav"><button id="prev" aria-label="Previous month">‹</button>
      <div class="calhead" id="calhead"></div>
      <button id="next" aria-label="Next month">›</button></div>
    <div class="cal" id="cal"></div>
    <p class="snote" id="snote"></p>
  </section>
+ {perf_html}
  <footer>{esc(cfg.get('footer',''))}</footer>
 </div>
 <div id="dmodal" class="modal" hidden><div class="mback"></div>
@@ -205,9 +262,13 @@ def page(cfg):
  document.addEventListener('keydown',function(e){{if(e.key==='Escape')closeD();}});
  document.getElementById('prev').addEventListener('click',function(){{cur.m--;if(cur.m<0){{cur.m=11;cur.y--;}}render();}});
  document.getElementById('next').addEventListener('click',function(){{cur.m++;if(cur.m>11){{cur.m=0;cur.y++;}}render();}});
+ var perf=document.getElementById('perf'), calcard=document.getElementById('calcard');
  document.querySelectorAll('.tab').forEach(function(t){{t.addEventListener('click',function(){{
    document.querySelectorAll('.tab').forEach(function(x){{x.classList.remove('on');}});
-   t.classList.add('on'); tab=t.dataset.tab; cur=startMonth(); render();
+   t.classList.add('on');
+   if(t.dataset.tab==='performance'){{ if(perf) perf.hidden=false; calcard.hidden=true; return; }}
+   if(perf) perf.hidden=true; calcard.hidden=false;
+   tab=t.dataset.tab; cur=startMonth(); render();
  }});}});
  render();
 </script>

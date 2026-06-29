@@ -203,6 +203,66 @@ def list_scheduled_posts(token, org_id, channel_ids=None,
     return nodes
 
 
+_AGG_METRICS_QUERY = """
+query Agg($input: AggregatedPostMetricsInput!) {
+  aggregatedPostMetrics(input: $input) {
+    metrics { type name value unit }
+    metricsUpdatedAt
+  }
+}
+"""
+
+
+def aggregated_metrics(token, org_id, channel_ids, start, end):
+    """Return ({metricType: value}, updatedAt) aggregated over [start, end] (ISO).
+
+    metric types include reach, impressions, likes, comments, shares, saves,
+    views, engagementRate, follows, etc. (only what each platform reports).
+    """
+    inp = {"organizationId": org_id, "startDateTime": start, "endDateTime": end}
+    if channel_ids:
+        inp["channelIds"] = channel_ids
+    data = _graphql(_AGG_METRICS_QUERY, {"input": inp}, token)
+    am = data.get("aggregatedPostMetrics", {}) or {}
+    metrics = {m["type"]: m.get("value", 0) for m in (am.get("metrics") or [])}
+    return metrics, am.get("metricsUpdatedAt")
+
+
+_SENT_METRICS_QUERY = """
+query SentPosts($input: PostsInput!, $after: String) {
+  posts(input: $input, first: 100, after: $after) {
+    edges { node {
+      id channelService dueAt text
+      assets { type source thumbnail }
+      metrics { type value unit }
+    } }
+    pageInfo { hasNextPage endCursor }
+  }
+}
+"""
+
+
+def posts_with_metrics(token, org_id, channel_ids, since):
+    """Return sent posts (with per-post metrics) since `since`, for ranking top posts."""
+    flt = {"status": ["sent"]}
+    if channel_ids:
+        flt["channelIds"] = channel_ids
+    if since:
+        flt["dueAt"] = {"start": since}
+    base = {"organizationId": org_id, "filter": flt,
+            "sort": [{"field": "dueAt", "direction": "desc"}]}
+    nodes, after = [], None
+    for _ in range(20):
+        data = _graphql(_SENT_METRICS_QUERY, {"input": base, "after": after}, token)
+        conn = data.get("posts", {})
+        nodes += [e["node"] for e in (conn.get("edges") or [])]
+        pi = conn.get("pageInfo", {}) or {}
+        if not pi.get("hasNextPage"):
+            break
+        after = pi.get("endCursor")
+    return nodes
+
+
 def posts_at(token, org_id, channel_ids, due_at):
     """Return existing posts on the given channels scheduled within the same minute
     as due_at (used to warn about double-booking a time slot).

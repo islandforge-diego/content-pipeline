@@ -49,8 +49,10 @@
     "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
     "data_file": "content-preview/clients/CLIENT_SLUG/config.json",
     "history_since": "2026-06-01",
+    "kpi_window_days": 30,
     "pages_repo": "",
     "pages_url": ""
   },
+  "calendly": { "user_uri": "", "booking_slug": "" },
   "partners": []
 }
