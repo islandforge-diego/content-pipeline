@@ -37,8 +37,8 @@ photo or short clip the creator took.
 
 Give me two things:
 1) overlay: a SHORT line (max ~8 words) to lay over the media. Casual and human,
-   like something you'd actually type on your own story. No hashtags, no link, at
-   most one emoji.
+   like something you'd actually type on your own story. No hashtags, no link, and
+   NO emojis (they don't render on the card).
 2) sticker: ONE interactive sticker prompt for Deba to tap in-app — either a poll
    ("This or that?" with two options) or a question-box prompt. Keep it natural and
    on-theme. Prefix it with "Poll:" or "Question:".

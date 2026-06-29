@@ -334,6 +334,9 @@ def api_story_generate():
 @app.post("/api/story/render")
 def api_story_render():
     body = request.get_json(force=True)
+    slug = secure_filename(body.get("client", ""))
+    cfg = json.loads((CLIENTS_DIR / f"{slug}.json").read_text())
+    font_name = cfg.get("brand", {}).get("fonts", {}).get("display")
     path = body.get("path", "")
     overlay = body.get("overlay", "")
     kind = body.get("kind") or kind_for(path)
@@ -344,7 +347,7 @@ def api_story_render():
 
     def work(progress):
         progress("Rendering story overlay…")
-        render_story(path, overlay, str(out), kind)
+        render_story(path, overlay, str(out), kind, font_name=font_name)
         return {"rendered": str(out), "preview_url": f"/rendered/{out.name}", "kind": kind}
 
     return jsonify({"job_id": jobs.start(work)})
