@@ -74,8 +74,7 @@ def render_story_block(s):
 def _topslide(c):
     """One top-post card: platform + reach + the present stat chips (likes/comments/…)."""
     m = c.get("m", {})
-    chips = [f'<span class="ptime">{esc(c.get("platform",""))}</span>',
-             f'<span class="cta">{c.get("reach",0):,} reach</span>']
+    chips = [f'<span class="ptime">{esc(c.get("platform",""))}</span>']
     for key, label in (("views", "views"), ("likes", "likes"), ("comments", "comments"),
                        ("shares", "shares"), ("saves", "saves")):
         if m.get(key):
@@ -100,7 +99,7 @@ def render_performance(cfg):
     cards = [
         ("Bookings", (str(bookings) if bookings is not None else "—"),
          "Calendly" if bookings is not None else "connect Calendly"),
-        ("Reach", fmt(k.get("reach", 0)), f"last {k.get('window_days', 30)} days"),
+        ("Views", fmt(k.get("views", 0)), f"last {k.get('window_days', 30)} days"),
         ("Engagement", fmt(k.get("engagement", 0)),
          (f"{k['engagement_rate']}% rate" if k.get("engagement_rate") else "")),
     ]
@@ -121,9 +120,9 @@ def render_performance(cfg):
     ) if top else '<p class="snote">No posts with metrics yet.</p>'
     # Merged platforms (facebook = page + personal), sorted by reach.
     rows = sorted(k.get("by_platform", {}).items(),
-                  key=lambda kv: max(kv[1].get("reach", 0), kv[1].get("views", 0)), reverse=True)
+                  key=lambda kv: kv[1].get("views", 0), reverse=True)
     plat = "".join(
-        f'<tr><td>{esc(p)}</td><td>{v.get("reach",0):,}</td><td>{v.get("views",0):,}</td>'
+        f'<tr><td>{esc(p)}</td><td>{v.get("views",0):,}</td>'
         f'<td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
         for p, v in rows)
     fb_drill = render_fb_drilldown(k)
@@ -134,7 +133,7 @@ def render_performance(cfg):
       {fb_note}
       {carousel}
       <details><summary>By platform</summary>
-        <table class="ptable"><tr><th>Platform</th><th>Reach</th><th>Views</th><th>Eng</th><th>Posts</th></tr>{plat}</table>
+        <table class="ptable"><tr><th>Platform</th><th>Views</th><th>Eng</th><th>Posts</th></tr>{plat}</table>
       </details>
       {fb_drill}
       <p class="snote">Updated {esc(k.get('updated',''))}</p>

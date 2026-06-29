@@ -63,7 +63,7 @@ def summarize_posts(posts):
                        "poster": assets[0].get("thumbnail", "")} if assets and assets[0].get("type") == "video"
                       else {"type": "gallery", "images": [assets[0]["source"]] if assets else []}),
         })
-    top = sorted(cards, key=lambda c: (c["reach"], c["engagement"]), reverse=True)[:5]
+    top = sorted(cards, key=lambda c: (c["m"]["views"], c["engagement"]), reverse=True)[:5]
     return {
         "posts": len(posts),
         "reach": reach, "impressions": impressions, "views": views,
@@ -90,8 +90,9 @@ def merge_manual(summary, client):
         if "facebook" in detail:
             detail["facebook_page"] = detail.pop("facebook")
         detail["facebook_personal"] = {"reach": r, "views": r, "engagement": e, "posts": 0, "followers": f}
-        # add into the top-line totals
+        # add into the top-line totals (reach kept in backend; Views is what we display)
         summary["reach"] += r
+        summary["views"] = summary.get("views", 0) + r
         summary["engagement"] += e
         summary["followers"] = (summary.get("followers", 0) or 0) + f
         # merged single 'facebook' line for display (FB 'reach' is its Views metric)

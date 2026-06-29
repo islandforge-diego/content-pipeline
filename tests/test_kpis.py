@@ -3,13 +3,14 @@ import kpi_sync
 import calendly_api
 
 
-def _post(plat, reach, reactions, comments, shares=0, saves=0):
+def _post(plat, reach, reactions, comments, shares=0, saves=0, views=0):
     return {
         "channelService": plat,
         "text": "a fairly long caption with several words in it here",
         "assets": [{"type": "video", "source": "u", "thumbnail": ""}],
         "metrics": [
             {"type": "reach", "value": reach},
+            {"type": "views", "value": views},
             {"type": "reactions", "value": reactions},
             {"type": "comments", "value": comments},
             {"type": "shares", "value": shares},
@@ -20,16 +21,17 @@ def _post(plat, reach, reactions, comments, shares=0, saves=0):
 
 
 def test_summarize_totals_top_and_platforms():
-    posts = [_post("instagram", 1000, 50, 10), _post("tiktok", 3000, 20, 5),
-             _post("linkedin", 500, 5, 1)]
+    posts = [_post("instagram", 1000, 50, 10, views=900),
+             _post("tiktok", 3000, 20, 5, views=3000),
+             _post("linkedin", 500, 5, 1, views=400)]
     s = kpi_sync.summarize_posts(posts)
-    assert s["reach"] == 4500
-    assert s["engagement"] == (60 + 25 + 6)
+    assert s["views"] == 4300
+    assert s["engagement"] == (60 + 25 + 6)               # actual engagements only
     assert s["posts"] == 3
-    assert s["top_posts"][0]["platform"] == "tiktok"      # ranked by reach
-    assert s["by_platform"]["instagram"]["reach"] == 1000
+    assert s["top_posts"][0]["platform"] == "tiktok"      # ranked by views
+    assert s["by_platform"]["instagram"]["views"] == 900
     assert s["engagement_rate"] == 5.0
-    assert s["top_posts"][0]["title"].endswith("…")        # title is truncated
+    assert s["top_posts"][0]["m"]["likes"] == 20          # per-post breakdown present
 
 
 def test_summarize_empty():
