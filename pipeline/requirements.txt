@@ -2,6 +2,10 @@ openai-whisper
 anthropic
 rich
 boto3
+botocore[crt]
 requests
 python-dotenv
 pytz
+flask
+pytest
+pillow

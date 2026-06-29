@@ -22,12 +22,29 @@
     "cta_keyword": "INVESTOR",
     "link_in_bio": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1",
     "course_platform": "Kajabi",
-    "canva_brand_kit_id": "kAHMyuJfyMM"
+    "canva_brand_kit_id": "kAHMyuJfyMM",
+    "context_file": "config/clients/deba.brand.md",
+    "examples_file": "config/clients/deba.examples.md"
+  },
+  "models": {
+    "caption": "claude-sonnet-4-6",
+    "revise": "claude-haiku-4-5-20251001"
+  },
+  "cta": {
+    "manychat_platforms": ["instagram", "facebook", "tiktok"],
+    "link_platforms": ["linkedin", "youtube"],
+    "default_keyword": "INVESTOR",
+    "book_link": "https://calendly.com/bookdeba/road-map-real-estate-investing-property-review-clone-1"
   },
   "buffer": {
     "org_name": "Island Forge Studio",
     "org_id": "67e362b288f79c93410af3fb",
     "timezone": "America/Chicago",
+    "create_as_draft": true,
+    "facebook_post_type": "post",
+    "youtube_category_id": "27",
+    "youtube_privacy": "public",
+    "youtube_made_for_kids": false,
     "channels": {
       "facebook":  { "id": "6a1cb55dc687a22dd4484430", "name": "Douglas Dwellings - Principles of Real Estate", "type": "page" },
       "instagram": { "id": "6a1cb662c687a22dd4484705", "handle": "debaflipstexas", "type": "business" },
@@ -54,7 +71,7 @@
       }
     }
   },
-  "s3": { "bucket": "debadouglas", "region": "us-east-2", "block_public_access": true, "delivery": "presigned" },
+  "s3": { "bucket": "debadouglas", "region": "us-east-2", "block_public_access": false, "delivery": "public" },
   "preview": {
     "theme": { "accent": "#1f6f54", "soft": "#e8f1ec", "soft_border": "#cfe2d8", "accent_text": "#16503c", "story_bg": "#0d5f6e" },
     "data_file": "content-preview/clients/deba/config.json"

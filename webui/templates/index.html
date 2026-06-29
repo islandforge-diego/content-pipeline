@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content Pipeline · Island Forge Studio</title>
+  <link rel="icon" type="image/png" href="/static/logos/palm-orange.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="/static/logos/wordmark-white.png" alt="Island Forge Studio" class="wordmark">
+      <span class="tool-name">Content Pipeline</span>
+    </div>
+    <div class="client-picker">
+      <select id="clientSelect" aria-label="Select client"></select>
+      <button id="previewBtn" class="ghost" title="Refresh preview from Buffer and open it">Preview ↗</button>
+      <button id="addClientBtn" class="ghost" title="Add a new client">+ Add client</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Client workspace -->
+    <section id="workspace" class="workspace hidden">
+      <div class="mode-toggle">
+        <button id="modeFeed" class="mode on">Feed post</button>
+        <button id="modeStory" class="mode">Story</button>
+      </div>
+
+      <div id="feedMode">
+      <!-- Step 1: choose media -->
+      <div class="step">
+        <h2><span class="num">1</span> Choose a file</h2>
+        <div id="dropzone" class="dropzone">
+          <p class="dz-big">Drag &amp; drop a photo or video here</p>
+          <p class="dz-or">or</p>
+          <div class="dz-buttons">
+            <button id="browseFileBtn" class="primary">Browse file…</button>
+            <button id="browseFolderBtn" class="ghost">Browse folder…</button>
+          </div>
+          <input type="file" id="fileInput" hidden accept="video/*,image/*">
+        </div>
+        <div id="folderList" class="folder-list hidden"></div>
+        <div id="chosen" class="chosen hidden">
+          <span class="chosen-label">Selected:</span>
+          <code id="chosenPath"></code>
+          <span id="chosenKind" class="pill"></span>
+        </div>
+        <div id="contextRow" class="brief-row">
+          <label for="contextInput">Context for the AI <span class="req-note" id="reqNote"></span></label>
+          <textarea id="contextInput" rows="3" placeholder="Anything that helps the captions: what's happening, who's on camera, the key point, the offer… (required for photos)"></textarea>
+        </div>
+        <div id="ctaRow" class="brief-row">
+          <label for="ctaInput">ManyChat CTA keyword <span class="req-note">— triggers your automation on IG / FB / TikTok</span></label>
+          <input type="text" id="ctaInput" placeholder="e.g. INVESTOR, START, FLIP — must match a ManyChat keyword you've set up">
+        </div>
+      </div>
+
+      <!-- Step 2: generate -->
+      <div class="step">
+        <h2><span class="num">2</span> Transcribe &amp; generate captions</h2>
+        <button id="generateBtn" class="primary" disabled>Generate captions</button>
+        <div id="genBar" class="progress hidden"><div id="genBarFill" class="indeterminate"></div></div>
+        <div id="genStatus" class="status"></div>
+        <details id="transcriptBox" class="transcript hidden">
+          <summary>Transcript</summary>
+          <p id="transcriptText"></p>
+        </details>
+      </div>
+
+      <!-- Step 3: review captions -->
+      <div class="step hidden" id="captionsStep">
+        <h2><span class="num">3</span> Review &amp; edit captions</h2>
+        <div class="revise-all">
+          <input type="text" id="reviseAllInput" placeholder="Update ALL captions at once — e.g. 'tie the CTA to first-time buyers', 'shorter', 'more energy'">
+          <button id="reviseAllBtn" class="primary">Update all</button>
+        </div>
+        <div id="reviseAllStatus" class="status"></div>
+        <div id="captionCards"></div>
+      </div>
+
+      <!-- Step 4: schedule -->
+      <div class="step hidden" id="scheduleStep">
+        <h2><span class="num">4</span> Schedule to Buffer</h2>
+        <div class="picker-label">Post to</div>
+        <div id="platformPicker" class="platform-picker"></div>
+        <div id="ytWarn" class="conflict-warn hidden"></div>
+        <div class="schedule-row">
+          <label for="dtInput">Post time</label>
+          <input type="datetime-local" id="dtInput">
+        </div>
+        <label class="check"><input type="checkbox" id="dryRun" checked> Preview only (don't post yet)</label>
+        <div id="conflictWarn" class="conflict-warn hidden"></div>
+        <button id="publishBtn" class="primary">Schedule</button>
+        <div id="pubBar" class="progress hidden"><div id="pubBarFill"></div></div>
+        <div id="pubStatus" class="status"></div>
+        <div id="pubResults" class="pub-results"></div>
+      </div>
+      </div><!-- /feedMode -->
+
+      <div id="storyMode" class="hidden">
+        <div class="step">
+          <h2><span class="num">1</span> Story media</h2>
+          <div id="storyDrop" class="dropzone">
+            <p class="dz-big">Drag &amp; drop a photo or short clip</p>
+            <p class="dz-or">or</p>
+            <div class="dz-buttons">
+              <button id="storyBrowse" class="primary">Browse…</button>
+            </div>
+            <input type="file" id="storyFileInput" hidden accept="video/*,image/*">
+          </div>
+          <div id="storyChosen" class="chosen hidden">
+            <span class="chosen-label">Selected:</span> <code id="storyPath"></code>
+            <span id="storyKind" class="pill"></span>
+          </div>
+        </div>
+
+        <div class="step">
+          <h2><span class="num">2</span> Story text</h2>
+          <div class="brief-row">
+            <label for="storyTheme">Theme</label>
+            <select id="storyTheme"></select>
+          </div>
+          <div class="brief-row">
+            <label for="storyBrief">Brief (optional)</label>
+            <input type="text" id="storyBrief" placeholder="what's happening in this story — who, where, the moment">
+          </div>
+          <button id="storyGenBtn" class="primary" disabled>Generate story text</button>
+          <div id="storyGenBar" class="progress hidden"><div class="indeterminate" style="height:100%;background:var(--accent);border-radius:999px"></div></div>
+          <div id="storyGenStatus" class="status"></div>
+        </div>
+
+        <div class="step hidden" id="storyTextStep">
+          <h2><span class="num">3</span> Review &amp; render</h2>
+          <div class="brief-row">
+            <label for="storyOverlay">Overlay text (shown on the media)</label>
+            <input type="text" id="storyOverlay">
+          </div>
+          <div class="brief-row">
+            <label for="storySticker">Interactive sticker (Deba adds in-app)</label>
+            <input type="text" id="storySticker">
+          </div>
+          <button id="storyRenderBtn" class="ghost">Render preview</button>
+          <div id="storyRenderBar" class="progress hidden"><div class="indeterminate" style="height:100%;background:var(--accent);border-radius:999px"></div></div>
+          <div id="storyRenderStatus" class="status"></div>
+          <div id="storyPreviewWrap" class="story-preview hidden"></div>
+        </div>
+
+        <div class="step hidden" id="storySchedStep">
+          <h2><span class="num">4</span> Schedule story reminder</h2>
+          <div class="schedule-row">
+            <label for="storyDt">Post time</label>
+            <input type="datetime-local" id="storyDt">
+          </div>
+          <label class="check"><input type="checkbox" id="storyDryRun" checked> Preview only (don't schedule yet)</label>
+          <button id="storyPublishBtn" class="primary">Schedule story reminder</button>
+          <div id="storyPubBar" class="progress hidden"><div id="storyPubFill"></div></div>
+          <div id="storyPubStatus" class="status"></div>
+        </div>
+      </div><!-- /storyMode -->
+    </section>
+
+    <div id="empty" class="empty">
+      <p>Select a client above to get started, or add a new one.</p>
+    </div>
+  </main>
+
+  <!-- Onboarding modal -->
+  <div id="onboardModal" class="modal hidden">
+    <div class="modal-card">
+      <button class="modal-close" id="onboardClose">✕</button>
+      <h2>Add a new client</h2>
+      <div class="form-grid">
+        <label>Slug <input id="ob_slug" placeholder="acme"></label>
+        <label>Display name <input id="ob_name" placeholder="Acme Co."></label>
+        <label>Brand name <input id="ob_brand" placeholder="Brand / show title"></label>
+        <label>Tagline <input id="ob_tagline" placeholder="Tagline"></label>
+        <label class="wide">Voice <input id="ob_voice" placeholder="empowering, educational, energetic…"></label>
+        <label>CTA keyword <input id="ob_cta" placeholder="INVESTOR"></label>
+        <label>Link in bio <input id="ob_link" placeholder="https://…"></label>
+        <label>S3 bucket <input id="ob_bucket" placeholder="acme-media"></label>
+        <label>S3 region <input id="ob_region" placeholder="us-east-2"></label>
+      </div>
+
+      <div class="channels-block">
+        <div class="channels-head">
+          <h3>Buffer channels</h3>
+          <button id="fetchChannels" class="ghost">Fetch from Buffer</button>
+        </div>
+        <p class="hint">Map each platform to a Buffer channel. Fetch pulls your org's channels so you don't paste IDs.</p>
+        <div id="channelMap" class="channel-map"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="onboardSave" class="primary">Create client</button>
+        <span id="onboardStatus" class="status"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

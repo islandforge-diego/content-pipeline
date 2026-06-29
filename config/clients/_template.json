@@ -12,12 +12,26 @@
     "cta_keyword": "KEYWORD",
     "link_in_bio": "https://...",
     "course_platform": "",
-    "canva_brand_kit_id": ""
+    "canva_brand_kit_id": "",
+    "context_file": "",
+    "examples_file": ""
+  },
+  "models": {
+    "caption": "claude-sonnet-4-6",
+    "revise": "claude-haiku-4-5-20251001"
+  },
+  "cta": {
+    "manychat_platforms": ["instagram", "facebook", "tiktok"],
+    "link_platforms": ["linkedin", "youtube"],
+    "default_keyword": "KEYWORD",
+    "book_link": "https://..."
   },
   "buffer": {
     "org_name": "Island Forge Studio",
     "org_id": "67e362b288f79c93410af3fb",
     "timezone": "America/Chicago",
+    "create_as_draft": true,
+    "youtube_category_id": "22",
     "channels": {
       "facebook":  { "id": "", "name": "", "type": "page" },
       "instagram": { "id": "", "handle": "", "type": "business" },

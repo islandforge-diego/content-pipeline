@@ -63,3 +63,6 @@ build/
 *.tmp
 *.bak
 *.orig
+
+# Web UI scratch
+webui/.uploads/
