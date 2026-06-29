@@ -614,7 +614,9 @@ $("publishWebBtn").onclick = async () => {
   try {
     const res = await pollJob((await api.post("/api/preview/publish", { client: state.client })).job_id, () => {});
     if (res.url) {
-      if (confirm("Live preview updated (Pages refreshes in ~1 min).\n\nOpen it now?")) window.open(res.url, "_blank");
+      // cache-bust so you see the fresh version (GitHub Pages caches HTML ~10 min)
+      const bust = res.url + (res.url.includes("?") ? "&" : "?") + "t=" + Date.now();
+      if (confirm("Live preview updated. GitHub Pages caches for ~10 min — opening with a cache-buster so you see it now.\n\nOpen it?")) window.open(bust, "_blank");
     }
   } catch (e) {
     alert("Publish to web failed: " + e.message);
