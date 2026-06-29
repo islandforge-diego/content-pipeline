@@ -398,6 +398,37 @@ function renderPubResults(res, dryRun) {
 $("addClientBtn").onclick = () => { $("onboardModal").classList.remove("hidden"); renderChannelMap([]); };
 $("onboardClose").onclick = () => $("onboardModal").classList.add("hidden");
 
+// ---- Follower counts (Performance page total audience) ----
+$("followersBtn").onclick = () => {
+  if (!state.client) { alert("Select a client first."); return; }
+  const mm = (state.config && state.config.manual_metrics) || {};
+  const fol = mm.followers || {};
+  const fb = (mm.facebook_personal && mm.facebook_personal.followers) || "";
+  $("fl_facebook").value = fb;
+  ["instagram", "tiktok", "linkedin", "youtube"].forEach((p) => {
+    $("fl_" + p).value = fol[p] || "";
+  });
+  setStatus("followersStatus", "", "");
+  $("followersModal").classList.remove("hidden");
+};
+$("followersClose").onclick = () => $("followersModal").classList.add("hidden");
+$("followersSave").onclick = async () => {
+  const num = (id) => { const v = $(id).value.trim(); return v === "" ? null : Number(v); };
+  const followers = {};
+  ["instagram", "tiktok", "linkedin", "youtube"].forEach((p) => {
+    const v = num("fl_" + p); if (v !== null) followers[p] = v;
+  });
+  const body = { client: state.client, followers };
+  const fb = num("fl_facebook");
+  if (fb !== null) body.facebook_personal = { followers: fb };
+  setStatus("followersStatus", "Saving…", "spinner");
+  const r = await api.post("/api/manual_metrics", body);
+  if (r.error) { setStatus("followersStatus", r.error, "err"); return; }
+  // refresh the in-memory config so a reopen shows saved values
+  state.config = await api.get(`/api/clients/${state.client}`);
+  setStatus("followersStatus", "Saved. Sync the preview to publish.", "ok");
+};
+
 let fetchedChannels = [];
 $("fetchChannels").onclick = async () => {
   $("onboardStatus").textContent = "Fetching channels…";

@@ -3520,6 +3520,7 @@
     "views": 267736,
     "engagement": 8779,
     "engagement_rate": 4.24,
+    "engagement_rate_total": 3.3,
     "by_platform": {
       "instagram": {
         "reach": 36969,
@@ -4317,6 +4318,9 @@
       ],
       "followers_split": []
     },
+    "followers_by_platform": {
+      "facebook": 7112
+    },
     "by_platform_detail": {
       "instagram": {
         "reach": 36969,
@@ -4358,6 +4362,6 @@
     },
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 1:33 PM CT"
+    "updated": "Jun 29, 2:04 PM CT"
   }
 }

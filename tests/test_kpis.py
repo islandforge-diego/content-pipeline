@@ -31,12 +31,15 @@ def test_summarize_totals_top_and_platforms():
     assert s["top_posts"][0]["platform"] == "tiktok"      # ranked by views
     assert s["by_platform"]["instagram"]["views"] == 900
     assert s["engagement_rate"] == 5.0
+    # total-consistent rate = total engagement / total views (what the page displays)
+    assert s["engagement_rate_total"] == round(91 / 4300 * 100, 1)
     assert s["top_posts"][0]["m"]["likes"] == 20          # per-post breakdown present
 
 
 def test_summarize_empty():
     s = kpi_sync.summarize_posts([])
     assert s["reach"] == 0 and s["top_posts"] == [] and s["engagement_rate"] is None
+    assert s["engagement_rate_total"] is None              # no divide-by-zero on empty
 
 
 def test_merge_manual_facebook_personal():
@@ -54,6 +57,21 @@ def test_merge_manual_facebook_personal():
     # backend keeps the split
     assert out["by_platform_detail"]["facebook_page"]["reach"] == 200
     assert out["by_platform_detail"]["facebook_personal"]["reach"] == 5000
+
+
+def test_merge_manual_total_followers():
+    summary = {"reach": 0, "engagement": 0, "by_platform": {}}
+    client = {"manual_metrics": {
+        "facebook_personal": {"reach": 0, "engagement": 0, "followers": 7000},
+        "followers": {"instagram": 1200, "tiktok": 800, "linkedin": 0, "youtube": 300},
+    }}
+    out = kpi_sync.merge_manual(summary, client)
+    # total followers = FB personal + each non-zero manual platform
+    assert out["followers"] == 7000 + 1200 + 800 + 300
+    fbp = out["followers_by_platform"]
+    assert fbp["facebook"] == 7000
+    assert fbp["instagram"] == 1200 and fbp["tiktok"] == 800 and fbp["youtube"] == 300
+    assert "linkedin" not in fbp                            # zero entries dropped
 
 
 def test_merge_manual_noop_without_block():

@@ -17,6 +17,7 @@
       <select id="clientSelect" aria-label="Select client"></select>
       <button id="previewBtn" class="ghost" title="Refresh preview from Buffer and open it locally">Preview ↗</button>
       <button id="publishWebBtn" class="ghost" title="Push the live (public) preview site for the client">Publish to web ⤴</button>
+      <button id="followersBtn" class="ghost" title="Update follower counts for the Performance page">Followers</button>
       <button id="addClientBtn" class="ghost" title="Add a new client">+ Add client</button>
     </div>
   </header>
@@ -196,6 +197,28 @@
       <div class="modal-actions">
         <button id="onboardSave" class="primary">Create client</button>
         <span id="onboardStatus" class="status"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Followers modal -->
+  <div id="followersModal" class="modal hidden">
+    <div class="modal-card">
+      <button class="modal-close" id="followersClose">✕</button>
+      <h2>Follower counts</h2>
+      <p class="hint">Total audience for the Performance page. Facebook comes from the
+        Professional Dashboard; the others Buffer can't read, so enter them here
+        (~monthly). Leave a field blank to keep its current value.</p>
+      <div class="form-grid">
+        <label>Facebook <input id="fl_facebook" type="number" min="0" placeholder="from FB dashboard"></label>
+        <label>Instagram <input id="fl_instagram" type="number" min="0" placeholder="0"></label>
+        <label>TikTok <input id="fl_tiktok" type="number" min="0" placeholder="0"></label>
+        <label>LinkedIn <input id="fl_linkedin" type="number" min="0" placeholder="0"></label>
+        <label>YouTube <input id="fl_youtube" type="number" min="0" placeholder="0"></label>
+      </div>
+      <div class="modal-actions">
+        <button id="followersSave" class="primary">Save</button>
+        <span id="followersStatus" class="status"></span>
       </div>
     </div>
   </div>

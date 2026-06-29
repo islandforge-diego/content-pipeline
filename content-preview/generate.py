@@ -8,13 +8,28 @@ produced by pipeline/preview_sync.py from Buffer.
 
 Run:  python3 generate.py
 """
+import base64
 import calendar
 import datetime
 import glob
 import html
 import json
+import os
 
 DEFAULT_CLIENT = "deba"
+
+# Island Forge wordmark (white, for the dark report header). Inlined as a base64
+# data URI at build time so the static page never depends on an asset path.
+_LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                          "assets", "islandforge-wordmark-white.png")
+
+
+def _logo_data_uri():
+    try:
+        with open(_LOGO_PATH, "rb") as fh:
+            return "data:image/png;base64," + base64.b64encode(fh.read()).decode("ascii")
+    except OSError:
+        return ""
 
 
 def esc(s):
@@ -96,15 +111,17 @@ def render_performance(cfg):
         return f"{n:,}" if isinstance(n, (int, float)) else "—"
 
     bookings = k.get("bookings")
+    rate = k.get("engagement_rate_total")
+    win = k.get("window_days", 30)
     cards = [
         ("Bookings", (str(bookings) if bookings is not None else "—"),
          "Calendly" if bookings is not None else "connect Calendly"),
-        ("Views", fmt(k.get("views", 0)), f"last {k.get('window_days', 30)} days"),
+        ("Total views", fmt(k.get("views", 0)), f"all platforms · {win} days"),
         ("Engagement", fmt(k.get("engagement", 0)),
-         (f"{k['engagement_rate']}% rate" if k.get("engagement_rate") else "")),
+         (f"{rate}% of views" if rate else "")),
     ]
     if k.get("followers"):
-        cards.append(("Followers", fmt(k.get("followers", 0)), "Facebook"))
+        cards.append(("Followers", fmt(k.get("followers", 0)), "all platforms"))
     else:
         cards.append(("Impressions", fmt(k.get("impressions", 0)), ""))
     kpi_cards = "".join(
@@ -123,21 +140,18 @@ def render_performance(cfg):
                   key=lambda kv: kv[1].get("views", 0), reverse=True)
     plat = "".join(
         f'<tr><td>{esc(p)}</td><td>{v.get("views",0):,}</td>'
-        f'<td>{v.get("engagement",0):,}</td></tr>'
+        f'<td>{v.get("engagement",0):,}</td><td>{_rate(v.get("engagement",0), v.get("views",0))}</td></tr>'
         for p, v in rows)
     fb_drill = render_fb_drilldown(k)
-    fb_note = ('<p class="snote">Facebook totals include her personal profile + page.</p>'
-               if "facebook_personal" in (k.get("by_platform_detail") or {}) else "")
     top_by_platform = k.get("top_by_platform", {})
     buffer_drills = "".join(
-        render_buffer_platform_drilldown(p, top_by_platform[p])
+        render_buffer_platform_drilldown(p, top_by_platform[p], k.get("by_platform", {}).get(p, {}))
         for p, _ in rows if p in top_by_platform)
     return f"""<section class="card" id="perf" hidden>
       <div class="kpis">{kpi_cards}</div>
-      {fb_note}
       {carousel}
       <details><summary>By platform</summary>
-        <table class="ptable"><tr><th>Platform</th><th>Views</th><th>Eng</th></tr>{plat}</table>
+        <table class="ptable"><tr><th>Platform</th><th>Views</th><th>Eng</th><th>Rate</th></tr>{plat}</table>
       </details>
       {buffer_drills}
       {fb_drill}
@@ -149,11 +163,22 @@ _PLAT_NAMES = {"instagram": "Instagram", "facebook": "Facebook",
                "tiktok": "TikTok", "linkedin": "LinkedIn", "youtube": "YouTube"}
 
 
-def render_buffer_platform_drilldown(platform, plat_posts):
-    """Drill-down for a Buffer-tracked platform: views-by-type bars + top posts with links."""
+def _rate(eng, views):
+    """Engagement rate as a percent string (engagement over views); — when no views."""
+    return f"{round(eng / views * 100, 1)}%" if views else "—"
+
+
+def render_buffer_platform_drilldown(platform, plat_posts, totals=None):
+    """Drill-down for a Buffer-tracked platform: per-platform summary + views-by-type
+    bars + top posts with links. `totals` is the by_platform entry (views/engagement)."""
     if not plat_posts:
         return ""
     label = _PLAT_NAMES.get(platform, platform.title())
+    totals = totals or {}
+    pv, pe = totals.get("views", 0), totals.get("engagement", 0)
+    summary_line = (f'<p class="snote" style="text-align:left;margin:6px 0 2px">'
+                    f'{pv:,} views · {pe:,} engagement · {_rate(pe, pv)} rate</p>'
+                    if (pv or pe) else "")
     by_type = {}
     for c in plat_posts:
         t = c.get("asset_type", "Image")
@@ -188,6 +213,7 @@ def render_buffer_platform_drilldown(platform, plat_posts):
                     if len(by_type) > 1 else "")
     return f"""<details>
       <summary>{esc(label)} — top posts by views</summary>
+      {summary_line}
       {type_section}
       <div class="subhead">Top posts</div>
       {tops}
@@ -249,6 +275,11 @@ def page(cfg):
     posts_by = _by_date(cfg.get("feed", []), render_post_block)
     stories_by = _by_date(cfg.get("stories", []), render_story_block)
     perf_html = render_performance(cfg)
+    logo = _logo_data_uri()
+    client_name = cfg.get("name", "")
+    ifbar = (f'<div class="ifbar">'
+             f'{f"""<img src="{logo}" alt="Island Forge Studio">""" if logo else "<span></span>"}'
+             f'<span class="rep">{esc(client_name)}</span></div>') if (logo or client_name) else ""
 
     updated = datetime.datetime.now(
         datetime.timezone(datetime.timedelta(hours=-5))
@@ -264,7 +295,10 @@ def page(cfg):
  *{{box-sizing:border-box;-webkit-text-size-adjust:100%}}
  body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}}
  .wrap{{max-width:540px;margin:0 auto;padding:16px 14px calc(40px + env(safe-area-inset-bottom))}}
- .top{{position:sticky;top:0;background:rgba(246,243,238,.92);backdrop-filter:blur(8px);margin:-16px -14px 14px;padding:14px;border-bottom:1px solid var(--line);z-index:5}}
+ .ifbar{{display:flex;align-items:center;justify-content:space-between;background:#2B2B26;margin:-16px -14px 0;padding:11px 16px}}
+ .ifbar img{{height:22px;width:auto;display:block}}
+ .ifbar .rep{{color:#FBF5EE;font-size:12.5px;font-weight:600;opacity:.85}}
+ .top{{position:sticky;top:0;background:rgba(246,243,238,.92);backdrop-filter:blur(8px);margin:0 -14px 14px;padding:14px;border-bottom:1px solid var(--line);z-index:5}}
  h1{{font-size:20px;margin:0;letter-spacing:-.01em}} .meta{{color:var(--muted);font-size:13px;margin-top:2px}}
  .banner{{background:var(--soft);border:1px solid {sborder};color:{atext};border-radius:12px;padding:11px 13px;font-size:13.5px;margin:0 0 16px}}
  .tabs{{display:flex;gap:0;border:1px solid var(--line);border-radius:999px;padding:3px;margin:0 0 14px;background:var(--card)}}
@@ -325,6 +359,7 @@ def page(cfg):
  .mday{{font-size:13px;font-weight:700;color:var(--accent);margin:2px 0 10px}}
  footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:22px}}
 </style></head><body><div class="wrap">
+ {ifbar}
  <div class="top"><h1>{esc(cfg.get('title','Content Preview'))}</h1><div class="meta">updated {updated}</div></div>
  <div class="tabs">
    <button class="tab on" data-tab="posts">Posts</button>

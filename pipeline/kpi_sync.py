@@ -79,7 +79,10 @@ def summarize_posts(posts):
         "posts": len(posts),
         "reach": reach, "impressions": impressions, "views": views,
         "engagement": engagement,
+        # Buffer's average of per-post rates (kept for reference)
         "engagement_rate": round(sum(rates) / len(rates), 2) if rates else None,
+        # consistent rate: total engagement over total views (what we display)
+        "engagement_rate_total": round(engagement / views * 100, 1) if views else None,
         "by_platform": per_platform,
         "top_posts": top,
         "top_by_platform": top_by_platform,
@@ -93,7 +96,8 @@ def merge_manual(summary, client):
     facebook_personal); the displayed `by_platform` merges them into one 'facebook'.
     """
     detail = {p: dict(v) for p, v in summary["by_platform"].items()}
-    fbp = (client.get("manual_metrics", {}) or {}).get("facebook_personal")
+    manual = client.get("manual_metrics", {}) or {}
+    fbp = manual.get("facebook_personal")
     if fbp:
         r = fbp.get("reach", 0) or 0
         e = fbp.get("engagement", 0) or 0
@@ -120,6 +124,27 @@ def merge_manual(summary, client):
             "top_posts": fbp.get("top_posts", []),
             "followers_split": fbp.get("followers_split", []),
         }
+
+    # Total followers across all platforms. Buffer exposes no follower counts, so the
+    # non-Facebook platforms are entered manually in manual_metrics.followers; Facebook
+    # comes from facebook_personal.followers (added to summary["followers"] above).
+    fb_followers = (fbp or {}).get("followers", 0) or 0
+    followers_by_platform = {}
+    if fb_followers:
+        followers_by_platform["facebook"] = fb_followers
+    for plat, count in (manual.get("followers") or {}).items():
+        count = int(count or 0)
+        if count:
+            followers_by_platform[plat] = count
+            summary["followers"] = (summary.get("followers", 0) or 0) + count
+    if followers_by_platform:
+        summary["followers_by_platform"] = followers_by_platform
+
+    # Recompute the displayed rate AFTER folding in manual sources, so it stays
+    # consistent with the totals shown (total engagement / total views, incl. Facebook).
+    v = summary.get("views", 0) or 0
+    summary["engagement_rate_total"] = round(summary["engagement"] / v * 100, 1) if v else None
+
     summary["by_platform_detail"] = detail
     return summary
 

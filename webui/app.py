@@ -395,8 +395,10 @@ def serve_rendered(name):
 def api_manual_metrics():
     """Save manually-captured metrics (e.g. Facebook personal profile) to the client config.
 
-    Body: {client, facebook_personal: {followers, reach, engagement}}. Read from her
-    Professional Dashboard (no API exists for personal profiles).
+    Body: {client, facebook_personal: {followers, reach, engagement},
+           followers: {instagram, tiktok, linkedin, youtube}}. Facebook comes from her
+           Professional Dashboard; the other platforms are entered manually (Buffer
+           exposes no follower counts) and feed the cross-platform total.
     """
     from datetime import date
     body = request.get_json(force=True)
@@ -405,14 +407,23 @@ def api_manual_metrics():
     if not cf.exists():
         return jsonify({"error": "client not found"}), 404
     cfg = json.loads(cf.read_text())
+    mm = cfg.setdefault("manual_metrics", {})
     fbp = body.get("facebook_personal") or {}
-    cur = cfg.setdefault("manual_metrics", {}).setdefault("facebook_personal", {})
+    cur = mm.setdefault("facebook_personal", {})
     for key in ("followers", "reach", "engagement"):
         if fbp.get(key) not in (None, ""):
             cur[key] = int(fbp[key])
     cur["updated"] = date.today().isoformat()
+    # non-Facebook follower counts (manual; Buffer has no follower API)
+    fol = body.get("followers") or {}
+    if fol:
+        cur_fol = mm.setdefault("followers", {})
+        for plat in ("instagram", "tiktok", "linkedin", "youtube"):
+            if fol.get(plat) not in (None, ""):
+                cur_fol[plat] = int(fol[plat])
     cf.write_text(json.dumps(cfg, indent=2))
-    return jsonify({"ok": True, "facebook_personal": cur})
+    return jsonify({"ok": True, "facebook_personal": cur,
+                    "followers": mm.get("followers", {})})
 
 
 @app.post("/api/fb/import")
