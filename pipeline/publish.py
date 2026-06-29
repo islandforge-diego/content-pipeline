@@ -30,23 +30,27 @@ def _s3_client(region: str):
     )
 
 
-def upload_to_s3(file_path: str, client: dict, dry_run: bool = False, key_prefix: str = "",
-                 on_progress=None) -> str:
-    """Upload a file to the client's S3 bucket and return a presigned URL.
+def upload_to_s3(file_path: str, client: dict, dry_run: bool = False, on_progress=None) -> str:
+    """Upload a file to the client's S3 bucket and return a fetchable URL.
 
-    Block Public Access stays ON; we hand out short-lived presigned URLs that
-    Buffer/Canva download at schedule time. `on_progress(percent)` is called
-    during upload (0-100) for the UI progress bar.
+    Delivery mode (config s3.delivery):
+      - 'public'    → upload under the public media/ prefix, return a plain URL.
+                      Buffer HEAD-checks the URL, and presigned URLs reject HEAD,
+                      so social delivery needs a genuinely public URL.
+      - 'presigned' → keep Block Public Access; return a 7-day presigned GET URL
+                      (fine for Canva/manual download, NOT for Buffer).
+    `on_progress(percent)` is called during upload (0-100) for the UI bar.
     """
     bucket = client["s3"]["bucket"]
     region = client["s3"]["region"]
+    delivery = client["s3"].get("delivery", "presigned")
     name = Path(file_path).name
-    key = f"{key_prefix.rstrip('/')}/{name}" if key_prefix else name
+    key = f"media/{name}" if delivery == "public" else name
 
     if dry_run:
         if on_progress:
             on_progress(100)
-        return f"https://{bucket}.s3.{region}.amazonaws.com/[dry-run]/{key}"
+        return f"https://{bucket}.s3.{region}.amazonaws.com/{key}  [dry-run]"
 
     s3 = _s3_client(region)
     content_type = mimetypes.guess_type(file_path)[0] or "application/octet-stream"
@@ -58,15 +62,12 @@ def upload_to_s3(file_path: str, client: dict, dry_run: bool = False, key_prefix
             sent["n"] += chunk
             on_progress(min(100, int(sent["n"] * 100 / total)))
 
-    s3.upload_file(
-        file_path, bucket, key,
-        ExtraArgs={"ContentType": content_type},
-        Callback=cb,
-    )
+    s3.upload_file(file_path, bucket, key, ExtraArgs={"ContentType": content_type}, Callback=cb)
+
+    if delivery == "public":
+        return f"https://{bucket}.s3.{region}.amazonaws.com/{key}"
     return s3.generate_presigned_url(
-        "get_object",
-        Params={"Bucket": bucket, "Key": key},
-        ExpiresIn=PRESIGN_TTL,
+        "get_object", Params={"Bucket": bucket, "Key": key}, ExpiresIn=PRESIGN_TTL,
     )
 
 
