@@ -4231,7 +4231,7 @@
         }
       ]
     },
-    "followers": 7112,
+    "followers": 14707,
     "facebook_personal_detail": {
       "window": "Apr 30, 2026 \u2013 Jun 29, 2026",
       "reach": 184783,
@@ -4319,8 +4319,13 @@
       "followers_split": []
     },
     "followers_by_platform": {
-      "facebook": 7112
+      "facebook": 7112,
+      "instagram": 5464,
+      "tiktok": 736,
+      "linkedin": 1116,
+      "youtube": 279
     },
+    "followers_as_of": "2026-06-29",
     "by_platform_detail": {
       "instagram": {
         "reach": 36969,
@@ -4362,6 +4367,6 @@
     },
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 2:04 PM CT"
+    "updated": "Jun 29, 2:22 PM CT"
   }
 }

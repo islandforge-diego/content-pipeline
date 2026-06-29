@@ -238,10 +238,11 @@
       "updated": "2026-06-29"
     },
     "followers": {
-      "instagram": 0,
-      "tiktok": 0,
-      "linkedin": 0,
-      "youtube": 0
+      "as_of": "2026-06-29",
+      "instagram": 5464,
+      "tiktok": 736,
+      "linkedin": 1116,
+      "youtube": 279
     }
   },
   "partners": [

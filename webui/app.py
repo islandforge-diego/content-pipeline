@@ -418,9 +418,14 @@ def api_manual_metrics():
     fol = body.get("followers") or {}
     if fol:
         cur_fol = mm.setdefault("followers", {})
+        touched = False
         for plat in ("instagram", "tiktok", "linkedin", "youtube"):
             if fol.get(plat) not in (None, ""):
                 cur_fol[plat] = int(fol[plat])
+                touched = True
+        # stamp the capture date so kpi_sync only counts Buffer 'follows' accrued after it
+        if touched:
+            cur_fol["as_of"] = date.today().isoformat()
     cf.write_text(json.dumps(cfg, indent=2))
     return jsonify({"ok": True, "facebook_personal": cur,
                     "followers": mm.get("followers", {})})

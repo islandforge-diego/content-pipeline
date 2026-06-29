@@ -121,7 +121,14 @@ def render_performance(cfg):
          (f"{rate}% of views" if rate else "")),
     ]
     if k.get("followers"):
-        cards.append(("Followers", fmt(k.get("followers", 0)), "all platforms"))
+        sub = "all platforms"
+        as_of = k.get("followers_as_of")
+        if as_of:
+            try:
+                sub += " · as of " + datetime.datetime.strptime(as_of, "%Y-%m-%d").strftime("%b %-d")
+            except (ValueError, TypeError):
+                pass
+        cards.append(("Followers", fmt(k.get("followers", 0)), sub))
     else:
         cards.append(("Impressions", fmt(k.get("impressions", 0)), ""))
     kpi_cards = "".join(

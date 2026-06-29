@@ -125,20 +125,33 @@ def merge_manual(summary, client):
             "followers_split": fbp.get("followers_split", []),
         }
 
-    # Total followers across all platforms. Buffer exposes no follower counts, so the
-    # non-Facebook platforms are entered manually in manual_metrics.followers; Facebook
-    # comes from facebook_personal.followers (added to summary["followers"] above).
+    # Total followers across all platforms. Buffer exposes no follower-count API, so each
+    # platform's baseline is captured manually (manual_metrics.followers, with an as_of
+    # date); Facebook comes from facebook_personal.followers (added to summary["followers"]
+    # above). Where Buffer reports a per-post `follows` metric (Instagram only, today), the
+    # new follows accrued AFTER the baseline date are added on top — see build_kpis — so the
+    # number creeps up automatically between manual refreshes without double-counting the
+    # audience already in the baseline.
+    new_follows = summary.get("new_follows_by_platform", {}) or {}
+    fol_cfg = manual.get("followers") or {}
     fb_followers = (fbp or {}).get("followers", 0) or 0
     followers_by_platform = {}
     if fb_followers:
-        followers_by_platform["facebook"] = fb_followers
-    for plat, count in (manual.get("followers") or {}).items():
+        fb_growth = int(new_follows.get("facebook", 0) or 0)
+        followers_by_platform["facebook"] = fb_followers + fb_growth
+        # the baseline was already added in the fbp block; add only the growth here
+        summary["followers"] = (summary.get("followers", 0) or 0) + fb_growth
+    for plat, count in fol_cfg.items():
+        if plat == "as_of":
+            continue
         count = int(count or 0)
         if count:
-            followers_by_platform[plat] = count
-            summary["followers"] = (summary.get("followers", 0) or 0) + count
+            total = count + int(new_follows.get(plat, 0) or 0)
+            followers_by_platform[plat] = total
+            summary["followers"] = (summary.get("followers", 0) or 0) + total
     if followers_by_platform:
         summary["followers_by_platform"] = followers_by_platform
+        summary["followers_as_of"] = fol_cfg.get("as_of") or (fbp or {}).get("updated") or ""
 
     # Recompute the displayed rate AFTER folding in manual sources, so it stays
     # consistent with the totals shown (total engagement / total views, incl. Facebook).
@@ -158,6 +171,21 @@ def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
 
     posts = buffer_api.posts_with_metrics(buffer_token, org_id, channel_ids, since)
     summary = summarize_posts(posts)
+
+    # Follower growth since the manual baseline. Buffer emits a per-post `follows`
+    # metric (Instagram only, today); count only posts published on/after the baseline
+    # capture date so we don't double-count the audience already in the baseline.
+    as_of = ((client.get("manual_metrics", {}) or {}).get("followers") or {}).get("as_of")
+    if as_of:
+        new_follows = {}
+        for p in posts:
+            f = int(_md(p).get("follows", 0) or 0)
+            if f and (p.get("dueAt") or "")[:10] >= as_of:
+                plat = p.get("channelService", "") or ""
+                new_follows[plat] = new_follows.get(plat, 0) + f
+        if new_follows:
+            summary["new_follows_by_platform"] = new_follows
+
     summary = merge_manual(summary, client)
 
     bookings = None

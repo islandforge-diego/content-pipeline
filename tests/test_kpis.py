@@ -63,15 +63,50 @@ def test_merge_manual_total_followers():
     summary = {"reach": 0, "engagement": 0, "by_platform": {}}
     client = {"manual_metrics": {
         "facebook_personal": {"reach": 0, "engagement": 0, "followers": 7000},
-        "followers": {"instagram": 1200, "tiktok": 800, "linkedin": 0, "youtube": 300},
+        "followers": {"as_of": "2026-06-29",
+                      "instagram": 1200, "tiktok": 800, "linkedin": 0, "youtube": 300},
     }}
     out = kpi_sync.merge_manual(summary, client)
-    # total followers = FB personal + each non-zero manual platform
+    # total followers = FB personal + each non-zero manual platform (as_of is not a platform)
     assert out["followers"] == 7000 + 1200 + 800 + 300
     fbp = out["followers_by_platform"]
     assert fbp["facebook"] == 7000
     assert fbp["instagram"] == 1200 and fbp["tiktok"] == 800 and fbp["youtube"] == 300
     assert "linkedin" not in fbp                            # zero entries dropped
+    assert "as_of" not in fbp                               # the date key is skipped
+    assert out["followers_as_of"] == "2026-06-29"
+
+
+def test_merge_manual_adds_buffer_new_follows():
+    # Buffer-reported new follows since the baseline grow the per-platform totals.
+    summary = {"reach": 0, "engagement": 0, "by_platform": {},
+               "new_follows_by_platform": {"instagram": 17}}
+    client = {"manual_metrics": {
+        "followers": {"as_of": "2026-06-29", "instagram": 1200, "tiktok": 800},
+    }}
+    out = kpi_sync.merge_manual(summary, client)
+    assert out["followers_by_platform"]["instagram"] == 1200 + 17   # baseline + growth
+    assert out["followers_by_platform"]["tiktok"] == 800            # no growth reported
+    assert out["followers"] == 1217 + 800
+
+
+def test_build_kpis_gates_new_follows_by_as_of(monkeypatch):
+    # Only `follows` on posts dated on/after as_of count toward growth.
+    posts = [
+        {**_post("instagram", 0, 0, 0, views=0), "dueAt": "2026-06-15T00:00:00Z",
+         "metrics": [{"type": "follows", "value": 5}]},   # before baseline → ignored
+        {**_post("instagram", 0, 0, 0, views=0), "dueAt": "2026-07-02T00:00:00Z",
+         "metrics": [{"type": "follows", "value": 9}]},   # after baseline → counted
+    ]
+    monkeypatch.setattr(kpi_sync.buffer_api, "posts_with_metrics",
+                        lambda *a, **k: posts)
+    client = {
+        "buffer": {"org_id": "o", "channels": {"instagram": {"id": "c1"}}},
+        "manual_metrics": {"followers": {"as_of": "2026-06-29", "instagram": 1000}},
+    }
+    out = kpi_sync.build_kpis(client, "tok", None, window_days=60)
+    assert out["new_follows_by_platform"] == {"instagram": 9}
+    assert out["followers_by_platform"]["instagram"] == 1009
 
 
 def test_merge_manual_noop_without_block():
