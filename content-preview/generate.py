@@ -71,6 +71,22 @@ def render_story_block(s):
     </div>"""
 
 
+def _topslide(c):
+    """One top-post card: platform + reach + the present stat chips (likes/comments/…)."""
+    m = c.get("m", {})
+    chips = [f'<span class="ptime">{esc(c.get("platform",""))}</span>',
+             f'<span class="cta">{c.get("reach",0):,} reach</span>']
+    for key, label in (("views", "views"), ("likes", "likes"), ("comments", "comments"),
+                       ("shares", "shares"), ("saves", "saves")):
+        if m.get(key):
+            chips.append(f'<span class="cta">{m[key]:,} {label}</span>')
+    if m.get("watch_min"):
+        chips.append(f'<span class="cta">{m["watch_min"]:g} min watched</span>')
+    return (f'<div class="tslide">{render_media(c.get("media"))}'
+            f'<div class="pmeta">{"".join(chips)}</div>'
+            f'<div class="ptitle">{esc(c.get("title",""))}</div></div>')
+
+
 def render_performance(cfg):
     """Server-render the Performance panel from cfg['kpis'] (hidden until its tab)."""
     k = cfg.get("kpis")
@@ -97,13 +113,7 @@ def render_performance(cfg):
         f'{(chr(60)+"div class=ksub"+chr(62)+esc(sub)+chr(60)+"/div"+chr(62)) if sub else ""}</div>'
         for lbl, v, sub in cards)
     top = k.get("top_posts", [])
-    slides = "".join(
-        f'<div class="tslide">{render_media(c.get("media"))}'
-        f'<div class="pmeta"><span class="ptime">{esc(c.get("platform",""))}</span>'
-        f'<span class="cta">{c.get("reach",0):,} reach</span>'
-        f'<span class="cta">{c.get("engagement",0):,} eng</span></div>'
-        f'<div class="ptitle">{esc(c.get("title",""))}</div></div>'
-        for c in top)
+    slides = "".join(_topslide(c) for c in top)
     carousel = (
         f'<div class="calhead" style="margin-top:16px">Top posts</div>'
         f'<div class="topcar">{slides}</div>'

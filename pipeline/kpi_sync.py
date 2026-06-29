@@ -50,6 +50,15 @@ def summarize_posts(posts):
             "title": _short(p.get("text", "")),
             "platform": plat,
             "reach": r, "engagement": eng,
+            # per-post breakdown for the card (only present metrics get shown)
+            "m": {
+                "views": int(v),
+                "likes": int(md.get("reactions", 0)),   # 'reactions' across platforms = likes
+                "comments": int(md.get("comments", 0)),
+                "shares": int(md.get("shares", 0)),
+                "saves": int(md.get("saves", 0)),
+                "watch_min": round(float(md.get("totalTimeWatched", 0)), 1),
+            },
             "media": ({"type": "video", "src": assets[0].get("source", ""),
                        "poster": assets[0].get("thumbnail", "")} if assets and assets[0].get("type") == "video"
                       else {"type": "gallery", "images": [assets[0]["source"]] if assets else []}),
