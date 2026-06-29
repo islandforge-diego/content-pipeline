@@ -43,8 +43,8 @@ def summarize_posts(posts):
         if md.get("engagementRate"):
             rates.append(md["engagementRate"])
         plat = p.get("channelService", "") or ""
-        pp = per_platform.setdefault(plat, {"reach": 0, "engagement": 0, "posts": 0})
-        pp["reach"] += r; pp["engagement"] += eng; pp["posts"] += 1
+        pp = per_platform.setdefault(plat, {"reach": 0, "engagement": 0, "posts": 0, "views": 0})
+        pp["reach"] += r; pp["engagement"] += eng; pp["posts"] += 1; pp["views"] += v
         assets = p.get("assets") or []
         cards.append({
             "title": _short(p.get("text", "")),
@@ -89,15 +89,16 @@ def merge_manual(summary, client):
         # preserve the distinction in the backend detail
         if "facebook" in detail:
             detail["facebook_page"] = detail.pop("facebook")
-        detail["facebook_personal"] = {"reach": r, "engagement": e, "posts": 0, "followers": f}
+        detail["facebook_personal"] = {"reach": r, "views": r, "engagement": e, "posts": 0, "followers": f}
         # add into the top-line totals
         summary["reach"] += r
         summary["engagement"] += e
         summary["followers"] = (summary.get("followers", 0) or 0) + f
-        # merged single 'facebook' line for display
-        fb = summary["by_platform"].setdefault("facebook", {"reach": 0, "engagement": 0, "posts": 0})
+        # merged single 'facebook' line for display (FB 'reach' is its Views metric)
+        fb = summary["by_platform"].setdefault("facebook", {"reach": 0, "engagement": 0, "posts": 0, "views": 0})
         fb["reach"] += r
         fb["engagement"] += e
+        fb["views"] = fb.get("views", 0) + r
         # pass through the richer drill-down (what drives the personal-profile reach)
         summary["facebook_personal_detail"] = {
             "window": fbp.get("window", ""),

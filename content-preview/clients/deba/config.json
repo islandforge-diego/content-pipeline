@@ -3524,27 +3524,32 @@
       "instagram": {
         "reach": 36969,
         "engagement": 2606,
-        "posts": 106
+        "posts": 106,
+        "views": 58783
       },
       "linkedin": {
         "reach": 1227,
         "engagement": 74,
-        "posts": 121
+        "posts": 121,
+        "views": 305
       },
       "facebook": {
         "reach": 184783,
         "engagement": 5607,
-        "posts": 14
+        "posts": 14,
+        "views": 184783
       },
       "tiktok": {
         "reach": 14405,
         "engagement": 428,
-        "posts": 46
+        "posts": 46,
+        "views": 16357
       },
       "youtube": {
         "reach": 0,
         "engagement": 64,
-        "posts": 17
+        "posts": 17,
+        "views": 7508
       }
     },
     "top_posts": [
@@ -3735,30 +3740,36 @@
       "instagram": {
         "reach": 36969,
         "engagement": 2606,
-        "posts": 106
+        "posts": 106,
+        "views": 58783
       },
       "linkedin": {
         "reach": 1227,
         "engagement": 74,
-        "posts": 121
+        "posts": 121,
+        "views": 305
       },
       "tiktok": {
         "reach": 14405,
         "engagement": 428,
-        "posts": 46
+        "posts": 46,
+        "views": 16357
       },
       "youtube": {
         "reach": 0,
         "engagement": 64,
-        "posts": 17
+        "posts": 17,
+        "views": 7508
       },
       "facebook_page": {
         "reach": 0,
         "engagement": 17,
-        "posts": 14
+        "posts": 14,
+        "views": 0
       },
       "facebook_personal": {
         "reach": 184783,
+        "views": 184783,
         "engagement": 5590,
         "posts": 0,
         "followers": 7112
@@ -3766,6 +3777,6 @@
     },
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 1:14 PM CT"
+    "updated": "Jun 29, 1:16 PM CT"
   }
 }
