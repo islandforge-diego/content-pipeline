@@ -67,12 +67,33 @@ mutation CreatePost($input: CreatePostInput!) {
 """
 
 
-def build_create_post_input(channel_id, text, media_url, due_at, kind, as_draft=True):
+def _platform_metadata(platform, kind, text, yt_category="22"):
+    """Per-network metadata Buffer requires. Returns a PostInputMetaData dict or None.
+
+    - Instagram/Facebook need a post type (video -> reel, image -> post).
+    - Instagram also needs shouldShareToFeed.
+    - YouTube needs a title and a category id.
+    """
+    post_type = "reel" if kind == "reel" else "post"
+    if platform == "instagram":
+        return {"instagram": {"type": post_type, "shouldShareToFeed": True}}
+    if platform == "facebook":
+        return {"facebook": {"type": post_type}}
+    if platform == "youtube":
+        # First non-empty line of the caption makes a sensible Short title (<=95 chars).
+        first = next((ln.strip() for ln in (text or "").splitlines() if ln.strip()), "New video")
+        return {"youtube": {"title": first[:95], "categoryId": yt_category}}
+    return None  # tiktok / linkedin need no extra metadata
+
+
+def build_create_post_input(channel_id, text, media_url, due_at, kind, platform="",
+                            as_draft=True, yt_category="22"):
     """Build the CreatePostInput payload (pure; unit-tested separately).
 
     - schedulingType 'automatic' = Buffer publishes for you (vs 'notification' reminders).
     - mode 'customScheduled' + dueAt = scheduled for a specific time.
     - assets use Buffer's @oneOf shape: {image|video: {url}}.
+    - metadata carries per-network requirements (post type, YouTube title/category).
     - saveToDraft keeps it as a draft for approval (honors the 'drafts for approval' rule).
     """
     asset_key = "video" if kind == "reel" else "image"
@@ -85,12 +106,17 @@ def build_create_post_input(channel_id, text, media_url, due_at, kind, as_draft=
         "assets": [{asset_key: {"url": media_url}}],
         "saveToDraft": bool(as_draft),
     }
+    meta = _platform_metadata(platform, kind, text, yt_category)
+    if meta:
+        payload["metadata"] = meta
     return payload
 
 
-def create_post(channel_id, text, media_url, due_at, kind, token, as_draft=True) -> dict:
+def create_post(channel_id, text, media_url, due_at, kind, token, platform="",
+                as_draft=True, yt_category="22") -> dict:
     """Schedule (or draft) a single post to one Buffer channel. Returns the post dict."""
-    variables = {"input": build_create_post_input(channel_id, text, media_url, due_at, kind, as_draft)}
+    variables = {"input": build_create_post_input(
+        channel_id, text, media_url, due_at, kind, platform, as_draft, yt_category)}
     result = _graphql(_CREATE_POST, variables, token).get("createPost", {})
     if result.get("__typename") == "PostActionSuccess":
         return result.get("post", {})

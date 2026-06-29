@@ -27,6 +27,30 @@ def test_build_input_draft_flag():
     assert buffer_api.build_create_post_input("c", "t", "u", "d", "reel", as_draft=False)["saveToDraft"] is False
 
 
+def test_metadata_instagram_reel_has_type_and_feed():
+    p = buffer_api.build_create_post_input("c", "t", "u", "d", "reel", platform="instagram")
+    assert p["metadata"]["instagram"]["type"] == "reel"
+    assert p["metadata"]["instagram"]["shouldShareToFeed"] is True
+
+
+def test_metadata_facebook_image_is_post():
+    p = buffer_api.build_create_post_input("c", "t", "u", "d", "image", platform="facebook")
+    assert p["metadata"]["facebook"]["type"] == "post"
+
+
+def test_metadata_youtube_has_title_and_category():
+    p = buffer_api.build_create_post_input("c", "Big hook line\nrest", "u", "d", "reel",
+                                           platform="youtube", yt_category="27")
+    assert p["metadata"]["youtube"]["title"] == "Big hook line"
+    assert p["metadata"]["youtube"]["categoryId"] == "27"
+
+
+def test_metadata_absent_for_linkedin_tiktok():
+    for plat in ("linkedin", "tiktok"):
+        p = buffer_api.build_create_post_input("c", "t", "u", "d", "reel", platform=plat)
+        assert "metadata" not in p
+
+
 # ---- publish.target_channels (config-driven routing) ----
 
 def test_target_channels_reel_all_five(deba_config):
