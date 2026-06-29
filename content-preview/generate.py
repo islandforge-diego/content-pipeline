@@ -118,26 +118,80 @@ def render_performance(cfg):
         f'<div class="topcar">{slides}</div>'
         f'<p class="snote">swipe to see the top {len(top)} →</p>'
     ) if top else '<p class="snote">No posts with metrics yet.</p>'
-    # Merged platforms (facebook = page + personal), sorted by reach.
+    # Merged platforms (facebook = page + personal), sorted by views.
     rows = sorted(k.get("by_platform", {}).items(),
                   key=lambda kv: kv[1].get("views", 0), reverse=True)
     plat = "".join(
         f'<tr><td>{esc(p)}</td><td>{v.get("views",0):,}</td>'
-        f'<td>{v.get("engagement",0):,}</td><td>{v.get("posts",0)}</td></tr>'
+        f'<td>{v.get("engagement",0):,}</td></tr>'
         for p, v in rows)
     fb_drill = render_fb_drilldown(k)
     fb_note = ('<p class="snote">Facebook totals include her personal profile + page.</p>'
                if "facebook_personal" in (k.get("by_platform_detail") or {}) else "")
+    top_by_platform = k.get("top_by_platform", {})
+    buffer_drills = "".join(
+        render_buffer_platform_drilldown(p, top_by_platform[p])
+        for p, _ in rows if p in top_by_platform)
     return f"""<section class="card" id="perf" hidden>
       <div class="kpis">{kpi_cards}</div>
       {fb_note}
       {carousel}
       <details><summary>By platform</summary>
-        <table class="ptable"><tr><th>Platform</th><th>Views</th><th>Eng</th><th>Posts</th></tr>{plat}</table>
+        <table class="ptable"><tr><th>Platform</th><th>Views</th><th>Eng</th></tr>{plat}</table>
       </details>
+      {buffer_drills}
       {fb_drill}
       <p class="snote">Updated {esc(k.get('updated',''))}</p>
     </section>"""
+
+
+_PLAT_NAMES = {"instagram": "Instagram", "facebook": "Facebook",
+               "tiktok": "TikTok", "linkedin": "LinkedIn", "youtube": "YouTube"}
+
+
+def render_buffer_platform_drilldown(platform, plat_posts):
+    """Drill-down for a Buffer-tracked platform: views-by-type bars + top posts with links."""
+    if not plat_posts:
+        return ""
+    label = _PLAT_NAMES.get(platform, platform.title())
+    by_type = {}
+    for c in plat_posts:
+        t = c.get("asset_type", "Image")
+        by_type[t] = by_type.get(t, 0) + c["m"].get("views", 0)
+    total = sum(by_type.values()) or 1
+    type_bars = "".join(
+        f'<div class="bar"><span class="blabel">{esc(t)}</span>'
+        f'<span class="btrack"><span class="bfill" style="width:{round(v*100/total)}%"></span></span>'
+        f'<span class="bpct">{round(v*100/total)}%</span></div>'
+        for t, v in sorted(by_type.items(), key=lambda x: x[1], reverse=True))
+
+    def tp(c):
+        m = c.get("m", {})
+        parts = []
+        if m.get("likes"): parts.append(f'{m["likes"]:,} likes')
+        if m.get("comments"): parts.append(f'{m["comments"]:,} comments')
+        if m.get("shares"): parts.append(f'{m["shares"]:,} shares')
+        if m.get("saves"): parts.append(f'{m["saves"]:,} saves')
+        if m.get("watch_min"): parts.append(f'{m["watch_min"]:g} min watched')
+        stats = " · ".join(parts)
+        date_chip = f'<span class="cta">{esc(c.get("date",""))}</span>' if c.get("date") else ""
+        link = (f'<a class="tp-link" href="{esc(c["externalLink"])}" target="_blank" rel="noopener">View post →</a>'
+                if c.get("externalLink") else "")
+        return (f'<div class="toppost"><div class="pmeta">'
+                f'<span class="ptime">{m.get("views",0):,} views</span>'
+                f'<span class="cta">{esc(c.get("asset_type",""))}</span>{date_chip}</div>'
+                f'<div class="ptitle">{esc(c.get("title",""))}</div>'
+                f'<div class="tp-stats">{esc(stats)}</div>{link}</div>')
+
+    tops = "".join(tp(c) for c in plat_posts)
+    type_section = (f'<div class="subhead">Views by content type</div>{type_bars}'
+                    if len(by_type) > 1 else "")
+    return f"""<details>
+      <summary>{esc(label)} — top posts by views</summary>
+      {type_section}
+      <div class="subhead">Top posts</div>
+      {tops}
+    </details>"""
 
 
 def render_fb_drilldown(k):

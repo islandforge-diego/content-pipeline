@@ -46,10 +46,14 @@ def summarize_posts(posts):
         pp = per_platform.setdefault(plat, {"reach": 0, "engagement": 0, "posts": 0, "views": 0})
         pp["reach"] += r; pp["engagement"] += eng; pp["posts"] += 1; pp["views"] += v
         assets = p.get("assets") or []
+        asset_type = assets[0].get("type", "image").capitalize() if assets else "Image"
         cards.append({
             "title": _short(p.get("text", "")),
             "platform": plat,
             "reach": r, "engagement": eng,
+            "externalLink": p.get("externalLink", "") or "",
+            "asset_type": asset_type,
+            "date": (p.get("dueAt") or "")[:10],
             # per-post breakdown for the card (only present metrics get shown)
             "m": {
                 "views": int(v),
@@ -64,6 +68,13 @@ def summarize_posts(posts):
                       else {"type": "gallery", "images": [assets[0]["source"]] if assets else []}),
         })
     top = sorted(cards, key=lambda c: (c["m"]["views"], c["engagement"]), reverse=True)[:5]
+    top_by_platform = {}
+    for c in cards:
+        top_by_platform.setdefault(c["platform"], []).append(c)
+    top_by_platform = {
+        plat: sorted(psts, key=lambda c: (c["m"]["views"], c["engagement"]), reverse=True)[:5]
+        for plat, psts in top_by_platform.items()
+    }
     return {
         "posts": len(posts),
         "reach": reach, "impressions": impressions, "views": views,
@@ -71,6 +82,7 @@ def summarize_posts(posts):
         "engagement_rate": round(sum(rates) / len(rates), 2) if rates else None,
         "by_platform": per_platform,
         "top_posts": top,
+        "top_by_platform": top_by_platform,
     }
 
 

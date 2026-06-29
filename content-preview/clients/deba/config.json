@@ -3558,6 +3558,9 @@
         "platform": "instagram",
         "reach": 2605,
         "engagement": 94,
+        "externalLink": "https://www.instagram.com/reel/DZKpTUnxsca/",
+        "asset_type": "Video",
+        "date": "2026-06-04",
         "m": {
           "views": 3610,
           "likes": 75,
@@ -3577,6 +3580,9 @@
         "platform": "instagram",
         "reach": 1657,
         "engagement": 123,
+        "externalLink": "https://www.instagram.com/reel/DZC4U_ygLVg/",
+        "asset_type": "Video",
+        "date": "2026-06-01",
         "m": {
           "views": 2880,
           "likes": 89,
@@ -3596,6 +3602,9 @@
         "platform": "instagram",
         "reach": 1646,
         "engagement": 146,
+        "externalLink": "https://www.instagram.com/reel/DZfl1DqxD7j/",
+        "asset_type": "Video",
+        "date": "2026-06-12",
         "m": {
           "views": 2577,
           "likes": 137,
@@ -3615,6 +3624,9 @@
         "platform": "instagram",
         "reach": 1526,
         "engagement": 208,
+        "externalLink": "https://www.instagram.com/reel/DZX05qQRpPN/",
+        "asset_type": "Video",
+        "date": "2026-06-09",
         "m": {
           "views": 2334,
           "likes": 153,
@@ -3634,6 +3646,9 @@
         "platform": "instagram",
         "reach": 1526,
         "engagement": 139,
+        "externalLink": "https://www.instagram.com/reel/DYSahq2RM-5/",
+        "asset_type": "Video",
+        "date": "2026-05-13",
         "m": {
           "views": 2193,
           "likes": 123,
@@ -3649,6 +3664,572 @@
         }
       }
     ],
+    "top_by_platform": {
+      "instagram": [
+        {
+          "title": "\u201cI lost a big chunk of money right\u2026",
+          "platform": "instagram",
+          "reach": 2605,
+          "engagement": 94,
+          "externalLink": "https://www.instagram.com/reel/DZKpTUnxsca/",
+          "asset_type": "Video",
+          "date": "2026-06-04",
+          "m": {
+            "views": 3610,
+            "likes": 75,
+            "comments": 7,
+            "shares": 9,
+            "saves": 3,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://scontent-iad3-1.cdninstagram.com/o1/v/t2/f2/m86/AQN8ncurY8h6srEB62Hfs5b9F6XGKcWwBP1iDc4lGThdds8LTUvFQtpQIhhlRHl-NcBME-2HL-9YuWlEhfd5hjm6mFMG32lbC0tyv9U.mp4?_nc_cat=110&_nc_sid=5e9851&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_ohc=S_P4RMXG4ZYQ7kNvwGOSFog&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6OTk3MDIwMDg2MjQxODgwLCJhc3NldF9hZ2VfZGF5cyI6MCwidmlfdXNlY2FzZV9pZCI6MTA4MjcsImR1cmF0aW9uX3MiOjI2LCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&vs=ba59aee4ad540c1b&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC85NjRENUQ5ODE2MkQ3QUU2MkMxRThDOEUwRUU1M0NCM192aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyLzVFNDNFNENGQTExOTVCMzE0Rjg4OUI3RURBNzNENEI0X2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACawqZjBmrLFAxUCKAJDMywXQDrKfvnbItEYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZZapAQA&_nc_gid=qo2w6ulOUvVLVg3FZFO_UA&edm=ANQ71j8EAAAA&_nc_zt=28&_nc_tpa=Q5bMBQEK_8B9MCVMTcPedCOtkLYcKatDZY9wP9TO8sryY9en8PaLvouASNZKQmyo_YitYw36NuuGGtnoZA&oh=00_Af8UJxijz8bDNLH5a3rgT7M8rTpvIsE0IaOU6EmSeFkKlg&oe=6A2355BB",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a218763a13169b278dfd3ea_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "My student just netted $28K on his flip.\u2026",
+          "platform": "instagram",
+          "reach": 1657,
+          "engagement": 123,
+          "externalLink": "https://www.instagram.com/reel/DZC4U_ygLVg/",
+          "asset_type": "Video",
+          "date": "2026-06-01",
+          "m": {
+            "views": 2880,
+            "likes": 89,
+            "comments": 14,
+            "shares": 16,
+            "saves": 4,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1d71339491da0b2c056dee/b1137d95bc47c5594d372a7d31c71ff9.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780318132115/3fa10ea8-c79c-49e3-a345-a17531fe2604.png"
+          }
+        },
+        {
+          "title": "I said I was gonna be mad. I\u2026",
+          "platform": "instagram",
+          "reach": 1646,
+          "engagement": 146,
+          "externalLink": "https://www.instagram.com/reel/DZfl1DqxD7j/",
+          "asset_type": "Video",
+          "date": "2026-06-12",
+          "m": {
+            "views": 2577,
+            "likes": 137,
+            "comments": 5,
+            "shares": 4,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://scontent-iad3-1.cdninstagram.com/o1/v/t2/f2/m86/AQNU1h3HQ2g3Rjvse42iCeMKjN-P2KZ4Z5XAHM4vVKWdhpGBAUAMXpAEScHQE67aBDb4mXqJXFStO2LeQypA-ois3fQUzXYjBOfH6PE.mp4?_nc_cat=104&_nc_sid=5e9851&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_ohc=ZQNBY3ZanR4Q7kNvwGmKmw5&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzIuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MTU0NTE0OTI0Njk5NDc5MCwiYXNzZXRfYWdlX2RheXMiOjAsInZpX3VzZWNhc2VfaWQiOjEwODI3LCJkdXJhdGlvbl9zIjoyMiwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&vs=a2b39bb6292618d1&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC9GRjRCRTVGNTFEOUJDRjA1MjBFNUMxNkQ3MDE5QkRBRV92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyLzRCNDg4QjEwNkU2MkY0NEREOEQ5OTVEOUJDQjlBRUE2X2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACbM5e__wtO-BRUCKAJDMiwXQDZqfvnbItEYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZZapAQA&_nc_gid=yFJ4SUSwPLGJd1zO4gcEMg&edm=AM6HXa8EAAAA&_nc_zt=28&oh=00_Af_Xhwc8QHa0uAAP65uUyakXg0LxxCR7GkKKidoE5D06qA&oe=6A2EBB01",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a2cc6bdf3a0a758abe0021f_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "\u201cI\u2019m trying to contain myself.\u201d \ud83d\ude04 Meet @internationalphife,\u2026",
+          "platform": "instagram",
+          "reach": 1526,
+          "engagement": 208,
+          "externalLink": "https://www.instagram.com/reel/DZX05qQRpPN/",
+          "asset_type": "Video",
+          "date": "2026-06-09",
+          "m": {
+            "views": 2334,
+            "likes": 153,
+            "comments": 38,
+            "shares": 14,
+            "saves": 3,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://scontent-iad3-1.cdninstagram.com/o1/v/t2/f2/m86/AQNSKTfVaAjdRQckR5V89ncSfjikcrFtdeMTl13zTQT9FmsvB7hI9aYJx0tF2YoVwMBb4Z634cQQhGiXFKtJP5OZgmfxGicll4WPIOI.mp4?_nc_cat=108&_nc_sid=5e9851&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_ohc=mIT8fU0wWIUQ7kNvwGAFL4P&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MTc1OTM3NzYzODM4MDM2MCwiYXNzZXRfYWdlX2RheXMiOjAsInZpX3VzZWNhc2VfaWQiOjEwODI3LCJkdXJhdGlvbl9zIjozNCwidXJsZ2VuX3NvdXJjZSI6Ind3dyJ9&ccb=17-1&vs=14002e882d13ce66&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC8zNjRERjg0NEIyOUEzRTZGNzYyOTU0NjYxMTBGMjQ5NV92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyLzI5NDkyMUEwMEFDRjA5NzE2MDUyQzA4ODI0OENDNDg3X2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACaQzcryoImgBhUCKAJDMywXQEFVP3ztkWgYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZZapAQA&_nc_gid=suZF8bB9HbfKefrs51g5gQ&edm=ANQ71j8EAAAA&_nc_zt=28&_nc_tpa=Q5bMBQGcHiXMHZ9ob1JJklzeUcz292EU66OFYq8n9f7lN0G8X8wMHpL28eRPkTRQt3doAAF8L9joKuVDjw&oh=00_Af9gx2dWihdwCO9itycuL9pjNKZuPSwurV_ankpsrSwMTw&oe=6A2A23E9",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a2845bdabca0868ad8a94ab_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "Reconnected with an old college friend \ud83e\udd1d\ud83d\udcda and\u2026",
+          "platform": "instagram",
+          "reach": 1526,
+          "engagement": 139,
+          "externalLink": "https://www.instagram.com/reel/DYSahq2RM-5/",
+          "asset_type": "Video",
+          "date": "2026-05-13",
+          "m": {
+            "views": 2193,
+            "likes": 123,
+            "comments": 6,
+            "shares": 8,
+            "saves": 2,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://scontent-iad3-1.cdninstagram.com/o1/v/t2/f2/m86/AQMAxfJdMC3iixGZJSUpxoq74Qpa7HdLf3ai7docAj5QFTRIogziqxMpvxRadD42FamoDtP6Jv4RB-dg4P0Y6yvimSxf8xlErpbLBdI.mp4?_nc_cat=110&_nc_sid=5e9851&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_ohc=I5x8yPJnhf4Q7kNvwFJwLcy&efg=eyJ2ZW5jb2RlX3RhZyI6Inhwdl9wcm9ncmVzc2l2ZS5JTlNUQUdSQU0uQ0xJUFMuQzMuNzIwLmRhc2hfYmFzZWxpbmVfMV92MSIsInhwdl9hc3NldF9pZCI6MjM0MjQ3MDQwMjkxMTIyNywiYXNzZXRfYWdlX2RheXMiOjE4LCJ2aV91c2VjYXNlX2lkIjoxMDA5OSwiZHVyYXRpb25fcyI6MTAxLCJ1cmxnZW5fc291cmNlIjoid3d3In0%3D&ccb=17-1&vs=ca8f63d697a910b4&_nc_vs=HBksFQIYUmlnX3hwdl9yZWVsc19wZXJtYW5lbnRfc3JfcHJvZC9DMjRFNEQ3Qjg3MjQ0RUJCMEMwMTIyNzE4QUE1NDg4Nl92aWRlb19kYXNoaW5pdC5tcDQVAALIARIAFQIYUWlnX3hwdl9wbGFjZW1lbnRfcGVybWFuZW50X3YyL0MyNEFBMzJFMjZCQ0I3QjFEOTc1OEY3QzA3QzFEMThGX2F1ZGlvX2Rhc2hpbml0Lm1wNBUCAsgBEgAoABgAGwKIB3VzZV9vaWwBMRJwcm9ncmVzc2l2ZV9yZWNpcGUBMRUAACb2r5nE3J2pCBUCKAJDMywXQFllT987ZFoYEmRhc2hfYmFzZWxpbmVfMV92MREAdf4HZeadAQA&_nc_gid=eET9RVmj-xAFAKhwfuJCPg&edm=ANo9K5cEAAAA&_nc_zt=28&_nc_tpa=Q5bMBQGAqRkeDZ2tc56LGRYFuV-TxpbM1I1DZpAHllChvdDGNK-VFlyA60yfon13fWMBhfIrsgIrVS6Zdg&oh=00_Af-UTk3mwHeglAxh_EUdmSQ009vfsahVHKd8KRSqWIV2AA&oe=6A1EAD6F",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb662c687a22dd4484705/6a1cb66408fdc25786a47c7b_thumbnail.jpg"
+          }
+        }
+      ],
+      "linkedin": [
+        {
+          "title": "Still waiting around at your properties for in-person\u2026",
+          "platform": "linkedin",
+          "reach": 87,
+          "engagement": 7,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7463265966945165312",
+          "asset_type": "Video",
+          "date": "2026-05-21",
+          "m": {
+            "views": 58,
+            "likes": 7,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 18.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://media.licdn.com/dms/image/v2/D5605AQHBez4gIZuEuQ/videocover-high/B56Z5LY3uvGoBQ-/0/1779381274268?e=1780873200&v=beta&t=QwJPDvk05eTyXAX0LrJsaFCoLc1OiSnbuRHM-NEVaFw&expires-ts=1780873200000",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb7a4c687a22dd4484a78/6a1cb7b81620f20ca75311cb_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "Delays cost time AND money. If your draw\u2026",
+          "platform": "linkedin",
+          "reach": 101,
+          "engagement": 6,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7468333116714065920",
+          "asset_type": "Video",
+          "date": "2026-06-04",
+          "m": {
+            "views": 54,
+            "likes": 6,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 10.1
+          },
+          "media": {
+            "type": "video",
+            "src": "https://media.licdn.com/dms/image/v2/D5605AQEKuuVqBwc1wA/videocover-high/B56Z6TaO8zH0BM-/0/1780589593490?e=1781276400&v=beta&t=Og7pgvfUGTxU_boZgHp0LPwGjSFA7iKNL_MYt0KuKlQ&expires-ts=1781276400000",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb7a4c687a22dd4484a78/6a22e3ac8ccf23b62fd1cfcd_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "Raise your hand if you are tired of\u2026",
+          "platform": "linkedin",
+          "reach": 47,
+          "engagement": 1,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7465796711664345088",
+          "asset_type": "Video",
+          "date": "2026-05-28",
+          "m": {
+            "views": 22,
+            "likes": 1,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 4.4
+          },
+          "media": {
+            "type": "video",
+            "src": "https://media.licdn.com/dms/image/v2/D5605AQGlP4A85DX20Q/videocover-high/B56Z5vXXf2HcBM-/0/1779984859535?e=1780873200&v=beta&t=LgvP2P4QsHAuz2L9v-zyl6kLBgMQgC4uhtuHuCwx5OQ&expires-ts=1780873200000",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb7a4c687a22dd4484a78/6a1cb7b81620f20ca75311d7_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "The June 2026 Hands-On Mentorship is officially SOLD\u2026",
+          "platform": "linkedin",
+          "reach": 19,
+          "engagement": 2,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7471368253039357952",
+          "asset_type": "Video",
+          "date": "2026-06-13",
+          "m": {
+            "views": 17,
+            "likes": 2,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 4.2
+          },
+          "media": {
+            "type": "video",
+            "src": "https://media.licdn.com/dms/image/v2/D5605AQGOpxRbEMkhtg/videocover-high/B56Z6.h21fJsBM-/0/1781313008591?e=1782086400&v=beta&t=a2kvovyg-8bJLzAykhczhNSJlFgaUE_XXk4RQtu-yE0&expires-ts=1782086400000",
+            "poster": "https://media.licdn.com/dms/image/v2/D5605AQGOpxRbEMkhtg/videocover-high/B56Z6.h21fJsBM-/0/1781313008591?e=1782086400&v=beta&t=a2kvovyg-8bJLzAykhczhNSJlFgaUE_XXk4RQtu-yE0&expires-ts=1782086400000"
+          }
+        },
+        {
+          "title": "When Roger and Reina joined my mentorship program,\u2026",
+          "platform": "linkedin",
+          "reach": 28,
+          "engagement": 0,
+          "externalLink": "https://www.linkedin.com/feed/update/urn:li:ugcPost:7474869512287268864",
+          "asset_type": "Video",
+          "date": "2026-06-22",
+          "m": {
+            "views": 15,
+            "likes": 0,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 2.7
+          },
+          "media": {
+            "type": "video",
+            "src": "https://media.licdn.com/dms/image/v2/D4E05AQHMG_2Ls6cxkw/videocover-high/B4EZ7wSUGjJEBQ-/0/1782147795885?e=1782903600&v=beta&t=ML7EZf4BGdVH-NgTmxyMRAGhK6u-Z8gzUcSD9vYP2yU&expires-ts=1782903600000",
+            "poster": "https://media.licdn.com/dms/image/v2/D4E05AQHMG_2Ls6cxkw/videocover-high/B4EZ7wSUGjJEBQ-/0/1782147795885?e=1782903600&v=beta&t=ML7EZf4BGdVH-NgTmxyMRAGhK6u-Z8gzUcSD9vYP2yU&expires-ts=1782903600000"
+          }
+        }
+      ],
+      "facebook": [
+        {
+          "title": "My student just netted $28K on his flip.\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 7,
+          "externalLink": "https://www.facebook.com/reel/1684214235957829/",
+          "asset_type": "Video",
+          "date": "2026-06-01",
+          "m": {
+            "views": 0,
+            "likes": 2,
+            "comments": 1,
+            "shares": 4,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1d71339491da0b2c056dee/b1137d95bc47c5594d372a7d31c71ff9.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780314414040/31247818-9b5a-49ab-8c4f-d8ac7218df2a.jpeg"
+          }
+        },
+        {
+          "title": "Is working a 9-5 job something you want\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 3,
+          "externalLink": "https://www.facebook.com/reel/1000818495971526/",
+          "asset_type": "Video",
+          "date": "2026-06-02",
+          "m": {
+            "views": 0,
+            "likes": 2,
+            "comments": 0,
+            "shares": 1,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1ed094bf28aab8bf0551f4/d42f4c9c76f2cef91d22e54b94ae00ba.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780404327266/2b5998f4-707a-451f-88bf-d07e7453ffa7.jpeg"
+          }
+        },
+        {
+          "title": "Only 10 spots. \ud83d\udc49\ud83c\udffe Comment INVERTIR and I'll\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 2,
+          "externalLink": "https://facebook.com/324502310753290_122219978546357658",
+          "asset_type": "Image",
+          "date": "2026-06-19",
+          "m": {
+            "views": 0,
+            "likes": 1,
+            "comments": 1,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "gallery",
+            "images": [
+              "https://buffer-media-uploads.s3.amazonaws.com/6a3591299fbef9953e0b5322/fc97975f39da5b02fb7fa4f45366913216322161_47de303b6b16b85afc4e52faf0b31dc232640fe1_facebook"
+            ]
+          }
+        },
+        {
+          "title": "$28K profit on his flip. \ud83d\udcb0 Israel didn't\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 2,
+          "externalLink": "https://www.facebook.com/reel/1566901598774354/",
+          "asset_type": "Video",
+          "date": "2026-06-03",
+          "m": {
+            "views": 0,
+            "likes": 2,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a20225ea621c7e90f07d63c/fc0326cabcc00c9910ef894de6985862.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780490830237/3f7fc206-4d5a-449f-a6ba-54af2cea611b.jpeg"
+          }
+        },
+        {
+          "title": "From the bays to the table \ud83c\udfcc\ufe0f\ud83c\udf79 Our\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 1,
+          "externalLink": "https://facebook.com/324502310753290_122220795446357658",
+          "asset_type": "Image",
+          "date": "2026-06-28",
+          "m": {
+            "views": 0,
+            "likes": 1,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "gallery",
+            "images": [
+              "https://res.cloudinary.com/dpwh4baly/image/upload/v1782138662/FX201244_tu2ssj.jpg"
+            ]
+          }
+        }
+      ],
+      "tiktok": [
+        {
+          "title": "When I was still a principal, nobody handed\u2026",
+          "platform": "tiktok",
+          "reach": 1138,
+          "engagement": 28,
+          "externalLink": "https://www.tiktok.com/@debaflipstexas/video/7652074298718424334?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+          "asset_type": "Image",
+          "date": "2026-06-16",
+          "m": {
+            "views": 1227,
+            "likes": 28,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "gallery",
+            "images": [
+              "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb855c687a22dd4484c34/6a32ca6278f0ae8dd10b637d_thumbnail.webp"
+            ]
+          }
+        },
+        {
+          "title": "our bank said no. Your network said yes.\u2026",
+          "platform": "tiktok",
+          "reach": 841,
+          "engagement": 30,
+          "externalLink": "https://www.tiktok.com/@debaflipstexas/video/7643138253566070029?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+          "asset_type": "Video",
+          "date": "2026-05-23",
+          "m": {
+            "views": 924,
+            "likes": 30,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://www.tiktok.com/@debaflipstexas/video/7643138253566070029?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb855c687a22dd4484c34/6a1cb8571bdf519a772e470d_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "The first step to becoming a real estate\u2026",
+          "platform": "tiktok",
+          "reach": 828,
+          "engagement": 37,
+          "externalLink": "https://www.tiktok.com/@debaflipstexas/video/7640548774460345613?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+          "asset_type": "Video",
+          "date": "2026-05-16",
+          "m": {
+            "views": 901,
+            "likes": 36,
+            "comments": 0,
+            "shares": 1,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://www.tiktok.com/@debaflipstexas/video/7640548774460345613?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb855c687a22dd4484c34/6a1cb8571bdf519a772e470f_thumbnail.jpg"
+          }
+        },
+        {
+          "title": "Nobody builds wealth alone. \ud83c\udfe1\u2728 I've spent years\u2026",
+          "platform": "tiktok",
+          "reach": 729,
+          "engagement": 19,
+          "externalLink": "https://www.tiktok.com/@debaflipstexas/video/7641669058529660174?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+          "asset_type": "Image",
+          "date": "2026-05-19",
+          "m": {
+            "views": 885,
+            "likes": 19,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "gallery",
+            "images": [
+              "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb855c687a22dd4484c34/6a1cb8571bdf519a772e47a9_thumbnail.webp"
+            ]
+          }
+        },
+        {
+          "title": "Nobody cares about the story. The numbers either\u2026",
+          "platform": "tiktok",
+          "reach": 792,
+          "engagement": 17,
+          "externalLink": "https://www.tiktok.com/@debaflipstexas/video/7637943130716753166?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+          "asset_type": "Video",
+          "date": "2026-05-09",
+          "m": {
+            "views": 867,
+            "likes": 17,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://www.tiktok.com/@debaflipstexas/video/7637943130716753166?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
+            "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb855c687a22dd4484c34/6a1cb8571bdf519a772e47e3_thumbnail.jpg"
+          }
+        }
+      ],
+      "youtube": [
+        {
+          "title": "Do it sooner. Just go in. \ud83d\ude4c\ud83c\udffe Joshua\u2026",
+          "platform": "youtube",
+          "reach": 0,
+          "engagement": 9,
+          "externalLink": "https://www.youtube.com/shorts/Q8UV0y7Q9gk",
+          "asset_type": "Video",
+          "date": "2026-06-22",
+          "m": {
+            "views": 1650,
+            "likes": 9,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a381e29c6da5ef0000d9016/cd926ee9cc94205309894f9251026986.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1782062605793/9e910ed8-ae7e-49be-942c-3653c141688b.jpeg"
+          }
+        },
+        {
+          "title": "Is working a 9-5 job something you want\u2026",
+          "platform": "youtube",
+          "reach": 0,
+          "engagement": 3,
+          "externalLink": "https://www.youtube.com/shorts/88TeQaLVFpw",
+          "asset_type": "Video",
+          "date": "2026-06-07",
+          "m": {
+            "views": 1146,
+            "likes": 3,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a25c294e8871b3af30691a7/7f3dcf3ab9ea02325af891d0406f8600.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780859539265/5e45902b-fa60-48ac-acd1-636c97d809f7.jpeg"
+          }
+        },
+        {
+          "title": "Is working a 9-5 job something you want\u2026",
+          "platform": "youtube",
+          "reach": 0,
+          "engagement": 4,
+          "externalLink": "https://www.youtube.com/shorts/iQ1DFqJ3L_c",
+          "asset_type": "Video",
+          "date": "2026-06-02",
+          "m": {
+            "views": 1044,
+            "likes": 4,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1ed094bf28aab8bf0551f4/d42f4c9c76f2cef91d22e54b94ae00ba.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780404327266/2b5998f4-707a-451f-88bf-d07e7453ffa7.jpeg"
+          }
+        },
+        {
+          "title": "\u201cHow do I get the money?\u201d \ud83d\udcb0 I\u2026",
+          "platform": "youtube",
+          "reach": 0,
+          "engagement": 16,
+          "externalLink": "https://www.youtube.com/shorts/nCsh_6PV1zY",
+          "asset_type": "Video",
+          "date": "2026-06-11",
+          "m": {
+            "views": 1033,
+            "likes": 16,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a2ac4d00ecc2e302b0c9a22/bb25e0f7b3a99cfda28e9e827b56127d.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1781187759598/8b0c53d3-3107-4e6c-a7b2-b218aa5893ea.jpeg"
+          }
+        },
+        {
+          "title": "\"I lost a big chunk of money right\u2026",
+          "platform": "youtube",
+          "reach": 0,
+          "engagement": 2,
+          "externalLink": "https://www.youtube.com/shorts/laKmOrqRKiA",
+          "asset_type": "Video",
+          "date": "2026-06-04",
+          "m": {
+            "views": 936,
+            "likes": 2,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a21895d534883508d0db9cc/003c979e4033723dbbaa2445869724ec.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780582748296/1c7222a9-ff5d-4402-bbdc-80a6d4376210.jpeg"
+          }
+        }
+      ]
+    },
     "followers": 7112,
     "facebook_personal_detail": {
       "window": "Apr 30, 2026 \u2013 Jun 29, 2026",
@@ -3777,6 +4358,6 @@
     },
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 1:19 PM CT"
+    "updated": "Jun 29, 1:33 PM CT"
   }
 }

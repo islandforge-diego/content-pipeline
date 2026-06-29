@@ -232,7 +232,7 @@ _SENT_METRICS_QUERY = """
 query SentPosts($input: PostsInput!, $after: String) {
   posts(input: $input, first: 100, after: $after) {
     edges { node {
-      id channelService dueAt text
+      id channelService dueAt text externalLink
       assets { type source thumbnail }
       metrics { type value unit }
     } }
