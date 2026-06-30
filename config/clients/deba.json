@@ -141,6 +141,10 @@
     "user_uri": "",
     "booking_slug": "bookdeba"
   },
+  "kajabi": {
+    "site_id": "2147563407",
+    "community_id": "12716"
+  },
   "manual_metrics": {
     "facebook_personal": {
       "followers": 7112,
@@ -236,6 +240,40 @@
       "canceled": 3,
       "window": "Apr 30 \u2013 Jun 28, 2026",
       "updated": "2026-06-29"
+    },
+    "kajabi": {
+      "revenue_total": 24404.0,
+      "revenue_weekly": [
+        {"period": "2026-04-27", "amount": 434.0, "count": 4},
+        {"period": "2026-05-04", "amount": 392.0, "count": 5},
+        {"period": "2026-05-11", "amount": 3730.0, "count": 15},
+        {"period": "2026-05-18", "amount": 3157.0, "count": 6},
+        {"period": "2026-05-25", "amount": 758.0, "count": 3},
+        {"period": "2026-06-01", "amount": 20153.0, "count": 9},
+        {"period": "2026-06-08", "amount": 24404.0, "count": 16},
+        {"period": "2026-06-15", "amount": 2157.0, "count": 4},
+        {"period": "2026-06-22", "amount": 2434.99, "count": 6}
+      ],
+      "mrr_gross": 2371.69,
+      "mrr_net": 2371.69,
+      "new_contacts": 119,
+      "contacts_total": 1781,
+      "top_offers": [
+        {"title": "The Roadmap to Real Estate - Hands-On Mentorship", "amount": 335605.6, "count": 88},
+        {"title": "Staging Checkout", "amount": 58490.0, "count": 36},
+        {"title": "The WBC - Monthly Membership", "amount": 66696.0, "count": 565},
+        {"title": "Roadmap to Real Estate - Tier 2: Payment Plan", "amount": 82698.2, "count": 73},
+        {"title": "The Roadmap to Real Estate Investing - AV", "amount": 30554.1, "count": 17}
+      ],
+      "community": {
+        "active_users": null,
+        "new_members": null,
+        "messages_sent": null,
+        "meetup_rsvp": null,
+        "challenges_joined": null
+      },
+      "window": "Apr 30 \u2013 Jun 29, 2026",
+      "updated": "2026-06-30"
     },
     "followers": {
       "as_of": "2026-06-29",

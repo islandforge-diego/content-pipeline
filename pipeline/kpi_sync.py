@@ -15,6 +15,7 @@ from pathlib import Path
 
 import buffer_api
 import calendly_api
+import kajabi_sync
 
 ROOT = Path(__file__).resolve().parent.parent
 PREVIEW_DIR = ROOT / "content-preview"
@@ -228,7 +229,7 @@ def compute_follower_growth(summary, client, posts, today, cutoff30):
     return history
 
 
-def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
+def build_kpis(client, buffer_token, calendly_token=None, kajabi_token=None, window_days=30):
     org_id = client["buffer"]["org_id"]
     channel_ids = [c["id"] for c in client["buffer"]["channels"].values() if c.get("id")]
     end = datetime.now(timezone.utc)
@@ -272,14 +273,19 @@ def build_kpis(client, buffer_token, calendly_token=None, window_days=30):
             bookings = man["bookings"]
 
     summary["bookings"] = bookings
+
+    kajabi_kpis = kajabi_sync.build_kajabi_metrics(client, kajabi_token, window_days)
+    if kajabi_kpis is not None:
+        summary["kajabi"] = kajabi_kpis
+
     summary["window_days"] = window_days
     summary["updated"] = end.astimezone(timezone(timedelta(hours=-5))).strftime("%b %-d, %-I:%M %p CT")
     return summary
 
 
-def sync_kpis(client, buffer_token, calendly_token=None, window_days=None):
+def sync_kpis(client, buffer_token, calendly_token=None, kajabi_token=None, window_days=None):
     window = window_days or client.get("preview", {}).get("kpi_window_days", 30)
-    kpis = build_kpis(client, buffer_token, calendly_token, window)
+    kpis = build_kpis(client, buffer_token, calendly_token, kajabi_token, window)
     slug = client["slug"]
 
     # Persist the follower-count snapshot history back to the source client config so

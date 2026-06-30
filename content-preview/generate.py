@@ -158,6 +158,7 @@ def render_performance(cfg):
     followers_breakdown = render_followers_breakdown(k)
     fb_drill = render_fb_drilldown(k)
     ig_drill = render_ig_breakdown(k)
+    kajabi_section = render_kajabi(k)
     top_by_platform = k.get("top_by_platform", {})
     # Instagram gets its own featured breakdown below, so skip it in the generic loop.
     buffer_drills = "".join(
@@ -173,6 +174,7 @@ def render_performance(cfg):
       {buffer_drills}
       {ig_drill}
       {fb_drill}
+      {kajabi_section}
       <p class="snote">Updated {esc(k.get('updated',''))}</p>
     </section>"""
 
@@ -354,6 +356,73 @@ def render_ig_breakdown(k):
       {type_section}
       <div class="subhead">Top Instagram posts (by views)</div>
       {tops}
+    </details>"""
+
+
+_COMMUNITY_LABELS = (
+    ("active_users", "Active members"),
+    ("new_members", "New members"),
+    ("messages_sent", "Messages sent"),
+    ("meetup_rsvp", "Meetup RSVPs"),
+    ("challenges_joined", "Challenges joined"),
+)
+
+
+def render_kajabi(k):
+    """Drill-down for Kajabi revenue + Community engagement (the course-business
+    outcome KPIs, alongside Calendly bookings). Omitted entirely if no kajabi block."""
+    kj = k.get("kajabi")
+    if not kj:
+        return ""
+
+    def money(n):
+        return f"${n:,.2f}" if isinstance(n, (int, float)) else "—"
+
+    cards = [
+        ("Revenue", money(kj.get("revenue_total")), f"{kj.get('window_days', 30)} days"),
+        ("MRR", money(kj.get("mrr_gross")), "recurring, gross"),
+        ("New leads", (f"{kj['new_contacts']:,}" if kj.get("new_contacts") is not None else "—"),
+         (f"{kj['contacts_total']:,} total" if kj.get("contacts_total") is not None else "")),
+    ]
+    kpi_cards = "".join(
+        f'<div class="kpi"><div class="kval">{esc(v)}</div><div class="klabel">{esc(lbl)}</div>'
+        f'{(chr(60)+"div class=ksub"+chr(62)+esc(sub)+chr(60)+"/div"+chr(62)) if sub else ""}</div>'
+        for lbl, v, sub in cards)
+
+    def offer_row(o):
+        count = f'{o["count"]:,}' if o.get("count") is not None else "—"
+        return (f'<tr><td>{esc(o.get("title",""))}</td><td>{count}</td>'
+                f'<td>{money(o.get("amount"))}</td></tr>')
+
+    offers = kj.get("top_offers") or []
+    offers_table = "".join(offer_row(o) for o in offers)
+    offers_section = (f'<div class="subhead">Top offers</div>'
+                      f'<table class="ptable"><tr><th>Offer</th><th>Purchases</th><th>Revenue</th></tr>'
+                      f'{offers_table}</table>') if offers else ""
+
+    weekly = kj.get("revenue_weekly") or []
+    max_amt = max((r.get("amount", 0) for r in weekly), default=0) or 1
+    weekly_bars = "".join(
+        f'<div class="bar"><span class="blabel">{esc(r.get("period",""))}</span>'
+        f'<span class="btrack"><span class="bfill" style="width:{round(r.get("amount",0)*100/max_amt)}%"></span></span>'
+        f'<span class="bpct">{money(r.get("amount"))}</span></div>'
+        for r in weekly)
+    weekly_section = (f'<div class="subhead">Revenue by week</div>{weekly_bars}') if weekly else ""
+
+    community = kj.get("community") or {}
+    community_rows = "".join(
+        f'<tr><td>{esc(label)}</td><td>{community[key]:,}</td></tr>'
+        for key, label in _COMMUNITY_LABELS if community.get(key) is not None)
+    community_section = (f'<div class="subhead">Community engagement</div>'
+                         f'<table class="ptable"><tr><th>Signal</th><th>Count</th></tr>'
+                         f'{community_rows}</table>') if community_rows else ""
+
+    return f"""<details>
+      <summary>Kajabi — revenue &amp; community</summary>
+      <div class="kpis">{kpi_cards}</div>
+      {weekly_section}
+      {offers_section}
+      {community_section}
     </details>"""
 
 

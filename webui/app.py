@@ -496,7 +496,8 @@ def api_preview_sync():
         return jsonify({"error": "BUFFER_TOKEN not set in .env"}), 400
     try:
         feed_n, story_n = preview_sync.sync_preview(cfg, token)
-        kpi_sync.sync_kpis(cfg, token, os.environ.get("CALENDLY_TOKEN") or None)
+        kpi_sync.sync_kpis(cfg, token, os.environ.get("CALENDLY_TOKEN") or None,
+                           os.environ.get("KAJABI_TOKEN") or None)
         return jsonify({"feed": feed_n, "stories": story_n, "url": f"/preview/clients/{slug}/"})
     except Exception as e:
         return jsonify({"error": str(e)}), 502
@@ -520,7 +521,8 @@ def api_preview_publish():
         progress("Syncing from Buffer…")
         preview_sync.sync_preview(cfg, token)
         progress("Computing KPIs…")
-        kpi_sync.sync_kpis(cfg, token, os.environ.get("CALENDLY_TOKEN") or None)
+        kpi_sync.sync_kpis(cfg, token, os.environ.get("CALENDLY_TOKEN") or None,
+                           os.environ.get("KAJABI_TOKEN") or None)
         progress("Publishing to the web…")
         env = dict(os.environ, PREVIEW_REPO=repo)
         r = subprocess.run(["bash", "deploy.sh"], cwd=str(PREVIEW_DIR),
