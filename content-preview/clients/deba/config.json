@@ -3536,27 +3536,35 @@
     }
   ],
   "kpis": {
-    "posts": 302,
-    "reach": 236913,
+    "posts": 307,
+    "reach": 237326,
     "impressions": 4428,
-    "views": 271232,
-    "engagement": 8761,
-    "engagement_rate": 4.24,
+    "views": 272064,
+    "engagement": 8794,
+    "engagement_rate": 5.67,
     "engagement_rate_total": 3.2,
     "by_platform": {
       "instagram": {
-        "reach": 36650,
-        "engagement": 2594,
-        "posts": 105,
-        "views": 58351,
+        "reach": 37063,
+        "engagement": 2626,
+        "posts": 108,
+        "views": 59120,
         "saves": 64,
         "follows": 8
       },
       "linkedin": {
         "reach": 1227,
         "engagement": 74,
-        "posts": 121,
+        "posts": 122,
         "views": 1995,
+        "saves": 0,
+        "follows": 0
+      },
+      "tiktok": {
+        "reach": 14253,
+        "engagement": 422,
+        "posts": 46,
+        "views": 16162,
         "saves": 0,
         "follows": 0
       },
@@ -3568,19 +3576,11 @@
         "saves": 0,
         "follows": 0
       },
-      "tiktok": {
-        "reach": 14253,
-        "engagement": 422,
-        "posts": 45,
-        "views": 16162,
-        "saves": 0,
-        "follows": 0
-      },
       "youtube": {
         "reach": 0,
-        "engagement": 64,
+        "engagement": 65,
         "posts": 17,
-        "views": 7508,
+        "views": 7571,
         "saves": 0,
         "follows": 0
       }
@@ -3639,7 +3639,7 @@
         "asset_type": "Video",
         "date": "2026-06-12",
         "m": {
-          "views": 2577,
+          "views": 2578,
           "likes": 137,
           "comments": 5,
           "shares": 4,
@@ -3752,7 +3752,7 @@
           "asset_type": "Video",
           "date": "2026-06-12",
           "m": {
-            "views": 2577,
+            "views": 2578,
             "likes": 137,
             "comments": 5,
             "shares": 4,
@@ -3922,118 +3922,6 @@
           }
         }
       ],
-      "facebook": [
-        {
-          "title": "My student just netted $28K on his flip.\u2026",
-          "platform": "facebook",
-          "reach": 0,
-          "engagement": 7,
-          "externalLink": "https://www.facebook.com/reel/1684214235957829/",
-          "asset_type": "Video",
-          "date": "2026-06-01",
-          "m": {
-            "views": 808,
-            "likes": 2,
-            "comments": 1,
-            "shares": 4,
-            "saves": 0,
-            "watch_min": 0.0
-          },
-          "media": {
-            "type": "video",
-            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1d71339491da0b2c056dee/b1137d95bc47c5594d372a7d31c71ff9.original_transcoded.mp4",
-            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780314414040/31247818-9b5a-49ab-8c4f-d8ac7218df2a.jpeg"
-          }
-        },
-        {
-          "title": "Is working a 9-5 job something you want\u2026",
-          "platform": "facebook",
-          "reach": 0,
-          "engagement": 3,
-          "externalLink": "https://www.facebook.com/reel/1000818495971526/",
-          "asset_type": "Video",
-          "date": "2026-06-02",
-          "m": {
-            "views": 313,
-            "likes": 2,
-            "comments": 0,
-            "shares": 1,
-            "saves": 0,
-            "watch_min": 0.0
-          },
-          "media": {
-            "type": "video",
-            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1ed094bf28aab8bf0551f4/d42f4c9c76f2cef91d22e54b94ae00ba.original_transcoded.mp4",
-            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780404327266/2b5998f4-707a-451f-88bf-d07e7453ffa7.jpeg"
-          }
-        },
-        {
-          "title": "How to make money with one skill. \ud83d\udcb0\u2026",
-          "platform": "facebook",
-          "reach": 0,
-          "engagement": 0,
-          "externalLink": "https://facebook.com/324502310753290_122220421094357658",
-          "asset_type": "Video",
-          "date": "2026-06-24",
-          "m": {
-            "views": 235,
-            "likes": 0,
-            "comments": 0,
-            "shares": 0,
-            "saves": 0,
-            "watch_min": 0.0
-          },
-          "media": {
-            "type": "video",
-            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a38262648cf24cb7e0f8211/2714214a971af3c92007d44ea0e60d50.original_transcoded.mp4",
-            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1782064622986/8c320970-99ff-4e8e-acc1-22c511ac412d.jpeg"
-          }
-        },
-        {
-          "title": "We asked our clients: \"What makes Deba a\u2026",
-          "platform": "facebook",
-          "reach": 0,
-          "engagement": 0,
-          "externalLink": "https://facebook.com/324502310753290_122220523802357658",
-          "asset_type": "Video",
-          "date": "2026-06-25",
-          "m": {
-            "views": 225,
-            "likes": 0,
-            "comments": 0,
-            "shares": 0,
-            "saves": 0,
-            "watch_min": 0.0
-          },
-          "media": {
-            "type": "video",
-            "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782071184/Blue_Jacket_Interview_Clip_2_ma5qdo.mov",
-            "poster": "https://images.buffer.com/thumbnail/49YVsIskFzBUCkxMRCTl2AjtLymJX9CAP8iuBwSSUKg?url=https%3A%2F%2Fres.cloudinary.com%2Fdpwh4baly%2Fvideo%2Fupload%2Fv1782071184%2FBlue_Jacket_Interview_Clip_2_ma5qdo.mov"
-          }
-        },
-        {
-          "title": "$28K profit on his flip. \ud83d\udcb0 Israel didn't\u2026",
-          "platform": "facebook",
-          "reach": 0,
-          "engagement": 2,
-          "externalLink": "https://www.facebook.com/reel/1566901598774354/",
-          "asset_type": "Video",
-          "date": "2026-06-03",
-          "m": {
-            "views": 223,
-            "likes": 2,
-            "comments": 0,
-            "shares": 0,
-            "saves": 0,
-            "watch_min": 0.0
-          },
-          "media": {
-            "type": "video",
-            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a20225ea621c7e90f07d63c/fc0326cabcc00c9910ef894de6985862.original_transcoded.mp4",
-            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780490830237/3f7fc206-4d5a-449f-a6ba-54af2cea611b.jpeg"
-          }
-        }
-      ],
       "tiktok": [
         {
           "title": "When I was still a principal, nobody handed\u2026",
@@ -4145,6 +4033,118 @@
             "type": "video",
             "src": "https://www.tiktok.com/@debaflipstexas/video/7637943130716753166?utm_campaign=tt4d_open_api&utm_source=7103819247981182978",
             "poster": "https://buffer-updates-media-backfill-bucket.s3.amazonaws.com/67e362b288f79c93410af3fb/6a1cb855c687a22dd4484c34/6a1cb8571bdf519a772e47e3_thumbnail.jpg"
+          }
+        }
+      ],
+      "facebook": [
+        {
+          "title": "My student just netted $28K on his flip.\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 7,
+          "externalLink": "https://www.facebook.com/reel/1684214235957829/",
+          "asset_type": "Video",
+          "date": "2026-06-01",
+          "m": {
+            "views": 808,
+            "likes": 2,
+            "comments": 1,
+            "shares": 4,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1d71339491da0b2c056dee/b1137d95bc47c5594d372a7d31c71ff9.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780314414040/31247818-9b5a-49ab-8c4f-d8ac7218df2a.jpeg"
+          }
+        },
+        {
+          "title": "Is working a 9-5 job something you want\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 3,
+          "externalLink": "https://www.facebook.com/reel/1000818495971526/",
+          "asset_type": "Video",
+          "date": "2026-06-02",
+          "m": {
+            "views": 313,
+            "likes": 2,
+            "comments": 0,
+            "shares": 1,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a1ed094bf28aab8bf0551f4/d42f4c9c76f2cef91d22e54b94ae00ba.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780404327266/2b5998f4-707a-451f-88bf-d07e7453ffa7.jpeg"
+          }
+        },
+        {
+          "title": "How to make money with one skill. \ud83d\udcb0\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 0,
+          "externalLink": "https://facebook.com/324502310753290_122220421094357658",
+          "asset_type": "Video",
+          "date": "2026-06-24",
+          "m": {
+            "views": 235,
+            "likes": 0,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a38262648cf24cb7e0f8211/2714214a971af3c92007d44ea0e60d50.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1782064622986/8c320970-99ff-4e8e-acc1-22c511ac412d.jpeg"
+          }
+        },
+        {
+          "title": "We asked our clients: \"What makes Deba a\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 0,
+          "externalLink": "https://facebook.com/324502310753290_122220523802357658",
+          "asset_type": "Video",
+          "date": "2026-06-25",
+          "m": {
+            "views": 225,
+            "likes": 0,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://res.cloudinary.com/dpwh4baly/video/upload/v1782071184/Blue_Jacket_Interview_Clip_2_ma5qdo.mov",
+            "poster": "https://images.buffer.com/thumbnail/49YVsIskFzBUCkxMRCTl2AjtLymJX9CAP8iuBwSSUKg?url=https%3A%2F%2Fres.cloudinary.com%2Fdpwh4baly%2Fvideo%2Fupload%2Fv1782071184%2FBlue_Jacket_Interview_Clip_2_ma5qdo.mov"
+          }
+        },
+        {
+          "title": "$28K profit on his flip. \ud83d\udcb0 Israel didn't\u2026",
+          "platform": "facebook",
+          "reach": 0,
+          "engagement": 2,
+          "externalLink": "https://www.facebook.com/reel/1566901598774354/",
+          "asset_type": "Video",
+          "date": "2026-06-03",
+          "m": {
+            "views": 223,
+            "likes": 2,
+            "comments": 0,
+            "shares": 0,
+            "saves": 0,
+            "watch_min": 0.0
+          },
+          "media": {
+            "type": "video",
+            "src": "https://buffer-media-uploads.s3.amazonaws.com/67e362b27bd165d61f0cf784/6a20225ea621c7e90f07d63c/fc0326cabcc00c9910ef894de6985862.original_transcoded.mp4",
+            "poster": "https://buffer-media-uploads.s3.amazonaws.com/67e362b288f79c93410af3f9/uploads/1780490830237/3f7fc206-4d5a-449f-a6ba-54af2cea611b.jpeg"
           }
         }
       ],
@@ -4358,17 +4358,17 @@
     "followers_as_of": "2026-06-29",
     "by_platform_detail": {
       "instagram": {
-        "reach": 36650,
-        "engagement": 2594,
-        "posts": 105,
-        "views": 58351,
+        "reach": 37063,
+        "engagement": 2626,
+        "posts": 108,
+        "views": 59120,
         "saves": 64,
         "follows": 8
       },
       "linkedin": {
         "reach": 1227,
         "engagement": 74,
-        "posts": 121,
+        "posts": 122,
         "views": 1995,
         "saves": 0,
         "follows": 0
@@ -4376,16 +4376,16 @@
       "tiktok": {
         "reach": 14253,
         "engagement": 422,
-        "posts": 45,
+        "posts": 46,
         "views": 16162,
         "saves": 0,
         "follows": 0
       },
       "youtube": {
         "reach": 0,
-        "engagement": 64,
+        "engagement": 65,
         "posts": 17,
-        "views": 7508,
+        "views": 7571,
         "saves": 0,
         "follows": 0
       },
@@ -4413,7 +4413,7 @@
       },
       "instagram": {
         "total": 5464,
-        "gained": 7,
+        "gained": 5,
         "window": "30d"
       },
       "tiktok": {
@@ -4433,9 +4433,9 @@
       }
     },
     "followers_gained_is_true_30d": false,
-    "followers_gained_total": 163,
+    "followers_gained_total": 161,
     "bookings": 35,
     "window_days": 60,
-    "updated": "Jun 29, 2:50 PM CT"
+    "updated": "Jun 30, 8:27 AM CT"
   }
 }
